@@ -46,9 +46,15 @@
     <Compile Include="APIworker.cs" />
     <Compile Include="Arena.cs" />
     <Compile Include="Card.cs" />
+    <Compile Include="Clan\Clan.cs" />
+    <Compile Include="Clan\ClanBadge.cs" />
+    <Compile Include="Clan\ClanChest.cs" />
+    <Compile Include="Clan\ClanPlayer.cs" />
+    <Compile Include="Clan\ClanRegion.cs" />
     <Compile Include="ClashRoyale.cs" />
     <Compile Include="Player\Player.cs" />
     <Compile Include="Player\PlayerChestCycle.cs" />
+    <Compile Include="Player\PlayerClan.cs" />
     <Compile Include="Player\PlayerExperience.cs" />
     <Compile Include="Player\PlayerGames.cs" />
     <Compile Include="Player\PlayerSeason.cs" />

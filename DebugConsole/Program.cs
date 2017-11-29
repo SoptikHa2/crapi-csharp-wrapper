@@ -8,6 +8,7 @@ namespace DebugConsole
         static void Main(string[] args)
         {
             Player player = Player.GetPlayer("80RGVCV9C");
+            Clan clan = Clan.GetClan("22Y802");
             Console.WriteLine($"{player.name}'s current deck:\n");
 
             foreach(Card card in player.currentDeck)

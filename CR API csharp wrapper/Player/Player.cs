@@ -20,7 +20,7 @@ namespace CRAPI
         public PlayerGames games;
         public PlayerChestCycle chestCycle;
         public PlayerShopOffers shopOffers;
-        // TODO: Clan
+        public PlayerClan clan;
         public Arena arena;
 
         /// <summary>
