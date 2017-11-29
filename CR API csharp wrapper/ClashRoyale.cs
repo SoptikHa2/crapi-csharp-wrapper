@@ -5,7 +5,7 @@ using System.Net;
 namespace CRAPI
 {
     /// <summary>
-    /// Base CR API class, contains basic information and net methods
+    /// Base CR API class, contains basic information
     /// </summary>
     public static class ClashRoyale
     {
@@ -19,8 +19,6 @@ namespace CRAPI
                 return Inside.APIworker.Get(Inside.APIworker.Endpoints.Version, "");
             }
             set { }
-        }
-
-        
+        }        
     }
 }

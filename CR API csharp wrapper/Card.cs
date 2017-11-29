@@ -11,5 +11,19 @@ namespace CRAPI
     /// </summary>
     public class Card
     {
+        public string name;
+        public string rarity;
+        public int level;
+        public int count;
+        public string requiredForUpgrade;
+        public int card_id;
+        public string key;
+        public string card_key;
+        public int elixir;
+        public string type;
+        public int arena;
+        public string description;
+        public string decklink;
+        public int? leftToUpgrade;
     }
 }
