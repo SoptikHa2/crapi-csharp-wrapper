@@ -44,8 +44,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="APIworker.cs" />
+    <Compile Include="Arena.cs" />
+    <Compile Include="Card.cs" />
     <Compile Include="ClashRoyale.cs" />
-    <Compile Include="Player.cs" />
+    <Compile Include="Player\Player.cs" />
+    <Compile Include="Player\PlayerChestCycle.cs" />
+    <Compile Include="Player\PlayerExperience.cs" />
+    <Compile Include="Player\PlayerGames.cs" />
+    <Compile Include="Player\PlayerSeason.cs" />
+    <Compile Include="Player\PlayerShopOffers.cs" />
+    <Compile Include="Player\PlayerStats.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

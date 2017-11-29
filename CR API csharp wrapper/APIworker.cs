@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.IO;
 using System.Net;
 
@@ -44,6 +45,11 @@ namespace CRAPI.Inside
             myResponse.Close();
 
             return result;
+        }
+
+        public static T Parse<T>(string input) where T : class
+        {
+            return JsonConvert.DeserializeObject<T>(input);
         }
     }
 }

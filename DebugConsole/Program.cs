@@ -7,8 +7,8 @@ namespace DebugConsole
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(ClashRoyale.Version);
-            Console.ReadLine();
+            Console.WriteLine(Player.GetPlayer("80RGVCV9C").name);
+            Console.ReadKey();
         }
     }
 }
