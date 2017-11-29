@@ -8,5 +8,11 @@ namespace CRAPI
 {
     public class PlayerGames
     {
+        public int total;
+        public int tournamentGames;
+        public int wins;
+        public int losses;
+        public int draws;
+        public int currentWinStreak;
     }
 }

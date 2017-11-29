@@ -11,5 +11,15 @@ namespace CRAPI
     /// </summary>
     public class Arena
     {
+        public string imageUrl;
+        public string arena;
+        public int arenaID;
+        public string name;
+        public int trophyLimit;
+
+        public override string ToString()
+        {
+            return name;
+        }
     }
 }

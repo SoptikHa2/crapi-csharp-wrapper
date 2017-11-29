@@ -8,5 +8,9 @@ namespace CRAPI
 {
     public class PlayerChestCycle
     {
+        public int position;
+        public int superMagicalPos;
+        public int legendaryPos;
+        public int epicPos;
     }
 }

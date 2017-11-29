@@ -8,5 +8,9 @@ namespace CRAPI
 {
     public class PlayerSeason
     {
+        public int seasonNumber;
+        public int seasonHighest;
+        public int seasonEnding;
+        public int? seasonEndGlobalRank;
     }
 }

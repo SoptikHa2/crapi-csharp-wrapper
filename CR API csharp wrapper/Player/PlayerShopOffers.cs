@@ -8,5 +8,8 @@ namespace CRAPI
 {
     public class PlayerShopOffers
     {
+        public int? legendary;
+        public int? epic;
+        public int? arena;
     }
 }

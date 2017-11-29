@@ -25,5 +25,10 @@ namespace CRAPI
         public string description;
         public string decklink;
         public int? leftToUpgrade;
+
+        public override string ToString()
+        {
+            return name;
+        }
     }
 }

@@ -15,6 +15,13 @@ namespace CRAPI
         public int? globalRank;
         public Card[] currentDeck;
         public PlayerSeason[] previousSeasons;
+        public PlayerExperience experience;
+        public PlayerStats stats;
+        public PlayerGames games;
+        public PlayerChestCycle chestCycle;
+        public PlayerShopOffers shopOffers;
+        // TODO: Clan
+        public Arena arena;
 
         /// <summary>
         /// Get player with TAG (in format like "Y99YRPYG") 
@@ -26,5 +33,9 @@ namespace CRAPI
             return Inside.APIworker.Parse<Player>(Inside.APIworker.Get(Inside.APIworker.Endpoints.Profile, tag));
         }
 
+        public override string ToString()
+        {
+            return name;
+        }
     }
 }

@@ -14,6 +14,10 @@ namespace DebugConsole
             {
                 Console.WriteLine($"{card.name} ({card.elixir})");
             }
+
+            Console.WriteLine("\n\n");
+            Console.WriteLine($"{player.name}'s current arena:");
+            Console.WriteLine($"{player.arena.name} ({player.trophies}/{player.arena.trophyLimit})");
             
             Console.ReadLine();
         }
