@@ -11,11 +11,27 @@ namespace CRAPI
     /// </summary>
     public class PlayerClan
     {
+        /// <summary>
+        /// Clan TAG
+        /// </summary>
         public string tag;
+        /// <summary>
+        /// Clan name
+        /// </summary>
         public string name;
+        /// <summary>
+        /// TODO
+        /// </summary>
         public string role;
+        /// <summary>
+        /// Clan badge
+        /// </summary>
         public ClanBadge badge;
 
+        /// <summary>
+        /// Returns string representation of clan summary, returns clan name
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return name;

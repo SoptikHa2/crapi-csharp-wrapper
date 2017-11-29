@@ -19,6 +19,16 @@ namespace CRAPI
                 return Inside.APIworker.Get(Inside.APIworker.Endpoints.Version, "");
             }
             set { }
-        }        
+        }
+
+        public static TopPlayers GetTopPlayers()
+        {
+            return Inside.APIworker.Parse<TopPlayers>(Inside.APIworker.Get(Inside.APIworker.Endpoints.Top, "players"));
+        }
+
+        public static TopClans GetTopClans()
+        {
+            return Inside.APIworker.Parse<TopClans>(Inside.APIworker.Get(Inside.APIworker.Endpoints.Top, "clans"));
+        }
     }
 }

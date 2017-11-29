@@ -5,6 +5,9 @@ using System.Net;
 
 namespace CRAPI.Inside
 {
+    /// <summary>
+    /// Class that is used by this wrapper. Do not touch!
+    /// </summary>
     public class APIworker
     {
         private const string domain = "http://api.cr-api.com/";
@@ -47,6 +50,9 @@ namespace CRAPI.Inside
             return result;
         }
 
+        /// <summary>
+        /// Deserialize JSON
+        /// </summary>
         public static T Parse<T>(string input) where T : class
         {
             return JsonConvert.DeserializeObject<T>(input);

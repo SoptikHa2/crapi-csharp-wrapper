@@ -7,21 +7,17 @@ using System.Threading.Tasks;
 namespace CRAPI
 {
     /// <summary>
-    /// Badge of clan
+    /// Class that contains array of the best player in Clash Royale
     /// </summary>
-    public class ClanBadge
+    public class TopPlayers
     {
         /// <summary>
-        /// URL to clan badge
+        /// DateTime when was this list last updated (in MS format)
         /// </summary>
-        public string url;
+        public ulong lastUpdated;
         /// <summary>
-        /// Name of file of the clan badge
+        /// Top players
         /// </summary>
-        public string filename;
-        /// <summary>
-        /// TODO
-        /// </summary>
-        public string key;
+        public Player[] players;
     }
 }

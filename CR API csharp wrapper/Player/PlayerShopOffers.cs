@@ -6,10 +6,22 @@ using System.Threading.Tasks;
 
 namespace CRAPI
 {
+    /// <summary>
+    /// Player shop offers data
+    /// </summary>
     public class PlayerShopOffers
     {
+        /// <summary>
+        /// Days until legendary offer appears
+        /// </summary>
         public int? legendary;
+        /// <summary>
+        /// Days until epic offer appears
+        /// </summary>
         public int? epic;
+        /// <summary>
+        /// Days until arena offer appears
+        /// </summary>
         public int? arena;
     }
 }

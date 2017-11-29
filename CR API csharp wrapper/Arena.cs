@@ -11,12 +11,31 @@ namespace CRAPI
     /// </summary>
     public class Arena
     {
+        /// <summary>
+        /// URL of the arena image
+        /// </summary>
         public string imageUrl;
+        /// <summary>
+        /// Arena number (like "Arena 10")
+        /// </summary>
         public string arena;
+        /// <summary>
+        /// Arena ID
+        /// </summary>
         public int arenaID;
+        /// <summary>
+        /// Arena name (like "Hog Mountain")
+        /// </summary>
         public string name;
+        /// <summary>
+        /// Arena minimum trophy limit
+        /// </summary>
         public int trophyLimit;
 
+        /// <summary>
+        /// Returns string reprezentation of arena, return arena's name
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return name;
