@@ -2,6 +2,8 @@
 This C# wrapper was made to help people with using [CR API](https://cr-api.com/). 
 Wrapper is written in C# and can be used in any C# application.
 
+> Wrapper works 100% correct with [API version](http://api.cr-api.com/version) `4.0.3` and older. Newer API versions are supported too, but some features may be missing.
+
 #### NUGET package
 
 `Stastny.CRAPI`
@@ -74,6 +76,17 @@ foreach (Clan c in topClans.clans)
 ## Documentation
 
 Documentation is still in TODO phase. Everything you need is commented inside classes. Open `.cs` files to see code.
+
+### Exceptions
+
+When something goes wrong, this wrapper throws an exception. This exception is thrown ONLY in `.Get` methods, that access API. The exception thrown is `WebException`. This exception means,
+that either user don't have connection to the Internet, or something inside API gone wrong (their servers may be down).
+
+Exceptions may be thrown in these methods:
+`ClashRoyale.GetTopPlayers();`
+`ClashRoyale.GetTopClans();`
+`Clan.GetClan("")`;
+`Player.GetPlayer("");`
 
 ## How to add this to my project
 
