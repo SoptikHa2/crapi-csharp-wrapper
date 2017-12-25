@@ -2,13 +2,16 @@
 This C# wrapper was made to help people with using [CR API](https://cr-api.com/). 
 Wrapper is written in C# and can be used in any C# application.
 
-> Wrapper works 100% correct with [API version](http://api.cr-api.com/version) `4.0.3` and older. Newer API versions are supported too, but some features may be missing.
+> <span style="color: red;">Due to changes in API, wrapper no longer works. I'm trying to fix it.</span>
+
+
+> Wrapper works 100% correct with [API version](http://api.cr-api.com/version) `4.0.3` and older.
 
 #### NUGET package
 
 `Stastny.CRAPI`
 
-[nuget.org](https://www.nuget.org/packages/Stastny.CRAPI/)
+[nuget.org package](https://www.nuget.org/packages/Stastny.CRAPI/)
 
 ```
 Install-Package Stastny.CRAPI -Version 0.1.0
@@ -19,6 +22,8 @@ dotnet add package Stastny.CRAPI --version 0.1.0
 ## How to use this wrapper
 
 You can start using wrapper right now, there's no API usage limit nor need to auth to use API.
+
+> You'll need to use auth key in future
 
 Classes are divided into 3 groups:
 - Main classes, like `Player`, `Clan` and `ClashRoyale`. These classes have methods, that can be used to get some output (example: `Player.GetPlayer(string tag)` method returns instance of `Player`). Instances
@@ -33,6 +38,8 @@ some Main Class. For example, `Player` class contains `deck` property, that is a
 > Note: All classes are in namespace `CRAPI`
 
 ### Example usage
+
+> This will change in next update
 
 ```csharp
 // Get player with ID 80RGVCV9C
@@ -92,7 +99,7 @@ Exceptions may be thrown in these methods:
 
 You can use nuget :) It's `Stastny.CRAPI`
 
-[nuget.org](https://www.nuget.org/packages/Stastny.CRAPI/)
+[nuget.org package](https://www.nuget.org/packages/Stastny.CRAPI/)
 
 ```
 Install-Package Stastny.CRAPI -Version 0.1.0
