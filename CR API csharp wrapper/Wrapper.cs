@@ -45,7 +45,17 @@ namespace CRAPI
             return Parse<Clan>(output);
         }
         
+        public ClanPlayer[] GetTopPlayers()
+        {
+            string output = Get(Endpoints.Top, "players");
+            return Parse<ClanPlayer[]>(output);
+        }
 
+        public PlayerClan[] GetTopClans()
+        {
+            string output = Get(Endpoints.Top, "clans");
+            return Parse<PlayerClan[]>(output);
+        }
 
         /// <summary>
         /// Get direct output from CR API

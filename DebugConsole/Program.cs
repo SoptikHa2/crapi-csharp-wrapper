@@ -22,6 +22,12 @@ namespace DebugConsole
             foreach (Card card in player.currentDeck)
                 Console.WriteLine(card);
 
+            Console.WriteLine("\n");
+
+            // Write best player's name and best clan's name
+            Console.WriteLine(wr.GetTopPlayers()[0]);
+            Console.WriteLine(wr.GetTopClans()[0]);
+
             Console.ReadKey();
         }
     }
