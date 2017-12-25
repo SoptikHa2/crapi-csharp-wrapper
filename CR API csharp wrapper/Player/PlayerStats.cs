@@ -12,43 +12,39 @@ namespace CRAPI
     public class PlayerStats
     {
         /// <summary>
-        /// Player's legendary trophies
-        /// </summary>
-        public int legendaryTrophies;
-        /// <summary>
-        /// Number of cards that player won in tournaments
+        /// TODO
         /// </summary>
         public int tournamentCardsWon;
         /// <summary>
-        /// Maximum wins in challenge
-        /// </summary>
-        public int challengeMaxWins;
-        /// <summary>
-        /// Number of cards that player won in challenges
-        /// </summary>
-        public int challengeCardsWon;
-        /// <summary>
-        /// Best player's trophies
+        /// TODO
         /// </summary>
         public int maxTrophies;
         /// <summary>
-        /// Number of three crown wins
+        /// TODO
         /// </summary>
         public int threeCrownWins;
         /// <summary>
-        /// Number of all cards that player can use
+        /// TODO
         /// </summary>
         public int cardsFound;
         /// <summary>
-        /// Name of player's favorite card
+        /// Player's favourite card
         /// </summary>
-        public string favoriteCard;
+        public Card favoriteCard;
         /// <summary>
-        /// Player's total donations
+        /// TODO
         /// </summary>
         public int totalDonations;
         /// <summary>
-        /// Player's current level
+        /// TODO
+        /// </summary>
+        public int challengeMaxWins;
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public int challengeCardsWon;
+        /// <summary>
+        /// TODO
         /// </summary>
         public int level;
     }

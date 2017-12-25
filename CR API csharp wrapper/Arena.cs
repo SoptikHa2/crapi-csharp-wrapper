@@ -12,10 +12,6 @@ namespace CRAPI
     public class Arena
     {
         /// <summary>
-        /// URL of the arena image
-        /// </summary>
-        public string imageUrl;
-        /// <summary>
         /// Arena number (like "Arena 10")
         /// </summary>
         public string arena;

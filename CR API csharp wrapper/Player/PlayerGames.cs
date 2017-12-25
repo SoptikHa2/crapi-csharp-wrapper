@@ -24,13 +24,25 @@ namespace CRAPI
         /// </summary>
         public int wins;
         /// <summary>
+        /// Player's wins percentage
+        /// </summary>
+        public float winsPercent;
+        /// <summary>
         /// Player's losses
         /// </summary>
         public int losses;
         /// <summary>
+        /// Player's losses percentage
+        /// </summary>
+        public float lossesPercent;
+        /// <summary>
         /// Player's draws
         /// </summary>
         public int draws;
+        /// <summary>
+        /// Player's draws percentage
+        /// </summary>
+        public float drawsPercent;
         /// <summary>
         /// Player's current win streak
         /// </summary>

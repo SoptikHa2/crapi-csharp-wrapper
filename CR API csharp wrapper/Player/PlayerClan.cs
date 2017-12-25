@@ -20,9 +20,21 @@ namespace CRAPI
         /// </summary>
         public string name;
         /// <summary>
-        /// TODO
+        /// Player's role (elder, member, etc)
         /// </summary>
         public string role;
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public int donations;
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public int donationsReceived;
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public int donationsDelta;
         /// <summary>
         /// Clan badge
         /// </summary>

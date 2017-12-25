@@ -16,12 +16,16 @@ namespace CRAPI
         /// </summary>
         public string url;
         /// <summary>
-        /// Name of file of the clan badge
+        /// Name of the badge
         /// </summary>
-        public string filename;
+        public string name;
         /// <summary>
         /// TODO
         /// </summary>
-        public string key;
+        public string category;
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public int id;
     }
 }

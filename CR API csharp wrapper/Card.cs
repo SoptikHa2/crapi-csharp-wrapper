@@ -12,47 +12,39 @@ namespace CRAPI
     public class Card
     {
         /// <summary>
-        /// Name of card
+        /// Name of card ("Rocket")
         /// </summary>
         public string name;
         /// <summary>
-        /// Rarity of caard
-        /// </summary>
-        public string rarity;
-        /// <summary>
-        /// Level of card
+        /// Current card level
         /// </summary>
         public int level;
         /// <summary>
-        /// Number of cards, that player have
+        /// Maximum level of card
+        /// </summary>
+        public int maxLevel;
+        /// <summary>
+        /// Number of cards in player's inventory
         /// </summary>
         public int count;
         /// <summary>
-        /// Number of cards that player needs to upgrade this card (can be "Maxed" instead of number when the card is on maximum level)
+        /// Url to card image
         /// </summary>
-        public string requiredForUpgrade;
+        public IconUrls iconUrls;
         /// <summary>
-        /// Card ID
-        /// </summary>
-        public int card_id;
-        /// <summary>
-        /// Card key (name of card)
+        /// Key of card ("rocket")
         /// </summary>
         public string key;
         /// <summary>
-        /// Card key (name of card)
-        /// </summary>
-        public string card_key;
-        /// <summary>
-        /// Card elixir cost
+        /// Card cost
         /// </summary>
         public int elixir;
         /// <summary>
-        /// Card type (like "Troop")
+        /// Type of card ("Spell")
         /// </summary>
         public string type;
         /// <summary>
-        /// Card arena
+        /// Number of arena, where is card unlocked (3)
         /// </summary>
         public int arena;
         /// <summary>
@@ -60,13 +52,9 @@ namespace CRAPI
         /// </summary>
         public string description;
         /// <summary>
-        /// TODO
+        /// Card rarity ("Epic")
         /// </summary>
-        public string decklink;
-        /// <summary>
-        /// TODO
-        /// </summary>
-        public int? leftToUpgrade;
+        public string rarity;
 
         /// <summary>
         /// Returns string reprezentation of card, return card's name
@@ -76,5 +64,13 @@ namespace CRAPI
         {
             return name;
         }
+    }
+
+    public struct IconUrls
+    {
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public string medium;
     }
 }

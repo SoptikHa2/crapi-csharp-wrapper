@@ -19,64 +19,51 @@ namespace CRAPI
         /// Player's current trophies
         /// </summary>
         public int trophies;
+
         /// <summary>
-        /// Player's legendary trophies
-        /// </summary>
-        public int legendaryTrophies;
-        /// <summary>
-        /// Changed player his name already?
-        /// </summary>
-        public bool nameChanged;
-        /// <summary>
-        /// Global rank of player (may be null)
-        /// </summary>
-        public int? globalRank;
-        /// <summary>
-        /// Current deck of player
-        /// </summary>
-        public Card[] currentDeck;
-        /// <summary>
-        /// Previous seasons data of player
-        /// </summary>
-        public PlayerSeason[] previousSeasons;
-        /// <summary>
-        /// Player's experience
-        /// </summary>
-        public PlayerExperience experience;
-        /// <summary>
-        /// Player's stats
-        /// </summary>
-        public PlayerStats stats;
-        /// <summary>
-        /// Player's game stats
-        /// </summary>
-        public PlayerGames games;
-        /// <summary>
-        /// Player's chest cycle data
-        /// </summary>
-        public PlayerChestCycle chestCycle;
-        /// <summary>
-        /// Player's shop offers
-        /// </summary>
-        public PlayerShopOffers shopOffers;
-        /// <summary>
-        /// Player's clan summary
-        /// </summary>
-        public PlayerClan clan;
-        /// <summary>
-        /// Player's arena
+        /// Player's current arena
         /// </summary>
         public Arena arena;
 
         /// <summary>
-        /// Get player with TAG (something like "Y99YRPYG") 
+        /// Player's current clan
         /// </summary>
-        /// <param name="tag">Player's ingame tag (something like "Y99YRPYG")</param>
-        /// <returns></returns>
-        public static Player GetPlayer(string tag)
-        {
-            return Inside.APIworker.Parse<Player>(Inside.APIworker.Get(Inside.APIworker.Endpoints.Profile, tag));
-        }
+        public PlayerClan clan;
+
+        /// <summary>
+        /// Additional player's stats
+        /// </summary>
+        public PlayerStats stats;
+
+        /// <summary>
+        /// Stats about player's games
+        /// </summary>
+        public PlayerGames games;
+
+        /// <summary>
+        /// Player's chest cycle
+        /// </summary>
+        public PlayerChestCycle chestCycle;
+
+        /// <summary>
+        /// Player's current deck
+        /// </summary>
+        public Card[] currentDeck;
+
+        /// <summary>
+        /// Cards in player's inventory
+        /// </summary>
+        public Card[] cards;
+
+        /// <summary>
+        /// Player's achievements
+        /// </summary>
+        public PlayerAchievement[] achievements;
+
+        /// <summary>
+        /// Player's recent battles
+        /// </summary>
+        public PlayerBattle[] battles;
 
         /// <summary>
         /// Return string representation of player, returns player's name

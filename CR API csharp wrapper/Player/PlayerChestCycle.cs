@@ -12,20 +12,33 @@ namespace CRAPI
     public class PlayerChestCycle
     {
         /// <summary>
-        /// Chest cycle position
+        /// Array of upcoming chests. ("silver", "silver", "gold", etc)
         /// </summary>
-        public int position;
+        public string[] upcoming;
+
         /// <summary>
         /// TODO
         /// </summary>
-        public int superMagicalPos;
+        public int superMagical;
+
         /// <summary>
         /// TODO
         /// </summary>
-        public int legendaryPos;
+        public int magical;
+
         /// <summary>
         /// TODO
         /// </summary>
-        public int epicPos;
+        public int legendary;
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public int epic;
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public int giant;
     }
 }

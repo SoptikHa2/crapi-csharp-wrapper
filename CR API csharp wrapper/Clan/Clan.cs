@@ -69,16 +69,6 @@ namespace CRAPI
         public ClanPlayer[] members;
 
         /// <summary>
-        /// Get clan from CR API
-        /// </summary>
-        /// <param name="tag">TAG of clan (something like "22Y802")</param>
-        /// <returns></returns>
-        public static Clan GetClan(string tag)
-        {
-            return Inside.APIworker.Parse<Clan>(Inside.APIworker.Get(Inside.APIworker.Endpoints.Clan, tag));
-        }
-
-        /// <summary>
         /// Get string representation of this clan, returns clan name
         /// </summary>
         /// <returns></returns>

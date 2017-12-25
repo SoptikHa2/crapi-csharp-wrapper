@@ -3,14 +3,16 @@ using System;
 using System.IO;
 using System.Net;
 
-namespace CRAPI.Inside
+namespace CRAPI
 {
     /// <summary>
     /// Class that is used by this wrapper. Do not touch!
     /// </summary>
-    public class APIworker
+    public class Wrapper
     {
         private const string domain = "http://api.cr-api.com/";
+
+        private readonly string key;
 
 
         /// <summary>
@@ -18,12 +20,25 @@ namespace CRAPI.Inside
         /// </summary>
         public enum Endpoints
         {
-            Profile,
+            Player,
             Top,
             Clan,
             Constants,
             Version
         }
+
+
+        public Wrapper(string devkey)
+        {
+            this.key = devkey;
+        }
+
+        public Player GetPlayer(string tag)
+        {
+            string output = Get(Endpoints.Player, tag);
+            return Parse<Player>(output);
+        }
+        
 
 
         /// <summary>
@@ -32,15 +47,16 @@ namespace CRAPI.Inside
         /// <param name="endpoint">Endpoint to use</param>
         /// <param name="parameter">Parameter to endpoint (like player ID)</param>
         /// <returns></returns>
-        public static string Get(Endpoints endpoint, string parameter)
+        private string Get(Endpoints endpoint, string parameter)
         {
             return Get(domain + endpoint.ToString() + "/" + parameter);
         }
 
-        private static string Get(string url)
+        private string Get(string url)
         {
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
             req.Method = "GET";
+            req.Headers.Add("auth", key);
             WebResponse myResponse = req.GetResponse();
             StreamReader sr = new StreamReader(myResponse.GetResponseStream(), System.Text.Encoding.UTF8);
             string result = sr.ReadToEnd();
@@ -53,7 +69,7 @@ namespace CRAPI.Inside
         /// <summary>
         /// Deserialize JSON
         /// </summary>
-        public static T Parse<T>(string input) where T : class
+        private static T Parse<T>(string input) where T : class
         {
             return JsonConvert.DeserializeObject<T>(input);
         }
