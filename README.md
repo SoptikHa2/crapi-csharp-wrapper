@@ -2,10 +2,7 @@
 This C# wrapper was made to help people with using [CR API](https://cr-api.com/). 
 Wrapper is written in C# and can be used in any C# application.
 
-> <span style="color: red;">Due to changes in API, wrapper no longer works. I'm trying to fix it.</span>
-
-
-> Wrapper works 100% correct with [API version](http://api.cr-api.com/version) `4.0.3` and older.
+> You need developer key to use API. You can get the key by following instructions listed on [CR API website](http://docs.cr-api.com/#/authentication)
 
 #### NUGET package
 
@@ -21,9 +18,7 @@ dotnet add package Stastny.CRAPI --version 0.1.0
 
 ## How to use this wrapper
 
-You can start using wrapper right now, there's no API usage limit nor need to auth to use API.
-
-> You'll need to use auth key in future
+> You have to get your own API key. Get your API KEY [here](http://docs.cr-api.com/#/authentication)
 
 Classes are divided into 3 groups:
 - Main classes, like `Player`, `Clan` and `ClashRoyale`. These classes have methods, that can be used to get some output (example: `Player.GetPlayer(string tag)` method returns instance of `Player`). Instances
@@ -37,47 +32,33 @@ some Main Class. For example, `Player` class contains `deck` property, that is a
 
 > Note: All classes are in namespace `CRAPI`
 
+To start, initialize `Wrapper` class. `Wrapper wr = new Wrapper(your_dev_key);`. You can get clans and players by calling methods on Wrapper class. See example usage.
+
 ### Example usage
 
-> This will change in next update
+> You have to add using: `using CRAPI;`
 
 ```csharp
+// Initialize wrapper with your dev key
+Wrapper wr = new Wrapper("your dev key");
+
 // Get player with ID 80RGVCV9C
-Player player = Player.GetPlayer("80RGVCV9C");
+Player player = wr.GetPlayer("80RGVCV9C");
 // Get clan with ID 22Y802
-Clan clan = Clan.GetClan("22Y802");
+Clan clan = wr.GetClan("22Y802");
 
-// Write player's name by using player.name
-Console.WriteLine($"{player.name}'s current deck:\n");
+Console.WriteLine(player.name);
+Console.WriteLine(clan.name);
 
-// Go thru all cards in player's deck
-foreach(Card card in player.currentDeck)
-{
-    // Write card name and card elixir cost
-    Console.WriteLine($"{card.name} ({card.elixir})");
-}
+// Write cards in player's deck
+foreach (Card card in player.currentDeck)
+    Console.WriteLine(card);
 
-Console.WriteLine("\n\n");
-// Again write player's name
-Console.WriteLine($"{player.name}'s current arena:");
-// Write player's arena name, player's trophies and player's arena's trophy limit
-Console.WriteLine($"{player.arena.name} ({player.trophies}/{player.arena.trophyLimit})");
+Console.WriteLine("\n");
 
-
-Console.WriteLine("\n\n");
-// Get top players
-TopPlayers topPlayers = ClashRoyale.GetTopPlayers();
-// Get top clans
-TopClans topClans = ClashRoyale.GetTopClans();
-Console.WriteLine("Top players:");
-// List top players
-foreach (Player p in topPlayers.players)
-    Console.WriteLine(p); // Use Player.ToString(), that returns player's name
-
-Console.WriteLine("\n\nTop clans:");
-// List top clans
-foreach (Clan c in topClans.clans)
-    Console.WriteLine(c); // Use Clan.ToString(), that returns clan's name
+// Write best player's name and best clan's name
+Console.WriteLine(wr.GetTopPlayers()[0]);
+Console.WriteLine(wr.GetTopClans()[0]);
 ```
 
 ## Documentation
@@ -88,12 +69,6 @@ Documentation is still in TODO phase. Everything you need is commented inside cl
 
 When something goes wrong, this wrapper throws an exception. This exception is thrown ONLY in `.Get` methods, that access API. The exception thrown is `WebException`. This exception means,
 that either user don't have connection to the Internet, or something inside API gone wrong (their servers may be down).
-
-Exceptions may be thrown in these methods:
-`ClashRoyale.GetTopPlayers();`
-`ClashRoyale.GetTopClans();`
-`Clan.GetClan("")`;
-`Player.GetPlayer("");`
 
 ## How to add this to my project
 
