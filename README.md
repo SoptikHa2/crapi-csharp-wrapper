@@ -11,9 +11,9 @@ Wrapper is written in C# and can be used in any C# application.
 [nuget.org package](https://www.nuget.org/packages/Stastny.CRAPI/)
 
 ```
-Install-Package Stastny.CRAPI -Version 0.1.0
+Install-Package Stastny.CRAPI -Version 0.2.1
 
-dotnet add package Stastny.CRAPI --version 0.1.0
+dotnet add package Stastny.CRAPI --version 0.2.1
 ```
 
 ## How to use this wrapper
@@ -77,7 +77,7 @@ You can use nuget :) It's `Stastny.CRAPI`
 [nuget.org package](https://www.nuget.org/packages/Stastny.CRAPI/)
 
 ```
-Install-Package Stastny.CRAPI -Version 0.1.0
+Install-Package Stastny.CRAPI -Version 0.2.1
 
-dotnet add package Stastny.CRAPI --version 0.1.0
+dotnet add package Stastny.CRAPI --version 0.2.1
 ```
