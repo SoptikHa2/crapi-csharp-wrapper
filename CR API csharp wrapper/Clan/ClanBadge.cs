@@ -14,7 +14,7 @@ namespace CRAPI
         /// <summary>
         /// URL to clan badge
         /// </summary>
-        public string url;
+        public string image;
         /// <summary>
         /// Name of the badge
         /// </summary>

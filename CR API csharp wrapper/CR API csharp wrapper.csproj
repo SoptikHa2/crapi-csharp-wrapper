@@ -50,7 +50,6 @@
     <Compile Include="Card.cs" />
     <Compile Include="Clan\Clan.cs" />
     <Compile Include="Clan\ClanBadge.cs" />
-    <Compile Include="Clan\ClanChest.cs" />
     <Compile Include="Clan\ClanPlayer.cs" />
     <Compile Include="Clan\ClanRegion.cs" />
     <Compile Include="Player\Player.cs" />

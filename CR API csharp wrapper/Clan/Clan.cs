@@ -12,59 +12,51 @@ namespace CRAPI
     public class Clan
     {
         /// <summary>
-        /// Name of clan
+        /// Clan tag
+        /// </summary>
+        public string tag;
+        /// <summary>
+        /// Clan name
         /// </summary>
         public string name;
-        /// <summary>
-        /// Clan badge
-        /// </summary>
-        public ClanBadge badge;
-        /// <summary>
-        /// TODO
-        /// </summary>
-        public int type;
-        /// <summary>
-        /// Number of members
-        /// </summary>
-        public int memberCount;
-        /// <summary>
-        /// Clan score
-        /// </summary>
-        public int score;
-        /// <summary>
-        /// Required trophies to join
-        /// </summary>
-        public int requiredScore;
-        /// <summary>
-        /// Donations in clan
-        /// </summary>
-        public int donations;
-        /// <summary>
-        /// TODO
-        /// </summary>
-        public int currentRank;
         /// <summary>
         /// Clan description
         /// </summary>
         public string description;
         /// <summary>
-        /// Clan tag
+        /// TODO
         /// </summary>
-        public string tag;
+        public string type;
+        /// <summary>
+        /// Clan score (trophies)
+        /// </summary>
+        public int score;
+        /// <summary>
+        /// Number of members
+        /// </summary>
+        public int memberCount;
+        /// <summary>
+        /// Required trophies to join
+        /// </summary>
+        public int requiredScore;
         /// <summary>
         /// TODO
         /// </summary>
-        public string typeName;
+        public int donations;
         /// <summary>
-        /// Clan region (country)
-        /// </summary>
-        public ClanRegion region;
-        /// <summary>
-        /// Clan's last clanchest info
+        /// Clan chest status
         /// </summary>
         public ClanChest clanChest;
         /// <summary>
-        /// Clan's members (short summary of each player)
+        /// Clan badge (image)
+        /// </summary>
+        public ClanBadge badge;
+        /// <summary>
+        /// Clan location
+        /// </summary>
+        public ClanRegion location;
+        /// <summary>
+        /// Array of players in clan
         /// </summary>
         public ClanPlayer[] members;
 
@@ -76,5 +68,10 @@ namespace CRAPI
         {
             return name;
         }
+    }
+
+    public struct ClanChest
+    {
+        public string status;
     }
 }

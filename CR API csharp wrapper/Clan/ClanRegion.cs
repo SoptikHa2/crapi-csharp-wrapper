@@ -12,17 +12,13 @@ namespace CRAPI
     public class ClanRegion
     {
         /// <summary>
-        /// ID of region
-        /// </summary>
-        public int id;
-        /// <summary>
         /// Is this region country? (Europe X Germany)
         /// </summary>
         public bool isCountry;
         /// <summary>
-        /// Country key
+        /// Country code (CZ)
         /// </summary>
-        public string key;
+        public string code;
         /// <summary>
         /// Country name
         /// </summary>

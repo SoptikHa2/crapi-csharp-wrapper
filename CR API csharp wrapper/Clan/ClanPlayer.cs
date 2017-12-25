@@ -15,50 +15,30 @@ namespace CRAPI
         /// Name of player
         /// </summary>
         public string name;
-        /// <summary>
-        /// Arena of player
-        /// </summary>
-        public Arena arena;
-        /// <summary>
-        /// Role of player
-        /// </summary>
-        public int role;
-        /// <summary>
-        /// Level of player
-        /// </summary>
-        public int expLevel;
-        /// <summary>
-        /// Trophies of player
-        /// </summary>
-        public int trophies;
-        /// <summary>
-        /// Donations from player
-        /// </summary>
-        public int donations;
-        /// <summary>
-        /// TODO
-        /// </summary>
-        public int currentRank;
-        /// <summary>
-        /// TODO
-        /// </summary>
-        public int previousRank;
-        /// <summary>
-        /// Number of crowns, player collected last clan chest
-        /// </summary>
-        public int clanChestCrowns;
-        /// <summary>
-        /// TAG of player
-        /// </summary>
+
         public string tag;
-        /// <summary>
-        /// Name of role of player (Elder, Leader, ...)
-        /// </summary>
-        public string roleName;
-        /// <summary>
-        /// Score of player
-        /// </summary>
-        public int score;
+
+        public int rank;
+
+        public int previousRank;
+
+        public string role;
+
+        public int expLevel;
+
+        public int trophies;
+
+        public int clanChestCrowns;
+
+        public int donations;
+
+        public int donationsReceived;
+
+        public int donationsDelta;
+
+        public float donationsPercent;
+
+        public Arena arena;
 
         /// <summary>
         /// Return string representation of player, returns player's name

@@ -38,6 +38,12 @@ namespace CRAPI
             string output = Get(Endpoints.Player, tag);
             return Parse<Player>(output);
         }
+
+        public Clan GetClan(string tag)
+        {
+            string output = Get(Endpoints.Clan, tag);
+            return Parse<Clan>(output);
+        }
         
 
 
