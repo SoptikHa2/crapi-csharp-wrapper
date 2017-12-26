@@ -5,9 +5,6 @@ using System.Net;
 
 namespace CRAPI
 {
-    /// <summary>
-    /// Class that is used by this wrapper. Do not touch!
-    /// </summary>
     public class Wrapper
     {
         private const string domain = "http://api.cr-api.com/";

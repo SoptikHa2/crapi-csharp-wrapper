@@ -4,75 +4,114 @@ Wrapper is written in C# and can be used in any C# application.
 
 > You need developer key to use API. You can get the key by following instructions listed on [CR API website](http://docs.cr-api.com/#/authentication)
 
-#### NUGET package
+## How to use this wrapper
 
-`Stastny.CRAPI`
+First of all, you should obtain your own developer key. Please see [CR API website](http://docs.cr-api.com/#/authentication) and get your developer key.
+You should receive something like this: `3012e5ab523243q2a86w2bqa58bdf9bce96071843029447631924cf99w5a9kfc` (example key, this one is not valid).
 
-[nuget.org package](https://www.nuget.org/packages/Stastny.CRAPI/)
 
+When you get your own key, you can include this wrapper in your project. The easiest way is to use my [NUGET package](https://www.nuget.org/packages/Stastny.CRAPI/).
+You can either import the package via visual studio or use one of these commands:
 ```
 Install-Package Stastny.CRAPI -Version 0.2.1
 
 dotnet add package Stastny.CRAPI --version 0.2.1
 ```
 
-## How to use this wrapper
 
-> You have to get your own API key. Get your API KEY [here](http://docs.cr-api.com/#/authentication)
-
-Classes are divided into 3 groups:
-- Main classes, like `Player`, `Clan` and `ClashRoyale`. These classes have methods, that can be used to get some output (example: `Player.GetPlayer(string tag)` method returns instance of `Player`). Instances
-of these classes have some basic information about object (like `Player.name`)
-- Sub classes, like `PlayerClan` or `ClanBadge`. These classes are related to one of main classes - `PlayerClan` is related to class `Player`, or `ClanBadge` is related to class `Clan`.
-These classes contains additional information. For example `Player.clan` returns `PlayClan` class, that contains summary of player's clan (information that you can get from ingame profile window, 
-detailed information are in `Clan` class)
-- Independent classes, like `Card`. These classes are something between Main classes and Sub classes. They are independent, but you cannot get them directly. They are returned alongside with
-some Main Class. For example, `Player` class contains `deck` property, that is array of `Card`.
+After you get your developer key and include the wrapper, you can start using it. Start by adding new using.
+```csharp
+// Start of file
+using System;
+using CRAPI;
+```
 
 
-> Note: All classes are in namespace `CRAPI`
+Then you need to create new Wrapper object.
 
-To start, initialize `Wrapper` class. `Wrapper wr = new Wrapper(your_dev_key);`. You can get clans and players by calling methods on Wrapper class. See example usage.
+```csharp
+Wrapper wr = new Wrapper("your dev key");
+```
 
-### Example usage
+
+Now, you can get Player or Clan objects.
+
+```csharp
+Player somerandomplayer = wr.GetPlayer("80RGVCV9C"); // Get player with tag 80RGVCV9C
+
+Clan somerandomclan = wr.GetClan("22Y802"); // Get clan with tag 22Y802
+
+Player[] bestPlayersInClashRoyale = wr.GetTopPlayers(); // Returns array which contains the best players in CR
+Clan[] bestClansInClashRoyale = wr.GetTopClans(); // Returns array which contains the best clans in CR
+```
+
+
+
+You can get information about player/clan directly from these objects.
+
+```csharp
+somerandomplayer.name; // Get player's name
+Card[] deck = somerandomplayer.currentDeck; // Get array of card, this array represents player's deck
+
+// Write each card's name into console
+foreach(Card card in deck){
+	Console.WriteLine(card.name);
+}
+
+// ...
+```
+
+
+You can get much more info from player or clan objects - for example player's recent battles or clan badge. Use IntelliSense or browse my code to see what you can achieve with
+my wrapper!
+
+## Example usage
 
 > You have to add using: `using CRAPI;`
 
 ```csharp
-// Initialize wrapper with your dev key
-Wrapper wr = new Wrapper("your dev key");
+ // Initialize wrapper with your dev key
+Wrapper wr = new Wrapper("2970f9ab909243f2a86c1bda54bdf9bce950718c3029447686924cf9985af91c");
 
-// Get player with ID 80RGVCV9C
-Player player = wr.GetPlayer("80RGVCV9C");
-// Get clan with ID 22Y802
-Clan clan = wr.GetClan("22Y802");
+// Read player TAG from default input
+string tag = Console.ReadLine();
 
-Console.WriteLine(player.name);
-Console.WriteLine(clan.name);
+// Get player from API
+Player player = wr.GetPlayer(tag);
 
-// Write cards in player's deck
-foreach (Card card in player.currentDeck)
-    Console.WriteLine(card);
+// Write player's name, level and arena'
+Console.WriteLine($"{player.name} (XP level {player.stats.level}) ({player.arena.name})");
+// Write player's clan name and player's role in clan
+Console.WriteLine($"{player.clan.name} ({player.clan.role})");
 
-Console.WriteLine("\n");
+Card[] cards = player.currentDeck;
 
-// Write best player's name and best clan's name
-Console.WriteLine(wr.GetTopPlayers()[0]);
-Console.WriteLine(wr.GetTopClans()[0]);
+// For each card in player's deck
+foreach(Card c in cards)
+{
+	// Write card's name, elixir cost, rarity and level
+    Console.WriteLine($"{c.name} {c.elixir} ({c.rarity}) --- level: {c.level}");
+}
 ```
 
-## Documentation
+Output:
 
-Documentation is still in TODO phase. Everything you need is commented inside classes. Open `.cs` files to see code.
+```
+Soptik (XP level 10) (Legendary Arena)
+CZ exKnights 2 (elder)
+Mega Knight 7 (Legendary) --- level: 1
+Skeleton Army 3 (Epic) --- level: 5
+Inferno Tower 5 (Rare) --- level: 8
+The Log 2 (Legendary) --- level: 2
+Minions 3 (Common) --- level: 12
+Miner 3 (Legendary) --- level: 2
+Executioner 5 (Epic) --- level: 5
+Archers 3 (Common) --- level: 11
+```
 
-### Exceptions
+## NUGET package
 
-When something goes wrong, this wrapper throws an exception. This exception is thrown ONLY in `.Get` methods, that access API. The exception thrown is `WebException`. This exception means,
-that either user don't have connection to the Internet, or something inside API gone wrong (their servers may be down).
-
-## How to add this to my project
-
-You can use nuget :) It's `Stastny.CRAPI`
+`Stastny.CRAPI`
 
 [nuget.org package](https://www.nuget.org/packages/Stastny.CRAPI/)
 

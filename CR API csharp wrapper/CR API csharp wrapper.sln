@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2009
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CR API csharp wrapper", "CR API csharp wrapper.csproj", "{2AC9DD68-3A26-4F74-A87B-1C1BEC7FC12E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugConsole", "..\DebugConsole\DebugConsole.csproj", "{8B851E1B-9490-4E4C-9D1F-F0E18B325FA5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleUsage", "..\DebugConsole\ExampleUsage.csproj", "{8B851E1B-9490-4E4C-9D1F-F0E18B325FA5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
