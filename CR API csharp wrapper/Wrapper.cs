@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace CRAPI
 {
@@ -30,6 +31,8 @@ namespace CRAPI
             this.key = devkey;
         }
 
+        #region GetFromAPI
+
         public Player GetPlayer(string tag)
         {
             string output = Get(Endpoints.Player, tag);
@@ -41,18 +44,48 @@ namespace CRAPI
             string output = Get(Endpoints.Clan, tag);
             return Parse<Clan>(output);
         }
-        
-        public ClanPlayer[] GetTopPlayers()
+
+        public SimplifiedPlayer[] GetTopPlayers()
         {
             string output = Get(Endpoints.Top, "players");
-            return Parse<ClanPlayer[]>(output);
+            return Parse<SimplifiedPlayer[]>(output);
         }
 
-        public PlayerClan[] GetTopClans()
+        public SimplifiedClan[] GetTopClans()
         {
             string output = Get(Endpoints.Top, "clans");
-            return Parse<PlayerClan[]>(output);
+            return Parse<SimplifiedClan[]>(output);
         }
+
+        #endregion
+
+        #region GetFromAPIasync
+
+        public async Task<Player> GetPlayerAsync(string tag)
+        {
+            Task<string> output = GetAsync(Endpoints.Player, tag);
+            return Parse<Player>(await output);
+        }
+
+        public async Task<Clan> GetClanAsync(string tag)
+        {
+            Task<string> output = GetAsync(Endpoints.Clan, tag);
+            return Parse<Clan>(await output);
+        }
+
+        public async Task<SimplifiedPlayer[]> GetTopPlayersAsync()
+        {
+            Task<string> output = GetAsync(Endpoints.Top, "players");
+            return Parse<SimplifiedPlayer[]>(await output);
+        }
+
+        public async Task<SimplifiedClan[]> GetTopClansAsync()
+        {
+            Task<string> output = GetAsync(Endpoints.Top, "clans");
+            return Parse<SimplifiedClan[]>(await output);
+        }
+
+        #endregion
 
         /// <summary>
         /// Get direct output from CR API
@@ -65,6 +98,12 @@ namespace CRAPI
             return Get(domain + endpoint.ToString() + "/" + parameter);
         }
 
+        private async Task<string> GetAsync(Endpoints endpoint, string parameter)
+        {
+            Task<string> tReq = GetAsync(domain + endpoint.ToString() + "/" + parameter);
+            return await tReq;
+        }
+
         private string Get(string url)
         {
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
@@ -75,6 +114,21 @@ namespace CRAPI
             string result = sr.ReadToEnd();
             sr.Close();
             myResponse.Close();
+
+            return result;
+        }
+
+        private async Task<string> GetAsync(string url)
+        {
+            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+            req.Method = "GET";
+            req.Headers.Add("auth", key);
+            Task<WebResponse> myResponse = req.GetResponseAsync();
+            WebResponse response = await myResponse;
+            StreamReader sr = new StreamReader(response.GetResponseStream(), System.Text.Encoding.UTF8);
+            string result = sr.ReadToEnd();
+            sr.Close();
+            response.Close();
 
             return result;
         }

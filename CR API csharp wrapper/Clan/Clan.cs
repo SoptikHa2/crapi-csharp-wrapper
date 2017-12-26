@@ -58,7 +58,7 @@ namespace CRAPI
         /// <summary>
         /// Array of players in clan
         /// </summary>
-        public ClanPlayer[] members;
+        public SimplifiedPlayer[] members;
 
         /// <summary>
         /// Get string representation of this clan, returns clan name

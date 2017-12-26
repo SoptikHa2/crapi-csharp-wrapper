@@ -9,7 +9,7 @@ namespace CRAPI
     /// <summary>
     /// Short summary of player (from clan view)
     /// </summary>
-    public class ClanPlayer
+    public class SimplifiedPlayer
     {
         /// <summary>
         /// Name of player

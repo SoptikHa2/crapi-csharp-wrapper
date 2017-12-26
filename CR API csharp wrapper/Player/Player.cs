@@ -28,7 +28,7 @@ namespace CRAPI
         /// <summary>
         /// Player's current clan
         /// </summary>
-        public PlayerClan clan;
+        public SimplifiedClan clan;
 
         /// <summary>
         /// Additional player's stats

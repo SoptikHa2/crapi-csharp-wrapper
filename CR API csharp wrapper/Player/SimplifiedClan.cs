@@ -9,7 +9,7 @@ namespace CRAPI
     /// <summary>
     /// Short clan description (clan tag, name, player's role and badge) from player's profile view
     /// </summary>
-    public class PlayerClan
+    public class SimplifiedClan
     {
         /// <summary>
         /// Clan TAG
