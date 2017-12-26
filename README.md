@@ -4,6 +4,18 @@ Wrapper is written in C# and can be used in any C# application.
 
 > You need developer key to use API. You can get the key by following instructions listed on [CR API website](http://docs.cr-api.com/#/authentication)
 
+## NUGET package
+
+`Stastny.CRAPI`
+
+[nuget.org package](https://www.nuget.org/packages/Stastny.CRAPI/)
+
+```
+Install-Package Stastny.CRAPI -Version 0.2.1
+
+dotnet add package Stastny.CRAPI --version 0.2.1
+```
+
 ## How to use this wrapper
 
 First of all, you should obtain your own developer key. Please see [CR API website](http://docs.cr-api.com/#/authentication) and get your developer key.
@@ -107,6 +119,66 @@ Minions 3 (Common) --- level: 12
 Miner 3 (Legendary) --- level: 2
 Executioner 5 (Epic) --- level: 5
 Archers 3 (Common) --- level: 11
+```
+
+## Example ASYNC usage
+
+> You have to input this code to special method -> do not throw this into Main! Make method like `static async void DoSomething()` (async keyword!)
+
+```csharp
+// As in sync version, initialize wrapper with your developer key
+Wrapper wr = new Wrapper("3012e5ab523243q2a86w2bqa58bdf9bce96071843029447631924cf99w5a9kfc");
+
+// Store player tag and clan tag
+string tag = "80RGVCV9C";
+string ctag = "22Y802";
+
+Console.WriteLine("I'll get one player profile, one clan profile, best players and best clans async!");
+
+// Get one player, one clan, best players and best clans async
+Task<Player> a_player = wr.GetPlayerAsync(tag);
+Task<Clan> a_clan = wr.GetClanAsync(ctag);
+Task<SimplifiedPlayer[]> a_topPlayers = wr.GetTopPlayersAsync(); // wr.GetTopPlayers() and its async version return SimplifiedPlayer -> this is just like Player,
+                                                                    // but simplified with less properties. If you want to get complete overview, get the top player:
+                                                                    // Player topPlayer = wr.GetPlayer(wr.GetTopPlayers()[0].tag)
+Task<SimplifiedClan[]> a_topClans = wr.GetTopClansAsync(); // Here is the same thing as with GetTopPlayers()
+
+
+// Wait untill everything is prepared. You can for example write dots into console /* THIS IS OPTIONAL */
+while (!a_player.IsCompleted || !a_clan.IsCompleted || !a_topPlayers.IsCompleted || !a_topClans.IsCompleted)
+{
+    Console.Write(".");
+    System.Threading.Thread.Sleep(50);
+}
+
+
+// The while cycle above ends when everything loaded
+Console.WriteLine("Done!");
+
+
+// Get variables
+// NOTE: If the while cycle above wouldn't be here, the application would wait untill everything is prepared here
+Player player = await a_player;
+Clan clan = await a_clan;
+SimplifiedPlayer[] topPlayers = await a_topPlayers;
+SimplifiedClan[] topCLans = await a_topClans;
+
+// Write few names
+Console.WriteLine(player.name);
+Console.WriteLine(clan.name);
+Console.WriteLine(topPlayers[0].name);
+Console.WriteLine(topCLans[0].name);
+```
+
+
+Output:
+```
+I'll get one player profile, one clan profile, best players and best clans async!
+..........................................................Done!
+Soptik
+CZ exKnights 2
+Nova l Pompeyo
+Nova eSports
 ```
 
 ## NUGET package
