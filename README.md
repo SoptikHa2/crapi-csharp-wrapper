@@ -11,9 +11,9 @@ Wrapper is written in C# and can be used in any C# application.
 [nuget.org package](https://www.nuget.org/packages/Stastny.CRAPI/)
 
 ```
-Install-Package Stastny.CRAPI -Version 0.2.5
+Install-Package Stastny.CRAPI -Version 0.2.6
 
-dotnet add package Stastny.CRAPI --version 0.2.5
+dotnet add package Stastny.CRAPI --version 0.2.6
 ```
 
 ## How to use this wrapper
@@ -25,9 +25,9 @@ You should receive something like this: `3012e5ab523243q2a86w2bqa58bdf9bce960718
 When you get your own key, you can include this wrapper in your project. The easiest way is to use my [NUGET package](https://www.nuget.org/packages/Stastny.CRAPI/).
 You can either import the package via visual studio or use one of these commands:
 ```
-Install-Package Stastny.CRAPI -Version 0.2.5
+Install-Package Stastny.CRAPI -Version 0.2.6
 
-dotnet add package Stastny.CRAPI --version 0.2.5
+dotnet add package Stastny.CRAPI --version 0.2.6
 ```
 
 
@@ -191,9 +191,9 @@ Nova eSports
 [nuget.org package](https://www.nuget.org/packages/Stastny.CRAPI/)
 
 ```
-Install-Package Stastny.CRAPI -Version 0.2.5
+Install-Package Stastny.CRAPI -Version 0.2.6
 
-dotnet add package Stastny.CRAPI --version 0.2.5
+dotnet add package Stastny.CRAPI --version 0.2.6
 ```
 
 
