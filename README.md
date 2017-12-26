@@ -71,7 +71,7 @@ my wrapper!
 
 ```csharp
  // Initialize wrapper with your dev key
-Wrapper wr = new Wrapper("2970f9ab909243f2a86c1bda54bdf9bce950718c3029447686924cf9985af91c");
+Wrapper wr = new Wrapper("3012e5ab523243q2a86w2bqa58bdf9bce96071843029447631924cf99w5a9kfc");
 
 // Read player TAG from default input
 string tag = Console.ReadLine();
