@@ -19,7 +19,10 @@ namespace CRAPI
         /// Player's current trophies
         /// </summary>
         public int trophies;
-
+        /// <summary>
+        /// Player's position in global leaderboard. May be NULL.
+        /// </summary>
+        public int? rank;
         /// <summary>
         /// Player's current arena
         /// </summary>
@@ -64,6 +67,12 @@ namespace CRAPI
         /// Player's recent battles
         /// </summary>
         public PlayerBattle[] battles;
+
+        /// <summary>
+        /// Player's league statistics. This may be NULL.
+        /// </summary>
+        public LeagueStatistics leagueStatistics;
+
 
         /// <summary>
         /// Return string representation of player, returns player's name

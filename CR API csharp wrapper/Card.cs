@@ -55,7 +55,15 @@ namespace CRAPI
         /// Card rarity ("Epic")
         /// </summary>
         public string rarity;
-
+        /// <summary>
+        /// Cards required to upgrade to next level ("Maxed" when on
+        /// maximum level, otherwise, number, for example "2")
+        /// </summary>
+        public string requiredForUpgrade;
+        /// <summary>
+        /// Cards that player needs to upgrade to next level. Is null, if [requiredForUpgrade] is "Maxed"
+        /// </summary>
+        public int? leftToUpgrade;
         /// <summary>
         /// Returns string reprezentation of card, return card's name
         /// </summary>

@@ -11,9 +11,9 @@ Wrapper is written in C# and can be used in any C# application.
 [nuget.org package](https://www.nuget.org/packages/Stastny.CRAPI/)
 
 ```
-Install-Package Stastny.CRAPI -Version 0.2.1
+Install-Package Stastny.CRAPI -Version 0.2.5
 
-dotnet add package Stastny.CRAPI --version 0.2.1
+dotnet add package Stastny.CRAPI --version 0.2.5
 ```
 
 ## How to use this wrapper
@@ -195,3 +195,9 @@ Install-Package Stastny.CRAPI -Version 0.2.5
 
 dotnet add package Stastny.CRAPI --version 0.2.5
 ```
+
+
+# Contact Me
+
+If you have any feedback, questions, or suggestions, feel free to contact me! You can add [GitHub issue](https://github.com/SoptikHa2/crapi-csharp-wrapper/issues) or send me a message
+via [Discord](https://discordapp.com/) (SoptikHa2#0976).

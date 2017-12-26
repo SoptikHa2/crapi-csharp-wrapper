@@ -43,11 +43,11 @@ namespace CRAPI
         /// <summary>
         /// Array of players of one team
         /// </summary>
-        public Player[] team;
+        public PlayerInfo[] team;
         /// <summary>
         /// Array of players of second team
         /// </summary>
-        public Player[] opponent;
+        public PlayerInfo[] opponent;
         /// <summary>
         /// In which arena was the fight
         /// </summary>
@@ -80,5 +80,29 @@ namespace CRAPI
         /// TODO
         /// </summary>
         public bool sameDeck;
+    }
+
+    public struct PlayerInfo
+    {
+        /// <summary>
+        /// Player's tag
+        /// </summary>
+        public string tag;
+        /// <summary>
+        /// Player's name
+        /// </summary>
+        public string name;
+        /// <summary>
+        /// Crowns earned by this player in the battle
+        /// </summary>
+        public int crownsEarned;
+        /// <summary>
+        /// Player's clan
+        /// </summary>
+        public SimplifiedClan clan;
+        /// <summary>
+        /// Player's deck in this battle
+        /// </summary>
+        public Card[] deck;
     }
 }
