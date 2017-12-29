@@ -45,7 +45,7 @@ namespace ExampleUsage
         
         static async void DoSomethingAsync()
         {
-            Wrapper wr = new Wrapper("2970f9ab909243f2a86c1bda54bdf9bce950718c3029447686924cf9985af91c");
+            Wrapper wr = new Wrapper("your secret key");
 
             string tag = "80RGVCV9C";
             string ctag = "22Y802";
