@@ -140,6 +140,50 @@ namespace CRAPI
             return Parse<SimplifiedClan[]>(await output);
         }
 
+        public async Task<SimplifiedClan[]> SearchForClansAsync(string name, int? score, int? minMembers, int? maxMembers)
+        {
+            List<string> queries = new List<string>(4);
+
+            if (name != null)
+                if (name.Length < 3)
+                    throw new ArgumentException("Parameter must contain at least 3 characters. If you do not want to search using this parameter, pass NULL instead.", "name");
+
+            if (minMembers != null)
+                if (minMembers < 0 || minMembers > 50)
+                    throw new ArgumentOutOfRangeException("Parameter must be in range 0-50. Value: " + minMembers, "minMembers");
+
+            if (maxMembers != null)
+                if (maxMembers < 0 || maxMembers > 60)
+                    throw new ArgumentOutOfRangeException("Parameter must be in range 0-60. Value: " + maxMembers, "maxMembers");
+
+
+            if (name != null)
+                queries.Add("name=" + name);
+            if (score != null)
+                queries.Add("score=" + score);
+            if (minMembers != null)
+                queries.Add("minMembers=" + minMembers);
+            if (maxMembers != null)
+                queries.Add("maxMembers=" + maxMembers);
+
+            if (queries.Count == 0)
+                throw new ArgumentException("At least one parameter must be not-null!");
+
+            string q = "?" + queries[0]; ;
+
+            for (int i = 1; i < queries.Count; i++)
+                q += "&" + queries[i];
+
+            Task<string> output = GetAsync(Endpoints.Clan, "search" + q);
+            return Parse<SimplifiedClan[]>(await output);
+        }
+
+        public async Task<Tournament> GetTournamentAsync(string tag)
+        {
+            Task<string> output = GetAsync(Endpoints.Tournaments, tag);
+            return Parse<Tournament>(await output);
+        }
+
         #endregion
 
         /// <summary>
