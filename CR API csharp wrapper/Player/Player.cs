@@ -73,6 +73,11 @@ namespace CRAPI
         /// </summary>
         public LeagueStatistics leagueStatistics;
 
+        /// <summary>
+        /// URL of player's deck. Open in web browser on device that has CR installed to copy player's deck.
+        /// </summary>
+        public string deckLink;
+
 
         /// <summary>
         /// Return string representation of player, returns player's name

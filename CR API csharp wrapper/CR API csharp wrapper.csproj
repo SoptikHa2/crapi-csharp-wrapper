@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Player\LeagueStatistics.cs" />
     <Compile Include="Player\PlayerAchievement.cs" />
     <Compile Include="Player\PlayerBattle.cs" />
     <Compile Include="Wrapper.cs" />
@@ -50,11 +51,11 @@
     <Compile Include="Card.cs" />
     <Compile Include="Clan\Clan.cs" />
     <Compile Include="Clan\ClanBadge.cs" />
-    <Compile Include="Clan\ClanPlayer.cs" />
+    <Compile Include="Clan\SimplifiedPlayer.cs" />
     <Compile Include="Clan\ClanRegion.cs" />
     <Compile Include="Player\Player.cs" />
     <Compile Include="Player\PlayerChestCycle.cs" />
-    <Compile Include="Player\PlayerClan.cs" />
+    <Compile Include="Player\SimplifiedClan.cs" />
     <Compile Include="Player\PlayerGames.cs" />
     <Compile Include="Player\PlayerSeason.cs" />
     <Compile Include="Player\PlayerShopOffers.cs" />

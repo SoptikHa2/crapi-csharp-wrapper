@@ -12,19 +12,19 @@ namespace CRAPI
     public class PlayerStats
     {
         /// <summary>
-        /// TODO
+        /// Cards won in tournaments
         /// </summary>
         public int tournamentCardsWon;
         /// <summary>
-        /// TODO
+        /// Best count of player's tropheis
         /// </summary>
         public int maxTrophies;
         /// <summary>
-        /// TODO
+        /// Count of player's 3 crown wins
         /// </summary>
         public int threeCrownWins;
         /// <summary>
-        /// TODO
+        /// Count of cards in player's inventory
         /// </summary>
         public int cardsFound;
         /// <summary>
@@ -32,19 +32,19 @@ namespace CRAPI
         /// </summary>
         public Card favoriteCard;
         /// <summary>
-        /// TODO
+        /// Total count of donations to player's clanmates
         /// </summary>
         public int totalDonations;
         /// <summary>
-        /// TODO
+        /// Max wins in challenge
         /// </summary>
         public int challengeMaxWins;
         /// <summary>
-        /// TODO
+        /// Cards won in challenge
         /// </summary>
         public int challengeCardsWon;
         /// <summary>
-        /// TODO
+        /// Player's XP level
         /// </summary>
         public int level;
     }

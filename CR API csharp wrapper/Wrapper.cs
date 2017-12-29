@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
@@ -54,6 +55,53 @@ namespace CRAPI
         public SimplifiedClan[] GetTopClans()
         {
             string output = Get(Endpoints.Top, "clans");
+            return Parse<SimplifiedClan[]>(output);
+        }
+
+        /// <summary>
+        /// Search for clans and get array of clan info. You need to pass AT LEAST one
+        /// parameter. If you do not want to pass some parameter, enter NULL instead
+        /// </summary>
+        /// <param name="name">Name to search. If you do not want to input this one, enter NULL</param>
+        /// <param name="score">Minimum clan score. If you do not want to input this one, enter NULL</param>
+        /// <param name="minMembers">Minimum members in clan. 0-50. If you do not want to input this one, enter NULL</param>
+        /// <param name="maxMembers">Maximum members in clan. 0-60. If you do not want to input this one, enter NULL</param>
+        /// <returns></returns>
+        public SimplifiedClan[] SearchForClans(string name, int? score, int? minMembers, int? maxMembers)
+        {
+            List<string> queries = new List<string>(4);
+
+            if (name != null)
+                if (name.Length < 3)
+                    throw new ArgumentException("Parameter must contain at least 3 characters. If you do not want to search using this parameter, pass NULL instead.", "name");
+
+            if (minMembers != null)
+                if (minMembers < 0 || minMembers > 50)
+                    throw new ArgumentOutOfRangeException("Parameter must be in range 0-50. Value: " + minMembers, "minMembers");
+
+            if (maxMembers != null)
+                if (maxMembers < 0 || maxMembers > 60)
+                    throw new ArgumentOutOfRangeException("Parameter must be in range 0-60. Value: " + maxMembers, "maxMembers");
+
+
+            if (name != null)
+                queries.Add("name=" + name);
+            if (score != null)
+                queries.Add("score=" + score);
+            if (minMembers != null)
+                queries.Add("minMembers=" + minMembers);
+            if (maxMembers != null)
+                queries.Add("maxMembers=" + maxMembers);
+
+            if (queries.Count == 0)
+                throw new ArgumentException("At least one parameter must be not-null!");
+
+            string q = "?" + queries[0]; ;
+
+            for (int i = 1; i < queries.Count; i++)
+                q += "&" + queries[i];
+
+            string output = Get(Endpoints.Clan, "search" + q);
             return Parse<SimplifiedClan[]>(output);
         }
 
