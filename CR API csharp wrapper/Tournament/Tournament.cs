@@ -50,9 +50,9 @@ namespace CRAPI
         public int duration;
 
         /// <summary>
-        /// Time when tournament ended in weird format. Example: "20171227T034657.000Z"
+        /// Time when tournament ended in normal format. Example: 1514346417
         /// </summary>
-        public string endedTime;
+        public int endedTime;
 
         /// <summary>
         /// Time when tournament started in normal format. Example: 1514342817
