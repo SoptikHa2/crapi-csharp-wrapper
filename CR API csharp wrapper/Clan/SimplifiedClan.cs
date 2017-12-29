@@ -20,19 +20,19 @@ namespace CRAPI
         /// </summary>
         public string name;
         /// <summary>
-        /// Player's role (elder, member, etc)
+        /// If instance of this class comes from player's profile: Player's role (elder, member, etc). If this instance is from clan search, this should be NULL.
         /// </summary>
         public string role;
         /// <summary>
-        /// TODO
+        /// If instance of this class comes from player's profile: Player's donations. If this instance is from clan search, this should be NULL.
         /// </summary>
         public int donations;
         /// <summary>
-        /// TODO
+        /// If instance of this class comes from player's profile: Player's received donations. If this instance is from clan search, this should be NULL.
         /// </summary>
         public int donationsReceived;
         /// <summary>
-        /// TODO
+        /// If instance of this class comes from player's profile: Player's delta donations. If this instance is from clan search, this should be NULL.
         /// </summary>
         public int donationsDelta;
         /// <summary>

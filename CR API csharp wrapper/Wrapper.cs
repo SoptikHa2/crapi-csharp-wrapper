@@ -23,7 +23,8 @@ namespace CRAPI
             Top,
             Clan,
             Constants,
-            Version
+            Version,
+            Tournaments
         }
 
 
@@ -103,6 +104,12 @@ namespace CRAPI
 
             string output = Get(Endpoints.Clan, "search" + q);
             return Parse<SimplifiedClan[]>(output);
+        }
+
+        public Tournament GetTournament(string tag)
+        {
+            string output = Get(Endpoints.Tournaments, tag);
+            return Parse<Tournament>(output);
         }
 
         #endregion
