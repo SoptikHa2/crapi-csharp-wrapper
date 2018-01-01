@@ -1,6 +1,7 @@
 # C# wrapper for CR API
 This C# wrapper was made to help people with using [CR API](https://cr-api.com/). 
-Wrapper is written in C# and can be used in any C# application.
+Wrapper is written in C# and can be used in any C# application. You can use it to get info about players, their decks, their chest cycle, recent battles, clans, clan chest,
+tournaments and more.
 
 > You need developer key to use API. You can get the key by following instructions listed on [CR API website](http://docs.cr-api.com/#/authentication)
 
@@ -11,9 +12,9 @@ Wrapper is written in C# and can be used in any C# application.
 [nuget.org package](https://www.nuget.org/packages/Stastny.CRAPI/)
 
 ```
-Install-Package Stastny.CRAPI -Version 0.2.6
+Install-Package Stastny.CRAPI -Version 0.2.9
 
-dotnet add package Stastny.CRAPI --version 0.2.6
+dotnet add package Stastny.CRAPI --version 0.2.9
 ```
 
 ## How to use this wrapper
@@ -25,9 +26,9 @@ You should receive something like this: `3012e5ab523243q2a86w2bqa58bdf9bce960718
 When you get your own key, you can include this wrapper in your project. The easiest way is to use my [NUGET package](https://www.nuget.org/packages/Stastny.CRAPI/).
 You can either import the package via visual studio or use one of these commands:
 ```
-Install-Package Stastny.CRAPI -Version 0.2.6
+Install-Package Stastny.CRAPI -Version 0.2.9
 
-dotnet add package Stastny.CRAPI --version 0.2.6
+dotnet add package Stastny.CRAPI --version 0.2.9
 ```
 
 
@@ -191,9 +192,9 @@ Nova eSports
 [nuget.org package](https://www.nuget.org/packages/Stastny.CRAPI/)
 
 ```
-Install-Package Stastny.CRAPI -Version 0.2.6
+Install-Package Stastny.CRAPI -Version 0.2.9
 
-dotnet add package Stastny.CRAPI --version 0.2.6
+dotnet add package Stastny.CRAPI --version 0.2.9
 ```
 
 

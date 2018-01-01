@@ -52,7 +52,7 @@ namespace CRAPI
         /// <summary>
         /// Time when tournament ended in normal format. Example: 1514346417
         /// </summary>
-        public int endedTime;
+        public int endTime;
 
         /// <summary>
         /// Time when tournament started in normal format. Example: 1514342817
