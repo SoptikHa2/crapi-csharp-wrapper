@@ -12,9 +12,9 @@ tournaments and more.
 [nuget.org package](https://www.nuget.org/packages/Stastny.CRAPI/)
 
 ```
-Install-Package Stastny.CRAPI -Version 0.2.9
+Install-Package Stastny.CRAPI -Version 0.3.0
 
-dotnet add package Stastny.CRAPI --version 0.2.9
+dotnet add package Stastny.CRAPI --version 0.3.0
 ```
 
 ## How to use this wrapper
@@ -26,9 +26,9 @@ You should receive something like this: `3012e5ab523243q2a86w2bqa58bdf9bce960718
 When you get your own key, you can include this wrapper in your project. The easiest way is to use my [NUGET package](https://www.nuget.org/packages/Stastny.CRAPI/).
 You can either import the package via visual studio or use one of these commands:
 ```
-Install-Package Stastny.CRAPI -Version 0.2.9
+Install-Package Stastny.CRAPI -Version 0.3.0
 
-dotnet add package Stastny.CRAPI --version 0.2.9
+dotnet add package Stastny.CRAPI --version 0.3.0
 ```
 
 
@@ -192,9 +192,9 @@ Nova eSports
 [nuget.org package](https://www.nuget.org/packages/Stastny.CRAPI/)
 
 ```
-Install-Package Stastny.CRAPI -Version 0.2.9
+Install-Package Stastny.CRAPI -Version 0.3.0
 
-dotnet add package Stastny.CRAPI --version 0.2.9
+dotnet add package Stastny.CRAPI --version 0.3.0
 ```
 
 
