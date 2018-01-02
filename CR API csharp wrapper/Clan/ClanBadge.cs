@@ -9,6 +9,7 @@ namespace CRAPI
     /// <summary>
     /// Badge of clan
     /// </summary>
+    [Serializable]
     public class ClanBadge
     {
         /// <summary>

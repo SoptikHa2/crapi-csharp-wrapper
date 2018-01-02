@@ -9,6 +9,7 @@ namespace CRAPI
     /// <summary>
     /// Clash Royale Card
     /// </summary>
+    [Serializable]
     public class Card
     {
         /// <summary>
@@ -74,6 +75,7 @@ namespace CRAPI
         }
     }
 
+    [Serializable]
     public struct IconUrls
     {
         /// <summary>

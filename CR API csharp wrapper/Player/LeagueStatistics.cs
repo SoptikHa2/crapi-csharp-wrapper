@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace CRAPI
 {
+    [Serializable]
     public class LeagueStatistics
     {
         /// <summary>
@@ -22,6 +23,7 @@ namespace CRAPI
         public Season? bestSeason;
     }
 
+    [Serializable]
     public struct Season
     {
         /// <summary>

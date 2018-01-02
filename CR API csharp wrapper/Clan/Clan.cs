@@ -9,6 +9,7 @@ namespace CRAPI
     /// <summary>
     /// Clash Royale Clan class
     /// </summary>
+    [Serializable]
     public class Clan
     {
         /// <summary>
@@ -70,6 +71,7 @@ namespace CRAPI
         }
     }
 
+    [Serializable]
     public struct ClanChest
     {
         public string status;

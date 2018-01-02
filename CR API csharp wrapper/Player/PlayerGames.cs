@@ -9,6 +9,7 @@ namespace CRAPI
     /// <summary>
     /// Stats of player's games
     /// </summary>
+    [Serializable]
     public class PlayerGames
     {
         /// <summary>

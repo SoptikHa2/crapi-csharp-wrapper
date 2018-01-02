@@ -9,6 +9,7 @@ namespace CRAPI
     /// <summary>
     /// Chest cycle of player
     /// </summary>
+    [Serializable]
     public class PlayerChestCycle
     {
         /// <summary>

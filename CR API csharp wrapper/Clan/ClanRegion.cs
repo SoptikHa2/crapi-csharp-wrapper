@@ -9,6 +9,7 @@ namespace CRAPI
     /// <summary>
     /// Clan region
     /// </summary>
+    [Serializable]
     public class ClanRegion
     {
         /// <summary>

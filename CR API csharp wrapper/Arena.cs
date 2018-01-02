@@ -9,6 +9,7 @@ namespace CRAPI
     /// <summary>
     /// Clash Royale Arena class
     /// </summary>
+    [Serializable]
     public class Arena
     {
         /// <summary>

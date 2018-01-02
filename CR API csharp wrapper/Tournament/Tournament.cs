@@ -2,6 +2,7 @@
 
 namespace CRAPI
 {
+    [Serializable]
     public class Tournament
     {
         /// <summary>
@@ -75,6 +76,7 @@ namespace CRAPI
         public TournamentPlayer[] members;
     }
 
+    [Serializable]
     public struct TournamentPlayer
     {
         /// <summary>

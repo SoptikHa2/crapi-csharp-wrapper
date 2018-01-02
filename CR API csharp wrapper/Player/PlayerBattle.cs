@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace CRAPI
 {
+    [Serializable]
     public class PlayerBattle
     {
         /// <summary>
@@ -54,6 +55,7 @@ namespace CRAPI
         public Arena arena;
     }
 
+    [Serializable]
     public struct Mode
     {
         /// <summary>
@@ -82,6 +84,7 @@ namespace CRAPI
         public bool sameDeck;
     }
 
+    [Serializable]
     public struct PlayerInfo
     {
         /// <summary>

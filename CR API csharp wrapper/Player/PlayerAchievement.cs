@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace CRAPI
 {
+    [Serializable]
     public class PlayerAchievement
     {
         /// <summary>

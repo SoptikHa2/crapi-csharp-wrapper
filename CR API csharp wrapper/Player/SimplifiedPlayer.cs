@@ -9,6 +9,7 @@ namespace CRAPI
     /// <summary>
     /// Short summary of player (from clan view)
     /// </summary>
+    [Serializable]
     public class SimplifiedPlayer
     {
         /// <summary>
@@ -40,25 +41,25 @@ namespace CRAPI
         /// </summary>
         public int trophies;
         /// <summary>
-        /// Number of crowns player scored last clan chest
+        /// Number of crowns player scored last clan chest [May be null]
         /// </summary>
-        public int clanChestCrowns;
+        public int? clanChestCrowns;
         /// <summary>
-        /// Player donations
+        /// Player donations [May be null]
         /// </summary>
-        public int donations;
+        public int? donations;
         /// <summary>
-        /// Donations that player received
+        /// Donations that player received [May be null]
         /// </summary>
-        public int donationsReceived;
+        public int? donationsReceived;
         /// <summary>
-        /// TODO [May be null!]
+        /// TODO [May be null]
         /// </summary>
         public int? donationsDelta;
         /// <summary>
-        /// TODO
+        /// TODO [May be null]
         /// </summary>
-        public float donationsPercent;
+        public float? donationsPercent;
         /// <summary>
         /// Player's current arena
         /// </summary>

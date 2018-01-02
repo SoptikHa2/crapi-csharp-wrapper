@@ -9,6 +9,7 @@ namespace CRAPI
     /// <summary>
     /// Player season data
     /// </summary>
+    [Serializable]
     public class PlayerSeason
     {
         /// <summary>

@@ -9,6 +9,7 @@ namespace CRAPI
     /// <summary>
     /// Player shop offers data
     /// </summary>
+    [Serializable]
     public class PlayerShopOffers
     {
         /// <summary>

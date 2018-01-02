@@ -5,6 +5,7 @@ namespace CRAPI
     /// <summary>
     /// Clash Royale player class
     /// </summary>
+    [Serializable]
     public class Player
     {
         /// <summary>
