@@ -35,27 +35,81 @@ namespace CRAPI
 
         #region GetFromAPI
 
-        public Player GetPlayer(string tag)
+        /// <summary>
+        /// Get instance of Player from API
+        /// </summary>
+        /// <param name="tag">Player's tag. Must be upper-case</param>
+        /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
+        /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
+        /// <returns></returns>
+        public Player GetPlayer(string tag, string[] include = null, string[] exclude = null)
         {
-            string output = Get(Endpoints.Player, tag);
+            string query = String.Empty;
+            if (include != null && exclude != null)
+                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
+            if (include != null)
+                query += "?keys=" + String.Join(",", include);
+            if (exclude != null)
+                query += "?exclude=" + String.Join(",", exclude);
+            string output = Get(Endpoints.Player, tag + query);
             return Parse<Player>(output);
         }
 
-        public Clan GetClan(string tag)
+        /// <summary>
+        /// Get instatnce of Clan from API
+        /// </summary>
+        /// <param name="tag">Clan tag. Must be upper-case</param>
+        /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
+        /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
+        /// <returns></returns>
+        public Clan GetClan(string tag, string[] include = null, string[] exclude = null)
         {
-            string output = Get(Endpoints.Clan, tag);
+            string query = String.Empty;
+            if (include != null && exclude != null)
+                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
+            if (include != null)
+                query += "?keys=" + String.Join(",", include);
+            if (exclude != null)
+                query += "?exclude=" + String.Join(",", exclude);
+            string output = Get(Endpoints.Clan, tag + query);
             return Parse<Clan>(output);
         }
 
-        public SimplifiedPlayer[] GetTopPlayers()
+        /// <summary>
+        /// Get top players in clash royale. Returned players are instances of SimplifiedPlayer, thus contain only basic information
+        /// </summary>
+        /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
+        /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
+        /// <returns></returns>
+        public SimplifiedPlayer[] GetTopPlayers(string[] include = null, string[] exclude = null)
         {
-            string output = Get(Endpoints.Top, "players");
+            string query = String.Empty;
+            if (include != null && exclude != null)
+                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
+            if (include != null)
+                query += "?keys=" + String.Join(",", include);
+            if (exclude != null)
+                query += "?exclude=" + String.Join(",", exclude);
+            string output = Get(Endpoints.Top, "players" + query);
             return Parse<SimplifiedPlayer[]>(output);
         }
 
-        public SimplifiedClan[] GetTopClans()
+        /// <summary>
+        /// Get top clans in clash royale. Returned clans are instances of SimplifiedClan, thus contain only basic information
+        /// </summary>
+         /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
+        /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
+        /// <returns></returns>
+        public SimplifiedClan[] GetTopClans(string[] include = null, string[] exclude = null)
         {
-            string output = Get(Endpoints.Top, "clans");
+            string query = String.Empty;
+            if (include != null && exclude != null)
+                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
+            if (include != null)
+                query += "?keys=" + String.Join(",", include);
+            if (exclude != null)
+                query += "?exclude=" + String.Join(",", exclude);
+            string output = Get(Endpoints.Top, "clans" + query);
             return Parse<SimplifiedClan[]>(output);
         }
 
@@ -67,8 +121,10 @@ namespace CRAPI
         /// <param name="score">Minimum clan score. If you do not want to input this one, enter NULL</param>
         /// <param name="minMembers">Minimum members in clan. 0-50. If you do not want to input this one, enter NULL</param>
         /// <param name="maxMembers">Maximum members in clan. 0-60. If you do not want to input this one, enter NULL</param>
+        /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
+        /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
         /// <returns></returns>
-        public SimplifiedClan[] SearchForClans(string name, int? score, int? minMembers, int? maxMembers)
+        public SimplifiedClan[] SearchForClans(string name, int? score, int? minMembers, int? maxMembers, string[] include = null, string[] exclude = null)
         {
             List<string> queries = new List<string>(4);
 
@@ -97,18 +153,40 @@ namespace CRAPI
             if (queries.Count == 0)
                 throw new ArgumentException("At least one parameter must be not-null!");
 
-            string q = "?" + queries[0]; ;
-
-            for (int i = 1; i < queries.Count; i++)
+            string q = String.Empty;
+            for (int i = 0; i < queries.Count; i++)
                 q += "&" + queries[i];
 
-            string output = Get(Endpoints.Clan, "search" + q);
+            string query = String.Empty;
+            if (include != null && exclude != null)
+                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
+            if (include != null)
+                query += "?keys=" + String.Join(",", include);
+            if (exclude != null)
+                query += "?exclude=" + String.Join(",", exclude);
+
+            string output = Get(Endpoints.Clan, "search" + query + q);
             return Parse<SimplifiedClan[]>(output);
         }
 
-        public Tournament GetTournament(string tag)
+        /// <summary>
+        /// Get instance of Tournament
+        /// </summary>
+        /// <param name="tag">TAG of tournament</param>
+        /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
+        /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
+        /// <returns></returns>
+        public Tournament GetTournament(string tag, string[] include = null, string[] exclude = null)
         {
-            string output = Get(Endpoints.Tournaments, tag);
+            string query = String.Empty;
+            if (include != null && exclude != null)
+                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
+            if (include != null)
+                query += "?keys=" + String.Join(",", include);
+            if (exclude != null)
+                query += "?exclude=" + String.Join(",", exclude);
+
+            string output = Get(Endpoints.Tournaments, tag + query);
             return Parse<Tournament>(output);
         }
 
@@ -116,31 +194,89 @@ namespace CRAPI
 
         #region GetFromAPIasync
 
-        public async Task<Player> GetPlayerAsync(string tag)
+        /// <summary>
+        /// Get instance of Player from API async
+        /// </summary>
+        /// <param name="tag">Player's tag. Must be upper-case</param>
+        /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
+        /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
+        /// <returns></returns>
+        public async Task<Player> GetPlayerAsync(string tag, string[] include = null, string[] exclude = null)
         {
-            Task<string> output = GetAsync(Endpoints.Player, tag);
+            string query = String.Empty;
+            if (include != null && exclude != null)
+                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
+            if (include != null)
+                query += "?keys=" + String.Join(",", include);
+            if (exclude != null)
+                query += "?exclude=" + String.Join(",", exclude);
+            Task<string> output = GetAsync(Endpoints.Player, tag + query);
             return Parse<Player>(await output);
         }
 
-        public async Task<Clan> GetClanAsync(string tag)
+        /// <summary>
+        /// Get instance of Clan from API async
+        /// </summary>
+        /// <param name="tag">Clan tag. Must be upper-case</param>
+        /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
+        /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
+        /// <returns></returns>
+        public async Task<Clan> GetClanAsync(string tag, string[] include = null, string[] exclude = null)
         {
             Task<string> output = GetAsync(Endpoints.Clan, tag);
             return Parse<Clan>(await output);
         }
 
-        public async Task<SimplifiedPlayer[]> GetTopPlayersAsync()
+        /// <summary>
+        /// Get top players in clash royale async. Returned players are instances of SimplifiedPlayer, thus contain only basic information
+        /// </summary>
+        /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
+        /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
+        /// <returns></returns>
+        public async Task<SimplifiedPlayer[]> GetTopPlayersAsync(string[] include = null, string[] exclude = null)
         {
-            Task<string> output = GetAsync(Endpoints.Top, "players");
+            string query = String.Empty;
+            if (include != null && exclude != null)
+                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
+            if (include != null)
+                query += "?keys=" + String.Join(",", include);
+            if (exclude != null)
+                query += "?exclude=" + String.Join(",", exclude);
+            Task<string> output = GetAsync(Endpoints.Top, "players" + query);
             return Parse<SimplifiedPlayer[]>(await output);
         }
 
-        public async Task<SimplifiedClan[]> GetTopClansAsync()
+        /// <summary>
+        /// Get top clans in clash royale async. Returned clans are instances of SimplifiedClan, thus contain only basic information
+        /// </summary>
+        /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
+        /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
+        /// <returns></returns>
+        public async Task<SimplifiedClan[]> GetTopClansAsync(string[] include = null, string[] exclude = null)
         {
-            Task<string> output = GetAsync(Endpoints.Top, "clans");
+            string query = String.Empty;
+            if (include != null && exclude != null)
+                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
+            if (include != null)
+                query += "?keys=" + String.Join(",", include);
+            if (exclude != null)
+                query += "?exclude=" + String.Join(",", exclude);
+            Task<string> output = GetAsync(Endpoints.Top, "clans" + query);
             return Parse<SimplifiedClan[]>(await output);
         }
 
-        public async Task<SimplifiedClan[]> SearchForClansAsync(string name, int? score, int? minMembers, int? maxMembers)
+        /// <summary>
+        /// Search for clans and get array of clan info async. You need to pass AT LEAST one
+        /// parameter. If you do not want to pass some parameter, enter NULL instead
+        /// </summary>
+        /// <param name="name">Name to search. If you do not want to input this one, enter NULL</param>
+        /// <param name="score">Minimum clan score. If you do not want to input this one, enter NULL</param>
+        /// <param name="minMembers">Minimum members in clan. 0-50. If you do not want to input this one, enter NULL</param>
+        /// <param name="maxMembers">Maximum members in clan. 0-60. If you do not want to input this one, enter NULL</param>
+        /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
+        /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
+        /// <returns></returns>
+        public async Task<SimplifiedClan[]> SearchForClansAsync(string name, int? score, int? minMembers, int? maxMembers, string[] include = null, string[] exclude = null)
         {
             List<string> queries = new List<string>(4);
 
@@ -169,18 +305,39 @@ namespace CRAPI
             if (queries.Count == 0)
                 throw new ArgumentException("At least one parameter must be not-null!");
 
-            string q = "?" + queries[0]; ;
-
-            for (int i = 1; i < queries.Count; i++)
+            string q = String.Empty;
+            for (int i = 0; i < queries.Count; i++)
                 q += "&" + queries[i];
 
-            Task<string> output = GetAsync(Endpoints.Clan, "search" + q);
+            string query = String.Empty;
+            if (include != null && exclude != null)
+                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
+            if (include != null)
+                query += "?keys=" + String.Join(",", include);
+            if (exclude != null)
+                query += "?exclude=" + String.Join(",", exclude);
+
+            Task<string> output = GetAsync(Endpoints.Clan, "search" + query + q);
             return Parse<SimplifiedClan[]>(await output);
         }
 
-        public async Task<Tournament> GetTournamentAsync(string tag)
+        /// <summary>
+        /// Get instance of Tournament async
+        /// </summary>
+        /// <param name="tag">TAG of tournament</param>
+        /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
+        /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
+        /// <returns></returns>
+        public async Task<Tournament> GetTournamentAsync(string tag, string[] include = null, string[] exclude = null)
         {
-            Task<string> output = GetAsync(Endpoints.Tournaments, tag);
+            string query = String.Empty;
+            if (include != null && exclude != null)
+                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
+            if (include != null)
+                query += "?keys=" + String.Join(",", include);
+            if (exclude != null)
+                query += "?exclude=" + String.Join(",", exclude);
+            Task<string> output = GetAsync(Endpoints.Tournaments, tag + query);
             return Parse<Tournament>(await output);
         }
 
