@@ -193,13 +193,13 @@ If you for example only want to know player's clan, there's no reason to request
 string array `include` and API will return only `clan` field - everything else will be either `null` or it will have its default value. You can add multiple fields into the array. 
 If this parameter is `null`, full response is returned.
 ```csharp
-    wr.GetPlayer("80RGVCV9C", new string[] { "clan" }); // Returns only "clan" field, everything else is null or has default value
+wr.GetPlayer("80RGVCV9C", new string[] { "clan" }); // Returns only "clan" field, everything else is null or has default value
 ```
 
 If you want, you can also exclude some fields. Just pass one or more field names in `string[] exclude`. You MUST set `include` as `null`, you cannot specify both
 parameters at one time.
 ```csharp
-	wr.GetPlayer("80RGVCV9C", null, new string[] { "clan" }); // Returns everything except "clan" field, this will be `null` (or default value)
+wr.GetPlayer("80RGVCV9C", null, new string[] { "clan" }); // Returns everything except "clan" field, this will be `null` (or default value)
 ```
 
 ## NUGET package
