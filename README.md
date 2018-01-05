@@ -190,7 +190,7 @@ Nova eSports
 All .Get methods have two optional parameters - `string[] include` and `string[] exclude`. At least one of these must be `null`.
 
 If you for example only want to know player's clan, there's no reason to request and download whole player object. Just add `clan` (name of field you want there) into
-string array `include` and API will return only `name` field - everything else will be either `null` or it will have its default value. You can add multiple fields into the array. 
+string array `include` and API will return only `clan` field - everything else will be either `null` or it will have its default value. You can add multiple fields into the array. 
 If this parameter is `null`, full response is returned.
 ```csharp
     wr.GetPlayer("80RGVCV9C", new string[] { "clan" }); // Returns only "clan" field, everything else is null or has default value
