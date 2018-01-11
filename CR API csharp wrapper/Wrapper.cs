@@ -97,7 +97,7 @@ namespace CRAPI
         /// <summary>
         /// Get top clans in clash royale. Returned clans are instances of SimplifiedClan, thus contain only basic information
         /// </summary>
-         /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
+        /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
         /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
         /// <returns></returns>
         public SimplifiedClan[] GetTopClans(string[] include = null, string[] exclude = null)
@@ -362,16 +362,33 @@ namespace CRAPI
 
         private string Get(string url)
         {
-            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
-            req.Method = "GET";
-            req.Headers.Add("auth", key);
-            WebResponse myResponse = req.GetResponse();
-            StreamReader sr = new StreamReader(myResponse.GetResponseStream(), System.Text.Encoding.UTF8);
-            string result = sr.ReadToEnd();
-            sr.Close();
-            myResponse.Close();
+            try
+            {
+                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+                req.Method = "GET";
+                req.Headers.Add("auth", key);
+                WebResponse myResponse = req.GetResponse();
+                StreamReader sr = new StreamReader(myResponse.GetResponseStream(), System.Text.Encoding.UTF8);
+                string result = sr.ReadToEnd();
+                sr.Close();
+                myResponse.Close();
 
-            return result;
+
+                return result;
+            }
+            catch (WebException e)
+            {
+                WebResponse wr = e.Response;
+
+                // Cannot connect to api servers -> API servers are down or user is disconnected
+                if (wr == null)
+                    throw e;
+
+                StreamReader sr = new StreamReader(wr.GetResponseStream());
+                BadResponse returnedException = Parse<BadResponse>(sr.ReadToEnd()) as BadResponse;
+                APIException exception = new APIException(returnedException.status, returnedException.message, returnedException.error);
+                throw exception;
+            }
         }
 
         private async Task<string> GetAsync(string url)
@@ -396,5 +413,16 @@ namespace CRAPI
         {
             return JsonConvert.DeserializeObject<T>(input);
         }
+
+    }
+
+    /// <summary>
+    /// This is only used to gather info from API reponse error responses. Do not use.
+    /// </summary>
+    class BadResponse
+    {
+        public bool error;
+        public int status;
+        public string message;
     }
 }
