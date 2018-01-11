@@ -12,9 +12,9 @@ tournaments and more.
 [nuget.org package](https://www.nuget.org/packages/Stastny.CRAPI/)
 
 ```
-Install-Package Stastny.CRAPI -Version 0.3.2
+Install-Package Stastny.CRAPI -Version 0.3.3
 
-dotnet add package Stastny.CRAPI --version 0.3.2
+dotnet add package Stastny.CRAPI --version 0.3.3
 ```
 
 ## How to use this wrapper
@@ -26,9 +26,9 @@ You should receive something like this: `3012e5ab523243q2a86w2bqa58bdf9bce960718
 When you get your own key, you can include this wrapper in your project. The easiest way is to use my [NUGET package](https://www.nuget.org/packages/Stastny.CRAPI/).
 You can either import the package via visual studio or use one of these commands:
 ```
-Install-Package Stastny.CRAPI -Version 0.3.2
+Install-Package Stastny.CRAPI -Version 0.3.3
 
-dotnet add package Stastny.CRAPI --version 0.3.2
+dotnet add package Stastny.CRAPI --version 0.3.3
 ```
 
 
@@ -202,6 +202,13 @@ parameters at one time.
 wr.GetPlayer("80RGVCV9C", null, new string[] { "clan" }); // Returns everything except "clan" field, this will be `null` (or default value)
 ```
 
+## Exceptions
+
+When something goes wrong, an exception is thrown. This can be either `APIException` if something goes wrong at sever side (bad player tag, bad auth key, etc).
+This is class inherited from `Exception` and contains message from server what gone wrong.
+
+If something goes wrong at client side (timed out, no internet connection), an `WebException` (this is classical .NET exception) is thrown.
+
 ## NUGET package
 
 `Stastny.CRAPI`
@@ -209,9 +216,9 @@ wr.GetPlayer("80RGVCV9C", null, new string[] { "clan" }); // Returns everything 
 [nuget.org package](https://www.nuget.org/packages/Stastny.CRAPI/)
 
 ```
-Install-Package Stastny.CRAPI -Version 0.3.2
+Install-Package Stastny.CRAPI -Version 0.3.3
 
-dotnet add package Stastny.CRAPI --version 0.3.2
+dotnet add package Stastny.CRAPI --version 0.3.3
 ```
 
 
