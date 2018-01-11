@@ -107,5 +107,9 @@ namespace CRAPI
         /// Player's deck in this battle
         /// </summary>
         public Card[] deck;
+        /// <summary>
+        /// Count of trophies won/lost
+        /// </summary>
+        public int trophyChange;
     }
 }
