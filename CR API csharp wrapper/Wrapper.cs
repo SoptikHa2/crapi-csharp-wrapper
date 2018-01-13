@@ -154,7 +154,8 @@ namespace CRAPI
                 throw new ArgumentException("At least one parameter must be not-null!");
 
             string q = String.Empty;
-            for (int i = 0; i < queries.Count; i++)
+            q += "?" + queries[0];
+            for (int i = 1; i < queries.Count; i++)
                 q += "&" + queries[i];
 
             string query = String.Empty;
@@ -306,7 +307,8 @@ namespace CRAPI
                 throw new ArgumentException("At least one parameter must be not-null!");
 
             string q = String.Empty;
-            for (int i = 0; i < queries.Count; i++)
+            q += "?" + queries[0];
+            for (int i = 1; i < queries.Count; i++)
                 q += "&" + queries[i];
 
             string query = String.Empty;
