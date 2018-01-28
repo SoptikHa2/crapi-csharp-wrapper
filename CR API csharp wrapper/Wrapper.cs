@@ -67,8 +67,18 @@ namespace CRAPI
                 query += "?keys=" + String.Join(",", include);
             if (exclude != null)
                 query += "?exclude=" + String.Join(",", exclude);
+
+            // Check for cache
+            Player cachedResult = cache.GetFromCache<Player>(tag + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            if (cachedResult != null)
+                return cachedResult;
+
             string output = Get(Endpoints.Player, tag + query);
-            return Parse<Player>(output);
+            Player result = Parse<Player>(output);
+
+            cache.Update(result, tag + String.Join("", include) + String.Join("", exclude));
+
+            return result;
         }
 
         /// <summary>
@@ -87,8 +97,18 @@ namespace CRAPI
                 query += "?keys=" + String.Join(",", include);
             if (exclude != null)
                 query += "?exclude=" + String.Join(",", exclude);
+
+            // Check for cache
+            Clan cachedResult = cache.GetFromCache<Clan>(tag + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            if (cachedResult != null)
+                return cachedResult;
+
             string output = Get(Endpoints.Clan, tag + query);
-            return Parse<Clan>(output);
+            Clan result = Parse<Clan>(output);
+
+            cache.Update(result, tag + String.Join("", include) + String.Join("", exclude));
+
+            return result;
         }
 
         /// <summary>
@@ -106,8 +126,18 @@ namespace CRAPI
                 query += "?keys=" + String.Join(",", include);
             if (exclude != null)
                 query += "?exclude=" + String.Join(",", exclude);
+
+            // Check for cache
+            SimplifiedPlayer[] cachedResult = cache.GetFromCache<SimplifiedPlayer[]>("topPlayers" + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            if (cachedResult != null)
+                return cachedResult;
+
             string output = Get(Endpoints.Top, "players" + query);
-            return Parse<SimplifiedPlayer[]>(output);
+            SimplifiedPlayer[] result = Parse<SimplifiedPlayer[]>(output);
+
+            cache.Update(result, "topPlayers" + String.Join("", include) + String.Join("", exclude));
+
+            return result;
         }
 
         /// <summary>
@@ -126,13 +156,22 @@ namespace CRAPI
                 query += "?keys=" + String.Join(",", include);
             if (exclude != null)
                 query += "?exclude=" + String.Join(",", exclude);
+
+            SimplifiedClan[] cachedResult = cache.GetFromCache<SimplifiedClan[]>("topClansRegion" + region.ToString() + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            if (cachedResult != null)
+                return cachedResult;
+
             string output = Get(Endpoints.Top, region != Locations.None ? "clans/" + region.ToString() + query : "clans" + query);
-            return Parse<SimplifiedClan[]>(output);
+            SimplifiedClan[] result = Parse<SimplifiedClan[]>(output);
+
+            cache.Update(result, "topClansRegion" + region.ToString() + String.Join("", include) + String.Join("", exclude));
+
+            return result;
         }
 
         /// <summary>
         /// Search for clans and get array of clan info. You need to pass AT LEAST one
-        /// parameter. If you do not want to pass some parameter, enter NULL instead
+        /// parameter. If you do not want to pass some parameter, enter NULL instead.
         /// </summary>
         /// <param name="name">Name to search. If you do not want to input this one, enter NULL</param>
         /// <param name="score">Minimum clan score. If you do not want to input this one, enter NULL</param>
@@ -183,8 +222,16 @@ namespace CRAPI
             if (exclude != null)
                 query += "?exclude=" + String.Join(",", exclude);
 
+            SimplifiedClan[] cachedResult = cache.GetFromCache<SimplifiedClan[]>("clanSearch" + String.Join("", queries) + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            if (cachedResult != null)
+                return cachedResult;
+
             string output = Get(Endpoints.Clan, "search" + query + q);
-            return Parse<SimplifiedClan[]>(output);
+            SimplifiedClan[] result = Parse<SimplifiedClan[]>(output);
+
+            cache.Update(result, "clanSearch" + String.Join("", queries) + String.Join("", include) + String.Join("", exclude));
+
+            return result;
         }
 
         /// <summary>
@@ -204,8 +251,16 @@ namespace CRAPI
             if (exclude != null)
                 query += "?exclude=" + String.Join(",", exclude);
 
+            Tournament cachedResult = cache.GetFromCache<Tournament>(tag + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            if (cachedResult != null)
+                return cachedResult;
+
             string output = Get(Endpoints.Tournaments, tag + query);
-            return Parse<Tournament>(output);
+            Tournament result = Parse<Tournament>(output);
+
+            cache.Update(result, tag + String.Join("", include) + String.Join("", exclude));
+
+            return result;
         }
 
         #endregion
@@ -228,8 +283,17 @@ namespace CRAPI
                 query += "?keys=" + String.Join(",", include);
             if (exclude != null)
                 query += "?exclude=" + String.Join(",", exclude);
+
+            Player cachedResult = cache.GetFromCache<Player>(tag + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            if (cachedResult != null)
+                return cachedResult;
+
             Task<string> output = GetAsync(Endpoints.Player, tag + query);
-            return Parse<Player>(await output);
+            Player result = Parse<Player>(await output);
+
+            cache.Update(result, tag + String.Join("", include) + String.Join("", exclude));
+
+            return result;
         }
 
         /// <summary>
@@ -241,8 +305,24 @@ namespace CRAPI
         /// <returns></returns>
         public async Task<Clan> GetClanAsync(string tag, string[] include = null, string[] exclude = null)
         {
-            Task<string> output = GetAsync(Endpoints.Clan, tag);
-            return Parse<Clan>(await output);
+            string query = String.Empty;
+            if (include != null && exclude != null)
+                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
+            if (include != null)
+                query += "?keys=" + String.Join(",", include);
+            if (exclude != null)
+                query += "?exclude=" + String.Join(",", exclude);
+
+            Clan cachedResult = cache.GetFromCache<Clan>(tag + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            if (cachedResult != null)
+                return cachedResult;
+
+            Task<string> output = GetAsync(Endpoints.Clan, tag + query);
+            Clan result = Parse<Clan>(await output);
+
+            cache.Update(result, tag + String.Join("", include) + String.Join("", exclude));
+
+            return result;
         }
 
         /// <summary>
@@ -260,8 +340,17 @@ namespace CRAPI
                 query += "?keys=" + String.Join(",", include);
             if (exclude != null)
                 query += "?exclude=" + String.Join(",", exclude);
+
+            SimplifiedPlayer[] cachedResult = cache.GetFromCache<SimplifiedPlayer[]>("topPlayers" + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            if (cachedResult != null)
+                return cachedResult;
+
             Task<string> output = GetAsync(Endpoints.Top, "players" + query);
-            return Parse<SimplifiedPlayer[]>(await output);
+            SimplifiedPlayer[] result = Parse<SimplifiedPlayer[]>(await output);
+
+            cache.Update(result, "topPlayers" + String.Join("", include) + String.Join("", exclude));
+
+            return result;
         }
 
         /// <summary>
@@ -280,8 +369,17 @@ namespace CRAPI
                 query += "?keys=" + String.Join(",", include);
             if (exclude != null)
                 query += "?exclude=" + String.Join(",", exclude);
+
+            SimplifiedClan[] cachedResult = cache.GetFromCache<SimplifiedClan[]>("topClans" + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            if (cachedResult != null)
+                return cachedResult;
+
             Task<string> output = GetAsync(Endpoints.Top, region == Locations.None ? "clans" + query : "clans/" + region.ToString() + query);
-            return Parse<SimplifiedClan[]>(await output);
+            SimplifiedClan[] result = Parse<SimplifiedClan[]>(await output);
+
+            cache.Update(result, "topClans" + String.Join("", include) + String.Join("", exclude));
+
+            return result;
         }
 
         /// <summary>
@@ -337,8 +435,16 @@ namespace CRAPI
             if (exclude != null)
                 query += "?exclude=" + String.Join(",", exclude);
 
+            SimplifiedClan[] cachedResult = cache.GetFromCache<SimplifiedClan[]>("clanSearch" + String.Join("", queries) + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            if (cachedResult != null)
+                return cachedResult;
+
             Task<string> output = GetAsync(Endpoints.Clan, "search" + query + q);
-            return Parse<SimplifiedClan[]>(await output);
+            SimplifiedClan[] result = Parse<SimplifiedClan[]>(await output);
+
+            cache.Update(result, "clanSearch" + String.Join("", queries) + String.Join("", include) + String.Join("", exclude));
+
+            return result;
         }
 
         /// <summary>
@@ -357,8 +463,17 @@ namespace CRAPI
                 query += "?keys=" + String.Join(",", include);
             if (exclude != null)
                 query += "?exclude=" + String.Join(",", exclude);
+
+            Tournament cachedResult = cache.GetFromCache<Tournament>(tag + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            if (cachedResult != null)
+                return cachedResult;
+
             Task<string> output = GetAsync(Endpoints.Tournaments, tag + query);
-            return Parse<Tournament>(await output);
+            Tournament result = Parse<Tournament>(await output);
+
+            cache.Update(result, tag + String.Join("", include) + String.Join("", exclude));
+
+            return result;
         }
 
         #endregion
