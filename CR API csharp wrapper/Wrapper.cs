@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 
 namespace CRAPI
@@ -13,7 +14,7 @@ namespace CRAPI
         private const string domain = "http://api.cr-api.com/";
 
         private readonly string key;
-
+        private Cacher cache;
 
         /// <summary>
         /// All current API endpoints
@@ -37,10 +38,15 @@ namespace CRAPI
             None, _EU, _NA, _SA, _AS, _AU, _AF, _INT, AF, AX, AL, DZ, AS, AD, AO, AI, AQ, AG, AR, AM, AW, AC, AU, AT, AZ, BS, BH, BD, BB, BY, BE, BZ, BJ, BM, BT, BO, BA, BW, BV, BR, IO, VG, BN, BG, BF, BI, KH, CM, CA, IC, CV, BQ, KY, CF, EA, TD, CL, CN, CX, CC, CO, KM, CG, CD, CK, CR, CI, HR, CU, CW, CY, CZ, DK, DG, DJ, DM, DO, EC, EG, SV, GQ, ER, EE, ET, FK, FO, FJ, FI, FR, GF, PF, TF, GA, GM, GE, DE, GH, GI, GR, GL, GD, GP, GU, GT, GG, GN, GW, GY, HT, HM, HN, HK, HU, IS, IN, ID, IR, IQ, IE, IM, IL, IT, JM, JP, JE, JO, KZ, KE, KI, XK, KW, KG, LA, LV, LB, LS, LR, LY, LI, LT, LU, MO, MK, MG, MW, MY, MV, ML, MT, MH, MQ, MR, MU, YT, MX, FM, MD, MC, MN, ME, MS, MA, MZ, MM, NA, NR, NP, NL, NC, NZ, NI, NE, NG, NU, NF, KP, MP, NO, OM, PK, PW, PS, PA, PG, PY, PE, PH, PN, PL, PT, PR, QA, RE, RO, RU, RW, BL, SH, KN, LC, MF, PM, WS, SM, ST, SA, SN, RS, SC, SL, SG, SX, SK, SI, SB, SO, ZA, KR, SS, ES, LK, VC, SD, SR, SJ, SZ, SE, CH, SY, TW, TJ, TZ, TH, TL, TG, TK, TO, TT, TA, TN, TR, TM, TC, TV, UM, VI, UG, UA, AE, GB, US, UY, UZ, VU, VA, VE, VN, WF, EH, YE, ZM, ZW
         }
 
-
-        public Wrapper(string devkey)
+        /// <summary>
+        /// Initialize wrapper for CR API
+        /// </summary>
+        /// <param name="devkey">Private developer key</param>
+        /// <param name="cacheDuration">Wrapper cache duration in minutes. 0 or less = no cache</param>
+        public Wrapper(string devkey, int cacheDuration = 1)
         {
             this.key = devkey;
+            this.cache = new Cacher(cacheDuration);
         }
 
         #region GetFromAPI
@@ -429,6 +435,145 @@ namespace CRAPI
         }
 
     }
+
+    #region Cache
+
+    internal class Cacher
+    {
+        private int cacheDuration;
+        private int cacheCheckInterval;
+        private Dictionary<CacheKey, CacheDetails> cache;
+        private DateTime lastCacheCheck;
+
+        public Cacher(int cacheDuration, int cacheCheckInterval = 5)
+        {
+            this.cacheDuration = cacheDuration;
+            this.cacheCheckInterval = cacheCheckInterval;
+            if (cacheDuration > 0)
+            {
+                cache = new Dictionary<CacheKey, CacheDetails>();
+                lastCacheCheck = DateTime.Now;
+            }
+        }
+
+        public T GetFromCache<T>(string ID)
+        {
+            if (cacheDuration <= 0)
+                return default(T);
+
+            var result = cache.Where(kvp => kvp.Key.ID == ID && kvp.Key.typeOfObject == typeof(T));
+
+            if (result.Count() == 0)
+                return default(T);
+
+            var cacheResult = result.Single();
+
+            if ((DateTime.Now - cacheResult.Value.cached).TotalMinutes > cacheDuration)
+                return default(T);
+
+            try
+            {
+                string fileString = File.ReadAllText(cacheResult.Value.path);
+                return (T)CacheSerializer.DeserializeObject(fileString);
+            }
+            catch
+            {
+                return default(T);
+            }
+        }
+
+        public void Update<T>(T objectToCache, string ID)
+        {
+            if (cacheDuration <= 0)
+                return;
+
+            var existingCache = cache.Where(kvp => kvp.Key.ID == ID && kvp.Key.typeOfObject == typeof(T));
+
+            if (existingCache.Count() > 0)
+                cache.Remove(existingCache.Single().Key);
+
+            try
+            {
+                string pathToFile = Path.Combine(Path.GetTempPath(), $"crapiwrapper-{ID}.{typeof(T).ToString()}");
+
+                File.WriteAllText(pathToFile, CacheSerializer.SerializeObject(objectToCache));
+
+                cache.Add(new CacheKey() { ID = ID, typeOfObject = typeof(T) }, new CacheDetails() { cached = DateTime.Now, path = pathToFile });
+            }
+            catch { }
+
+            if ((DateTime.Now - lastCacheCheck).TotalMinutes > cacheCheckInterval)
+                RemoveOutdatedCache();
+        }
+
+        private void RemoveOutdatedCache()
+        {
+            var outdatedCaches = cache.Where(kvp => (DateTime.Now - kvp.Value.cached).Minutes > cacheDuration);
+
+            foreach (var oCache in outdatedCaches)
+            {
+                try
+                {
+                    File.Delete(oCache.Value.path);
+                    cache.Remove(oCache.Key);
+                }
+                catch { }
+            }
+
+            lastCacheCheck = DateTime.Now;
+        }
+
+        ~Cacher()
+        {
+            foreach (string path in cache.Select(x => x.Value.path))
+                try
+                {
+                    File.Delete(path);
+                }
+                catch { }
+        }
+    }
+
+    internal static class CacheSerializer
+    {
+        public static string SerializeObject(object o)
+        {
+            if (!o.GetType().IsSerializable)
+            {
+                return null;
+            }
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                new BinaryFormatter().Serialize(stream, o);
+                return Convert.ToBase64String(stream.ToArray());
+            }
+        }
+
+        public static object DeserializeObject(string str)
+        {
+            byte[] bytes = Convert.FromBase64String(str);
+
+            using (MemoryStream stream = new MemoryStream(bytes))
+            {
+                return new BinaryFormatter().Deserialize(stream);
+            }
+        }
+    }
+
+    internal struct CacheKey
+    {
+        public string ID;
+        public Type typeOfObject;
+    }
+
+    internal struct CacheDetails
+    {
+        public DateTime cached;
+        public string path;
+    }
+
+    #endregion
 
     /// <summary>
     /// This is only used to gather info from API reponse error responses. Do not use.
