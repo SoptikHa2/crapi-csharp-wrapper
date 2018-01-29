@@ -64,6 +64,10 @@ namespace CRAPI
         /// Player's current arena
         /// </summary>
         public Arena arena;
+        /// <summary>
+        /// Basic info about player's clan
+        /// </summary>
+        public ClanInfo clan;
 
         /// <summary>
         /// Return string representation of player, returns player's name
