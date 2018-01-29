@@ -76,7 +76,7 @@ namespace CRAPI
             string output = Get(Endpoints.Player, tag + query);
             Player result = Parse<Player>(output);
 
-            cache.Update(result, tag + String.Join("", include) + String.Join("", exclude));
+            cache.Update(result, tag + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
 
             return result;
         }
@@ -106,7 +106,7 @@ namespace CRAPI
             string output = Get(Endpoints.Clan, tag + query);
             Clan result = Parse<Clan>(output);
 
-            cache.Update(result, tag + String.Join("", include) + String.Join("", exclude));
+            cache.Update(result, tag + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
 
             return result;
         }
@@ -135,7 +135,7 @@ namespace CRAPI
             string output = Get(Endpoints.Top, "players" + query);
             SimplifiedPlayer[] result = Parse<SimplifiedPlayer[]>(output);
 
-            cache.Update(result, "topPlayers" + String.Join("", include) + String.Join("", exclude));
+            cache.Update(result, "topPlayers" + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
 
             return result;
         }
@@ -164,7 +164,7 @@ namespace CRAPI
             string output = Get(Endpoints.Top, region != Locations.None ? "clans/" + region.ToString() + query : "clans" + query);
             SimplifiedClan[] result = Parse<SimplifiedClan[]>(output);
 
-            cache.Update(result, "topClansRegion" + region.ToString() + String.Join("", include) + String.Join("", exclude));
+            cache.Update(result, "topClansRegion" + region.ToString() + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
 
             return result;
         }
@@ -229,7 +229,7 @@ namespace CRAPI
             string output = Get(Endpoints.Clan, "search" + query + q);
             SimplifiedClan[] result = Parse<SimplifiedClan[]>(output);
 
-            cache.Update(result, "clanSearch" + String.Join("", queries) + String.Join("", include) + String.Join("", exclude));
+            cache.Update(result, "clanSearch" + String.Join("", queries) + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
 
             return result;
         }
@@ -258,7 +258,7 @@ namespace CRAPI
             string output = Get(Endpoints.Tournaments, tag + query);
             Tournament result = Parse<Tournament>(output);
 
-            cache.Update(result, tag + String.Join("", include) + String.Join("", exclude));
+            cache.Update(result, tag + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
 
             return result;
         }
@@ -291,7 +291,7 @@ namespace CRAPI
             Task<string> output = GetAsync(Endpoints.Player, tag + query);
             Player result = Parse<Player>(await output);
 
-            cache.Update(result, tag + String.Join("", include) + String.Join("", exclude));
+            cache.Update(result, tag + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
 
             return result;
         }
@@ -320,7 +320,7 @@ namespace CRAPI
             Task<string> output = GetAsync(Endpoints.Clan, tag + query);
             Clan result = Parse<Clan>(await output);
 
-            cache.Update(result, tag + String.Join("", include) + String.Join("", exclude));
+            cache.Update(result, tag + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
 
             return result;
         }
@@ -348,7 +348,7 @@ namespace CRAPI
             Task<string> output = GetAsync(Endpoints.Top, "players" + query);
             SimplifiedPlayer[] result = Parse<SimplifiedPlayer[]>(await output);
 
-            cache.Update(result, "topPlayers" + String.Join("", include) + String.Join("", exclude));
+            cache.Update(result, "topPlayers" + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
 
             return result;
         }
@@ -377,7 +377,7 @@ namespace CRAPI
             Task<string> output = GetAsync(Endpoints.Top, region == Locations.None ? "clans" + query : "clans/" + region.ToString() + query);
             SimplifiedClan[] result = Parse<SimplifiedClan[]>(await output);
 
-            cache.Update(result, "topClans" + String.Join("", include) + String.Join("", exclude));
+            cache.Update(result, "topClans" + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
 
             return result;
         }
@@ -442,7 +442,7 @@ namespace CRAPI
             Task<string> output = GetAsync(Endpoints.Clan, "search" + query + q);
             SimplifiedClan[] result = Parse<SimplifiedClan[]>(await output);
 
-            cache.Update(result, "clanSearch" + String.Join("", queries) + String.Join("", include) + String.Join("", exclude));
+            cache.Update(result, "clanSearch" + String.Join("", queries) + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
 
             return result;
         }
@@ -471,7 +471,7 @@ namespace CRAPI
             Task<string> output = GetAsync(Endpoints.Tournaments, tag + query);
             Tournament result = Parse<Tournament>(await output);
 
-            cache.Update(result, tag + String.Join("", include) + String.Join("", exclude));
+            cache.Update(result, tag + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
 
             return result;
         }
