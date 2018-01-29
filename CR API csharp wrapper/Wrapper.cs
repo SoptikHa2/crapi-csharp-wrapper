@@ -35,7 +35,7 @@ namespace CRAPI
         /// </summary>
         public enum Locations
         {
-            None, _EU, _NA, _SA, _AS, _AU, _AF, _INT, AF, AX, AL, DZ, AS, AD, AO, AI, AQ, AG, AR, AM, AW, AC, AU, AT, AZ, BS, BH, BD, BB, BY, BE, BZ, BJ, BM, BT, BO, BA, BW, BV, BR, IO, VG, BN, BG, BF, BI, KH, CM, CA, IC, CV, BQ, KY, CF, EA, TD, CL, CN, CX, CC, CO, KM, CG, CD, CK, CR, CI, HR, CU, CW, CY, CZ, DK, DG, DJ, DM, DO, EC, EG, SV, GQ, ER, EE, ET, FK, FO, FJ, FI, FR, GF, PF, TF, GA, GM, GE, DE, GH, GI, GR, GL, GD, GP, GU, GT, GG, GN, GW, GY, HT, HM, HN, HK, HU, IS, IN, ID, IR, IQ, IE, IM, IL, IT, JM, JP, JE, JO, KZ, KE, KI, XK, KW, KG, LA, LV, LB, LS, LR, LY, LI, LT, LU, MO, MK, MG, MW, MY, MV, ML, MT, MH, MQ, MR, MU, YT, MX, FM, MD, MC, MN, ME, MS, MA, MZ, MM, NA, NR, NP, NL, NC, NZ, NI, NE, NG, NU, NF, KP, MP, NO, OM, PK, PW, PS, PA, PG, PY, PE, PH, PN, PL, PT, PR, QA, RE, RO, RU, RW, BL, SH, KN, LC, MF, PM, WS, SM, ST, SA, SN, RS, SC, SL, SG, SX, SK, SI, SB, SO, ZA, KR, SS, ES, LK, VC, SD, SR, SJ, SZ, SE, CH, SY, TW, TJ, TZ, TH, TL, TG, TK, TO, TT, TA, TN, TR, TM, TC, TV, UM, VI, UG, UA, AE, GB, US, UY, UZ, VU, VA, VE, VN, WF, EH, YE, ZM, ZW
+            None, _EU = 57000000, _NA, _SA, _AS, _AU, _AF, _INT, AF, AX, AL, DZ, AS, AD, AO, AI, AQ, AG, AR, AM, AW, AC, AU, AT, AZ, BS, BH, BD, BB, BY, BE, BZ, BJ, BM, BT, BO, BA, BW, BV, BR, IO, VG, BN, BG, BF, BI, KH, CM, CA, IC, CV, BQ, KY, CF, EA, TD, CL, CN, CX, CC, CO, KM, CG, CD, CK, CR, CI, HR, CU, CW, CY, CZ, DK, DG, DJ, DM, DO, EC, EG, SV, GQ, ER, EE, ET, FK, FO, FJ, FI, FR, GF, PF, TF, GA, GM, GE, DE, GH, GI, GR, GL, GD, GP, GU, GT, GG, GN, GW, GY, HT, HM, HN, HK, HU, IS, IN, ID, IR, IQ, IE, IM, IL, IT, JM, JP, JE, JO, KZ, KE, KI, XK, KW, KG, LA, LV, LB, LS, LR, LY, LI, LT, LU, MO, MK, MG, MW, MY, MV, ML, MT, MH, MQ, MR, MU, YT, MX, FM, MD, MC, MN, ME, MS, MA, MZ, MM, NA, NR, NP, NL, NC, NZ, NI, NE, NG, NU, NF, KP, MP, NO, OM, PK, PW, PS, PA, PG, PY, PE, PH, PN, PL, PT, PR, QA, RE, RO, RU, RW, BL, SH, KN, LC, MF, PM, WS, SM, ST, SA, SN, RS, SC, SL, SG, SX, SK, SI, SB, SO, ZA, KR, SS, ES, LK, VC, SD, SR, SJ, SZ, SE, CH, SY, TW, TJ, TZ, TH, TL, TG, TK, TO, TT, TA, TN, TR, TM, TC, TV, UM, VI, UG, UA, AE, GB, US, UY, UZ, VU, VA, VE, VN, WF, EH, YE, ZM, ZW
         }
 
         /// <summary>
@@ -116,9 +116,13 @@ namespace CRAPI
         /// </summary>
         /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
         /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
+        /// <param name="region">Optional parameter, feault value is Locations.None. Specifies from what country should be top players returned. This CANNOT be location starting with "_" (like _EU, _NA, etc). In that case, Location.None will be used.</param>
         /// <returns></returns>
-        public SimplifiedPlayer[] GetTopPlayers(string[] include = null, string[] exclude = null)
+        public SimplifiedPlayer[] GetTopPlayers(string[] include = null, string[] exclude = null, Locations region = Locations.None)
         {
+            if (region.ToString().StartsWith("_"))
+                region = Locations.None;
+
             string query = String.Empty;
             if (include != null && exclude != null)
                 throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
@@ -128,14 +132,14 @@ namespace CRAPI
                 query += "?exclude=" + String.Join(",", exclude);
 
             // Check for cache
-            SimplifiedPlayer[] cachedResult = cache.GetFromCache<SimplifiedPlayer[]>("topPlayers" + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            SimplifiedPlayer[] cachedResult = cache.GetFromCache<SimplifiedPlayer[]>("topPlayersRegion" + region.ToString() + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
             if (cachedResult != null)
                 return cachedResult;
 
-            string output = Get(Endpoints.Top, "players" + query);
+            string output = Get(Endpoints.Top, region != Locations.None ? "players/" + region.ToString() + query : "players" + query);
             SimplifiedPlayer[] result = Parse<SimplifiedPlayer[]>(output);
 
-            cache.Update(result, "topPlayers" + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            cache.Update(result, "topPlayersRegion" + region.ToString() + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
 
             return result;
         }
@@ -331,8 +335,11 @@ namespace CRAPI
         /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
         /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
         /// <returns></returns>
-        public async Task<SimplifiedPlayer[]> GetTopPlayersAsync(string[] include = null, string[] exclude = null)
+        public async Task<SimplifiedPlayer[]> GetTopPlayersAsync(string[] include = null, string[] exclude = null, Locations region = Locations.None)
         {
+            if (region.ToString().StartsWith("_"))
+                region = Locations.None;
+
             string query = String.Empty;
             if (include != null && exclude != null)
                 throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
@@ -341,14 +348,15 @@ namespace CRAPI
             if (exclude != null)
                 query += "?exclude=" + String.Join(",", exclude);
 
-            SimplifiedPlayer[] cachedResult = cache.GetFromCache<SimplifiedPlayer[]>("topPlayers" + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            SimplifiedPlayer[] cachedResult = cache.GetFromCache<SimplifiedPlayer[]>("topPlayersRegion" + region.ToString() + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
             if (cachedResult != null)
                 return cachedResult;
 
-            Task<string> output = GetAsync(Endpoints.Top, "players" + query);
+            Task<string> output = GetAsync(Endpoints.Top, region != Locations.None ? "players/" + region.ToString() + query : "players" + query);
+
             SimplifiedPlayer[] result = Parse<SimplifiedPlayer[]>(await output);
 
-            cache.Update(result, "topPlayers" + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            cache.Update(result, "topPlayersRegion" + region.ToString() + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
 
             return result;
         }
@@ -370,14 +378,14 @@ namespace CRAPI
             if (exclude != null)
                 query += "?exclude=" + String.Join(",", exclude);
 
-            SimplifiedClan[] cachedResult = cache.GetFromCache<SimplifiedClan[]>("topClans" + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            SimplifiedClan[] cachedResult = cache.GetFromCache<SimplifiedClan[]>("topClansRegion" + region.ToString() + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
             if (cachedResult != null)
                 return cachedResult;
 
             Task<string> output = GetAsync(Endpoints.Top, region == Locations.None ? "clans" + query : "clans/" + region.ToString() + query);
             SimplifiedClan[] result = Parse<SimplifiedClan[]>(await output);
 
-            cache.Update(result, "topClans" + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            cache.Update(result, "topClansRegion" + region.ToString() + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
 
             return result;
         }
