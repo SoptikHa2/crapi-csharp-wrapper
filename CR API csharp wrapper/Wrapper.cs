@@ -114,11 +114,11 @@ namespace CRAPI
         /// <summary>
         /// Get top players in clash royale. Returned players are instances of SimplifiedPlayer, thus contain only basic information
         /// </summary>
+        /// <param name="region">Optional parameter, feault value is Locations.None. Specifies from what country should be top players returned. This CANNOT be location starting with "_" (like _EU, _NA, etc). In that case, Location.None will be used.</param>
         /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
         /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
-        /// <param name="region">Optional parameter, feault value is Locations.None. Specifies from what country should be top players returned. This CANNOT be location starting with "_" (like _EU, _NA, etc). In that case, Location.None will be used.</param>
         /// <returns></returns>
-        public SimplifiedPlayer[] GetTopPlayers(string[] include = null, string[] exclude = null, Locations region = Locations.None)
+        public SimplifiedPlayer[] GetTopPlayers(Locations region = Locations.None, string[] include = null, string[] exclude = null)
         {
             if (region.ToString().StartsWith("_"))
                 region = Locations.None;
@@ -147,11 +147,11 @@ namespace CRAPI
         /// <summary>
         /// Get top clans in clash royale. Returned clans are instances of SimplifiedClan, thus contain only basic information
         /// </summary>
+        /// <param name="region">Optional parameter, default value is Locations.None. Specifies region, only clans from selected region will be returned. Select Locations.None to return clans from whole world.</param>
         /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
         /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
-        /// <param name="region">Optional parameter, default value is Locations.None. Specifies region, only clans from selected region will be returned. Select Locations.None to return clans from whole world.</param>
         /// <returns></returns>
-        public SimplifiedClan[] GetTopClans(string[] include = null, string[] exclude = null, Locations region = Locations.None)
+        public SimplifiedClan[] GetTopClans(Locations region = Locations.None, string[] include = null, string[] exclude = null)
         {
             string query = String.Empty;
             if (include != null && exclude != null)
@@ -332,10 +332,11 @@ namespace CRAPI
         /// <summary>
         /// Get top players in clash royale async. Returned players are instances of SimplifiedPlayer, thus contain only basic information
         /// </summary>
+        /// <param name="region">Optional parameter, feault value is Locations.None. Specifies from what country should be top players returned. This CANNOT be location starting with "_" (like _EU, _NA, etc). In that case, Location.None will be used.</param>
         /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
         /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
         /// <returns></returns>
-        public async Task<SimplifiedPlayer[]> GetTopPlayersAsync(string[] include = null, string[] exclude = null, Locations region = Locations.None)
+        public async Task<SimplifiedPlayer[]> GetTopPlayersAsync(Locations region = Locations.None, string[] include = null, string[] exclude = null)
         {
             if (region.ToString().StartsWith("_"))
                 region = Locations.None;
@@ -364,11 +365,11 @@ namespace CRAPI
         /// <summary>
         /// Get top clans in clash royale async. Returned clans are instances of SimplifiedClan, thus contain only basic information
         /// </summary>
+        /// <param name="region">Optional parameter, default value is Locations.None. Specifies region, only clans from selected region will be returned. Select Locations.None to return clans from whole world.</param>
         /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
         /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
-        /// <param name="region">Optional parameter, default value is Locations.None. Specifies region, only clans from selected region will be returned. Select Locations.None to return clans from whole world.</param>
         /// <returns></returns>
-        public async Task<SimplifiedClan[]> GetTopClansAsync(string[] include = null, string[] exclude = null, Locations region = Locations.None)
+        public async Task<SimplifiedClan[]> GetTopClansAsync(Locations region = Locations.None, string[] include = null, string[] exclude = null)
         {
             string query = String.Empty;
             if (include != null && exclude != null)
