@@ -25,7 +25,7 @@ namespace CRAPI
         /// </summary>
         public string role;
         /// <summary>
-        /// If instance of this class comes from player's profile: Player's donations. If this instance is from clan search, this should be NULL. May be null if player is not in clan.
+        /// Overall donations in clan
         /// </summary>
         public int? donations;
         /// <summary>

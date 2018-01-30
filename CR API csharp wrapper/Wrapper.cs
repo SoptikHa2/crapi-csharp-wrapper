@@ -222,6 +222,9 @@ namespace CRAPI
             if (exclude != null)
                 queries.Add("exclude=" + String.Join(",", exclude));
 
+            if (region != Locations.None)
+                queries.Add("locationId=" + (int)region);
+
             string q = String.Empty;
             q += "?" + queries[0];
             for (int i = 1; i < queries.Count; i++)
@@ -231,7 +234,7 @@ namespace CRAPI
             if (cachedResult != null)
                 return cachedResult;
 
-            string output = Get(Endpoints.Clan, region != Locations.None ? "search/" + region.ToString() + q : "search" + q);
+            string output = Get(Endpoints.Clan, "search" + q);
             SimplifiedClan[] result = Parse<SimplifiedClan[]>(output);
 
             cache.Update(result, "clanSearch" + region.ToString() + String.Join("", queries));
@@ -400,10 +403,11 @@ namespace CRAPI
         /// <param name="score">Minimum clan score. If you do not want to input this one, enter NULL</param>
         /// <param name="minMembers">Minimum members in clan. 0-50. If you do not want to input this one, enter NULL</param>
         /// <param name="maxMembers">Maximum members in clan. 0-60. If you do not want to input this one, enter NULL</param>
+        /// <param name="region">Optional parameter, default value is Locations.None. Enter another one to search only for clans in region.</param>
         /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
         /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
         /// <returns></returns>
-        public async Task<SimplifiedClan[]> SearchForClansAsync(string name, int? score, int? minMembers, int? maxMembers, string[] include = null, string[] exclude = null)
+        public async Task<SimplifiedClan[]> SearchForClansAsync(string name, int? score, int? minMembers, int? maxMembers, Locations region = Locations.None, string[] include = null, string[] exclude = null)
         {
             List<string> queries = new List<string>(4);
 
@@ -432,27 +436,30 @@ namespace CRAPI
             if (queries.Count == 0)
                 throw new ArgumentException("At least one parameter must be not-null!");
 
+            if (include != null && exclude != null)
+                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
+
+            if (include != null)
+                queries.Add("keys=" + String.Join(",", include));
+            if (exclude != null)
+                queries.Add("exclude=" + String.Join(",", exclude));
+
+            if (region != Locations.None)
+                queries.Add("locationId=" + (int)region);
+
             string q = String.Empty;
             q += "?" + queries[0];
             for (int i = 1; i < queries.Count; i++)
                 q += "&" + queries[i];
 
-            string query = String.Empty;
-            if (include != null && exclude != null)
-                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
-            if (include != null)
-                query += "?keys=" + String.Join(",", include);
-            if (exclude != null)
-                query += "?exclude=" + String.Join(",", exclude);
-
-            SimplifiedClan[] cachedResult = cache.GetFromCache<SimplifiedClan[]>("clanSearch" + String.Join("", queries) + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            SimplifiedClan[] cachedResult = cache.GetFromCache<SimplifiedClan[]>("clanSearch" + region.ToString() + String.Join("", queries));
             if (cachedResult != null)
                 return cachedResult;
 
-            Task<string> output = GetAsync(Endpoints.Clan, "search" + query + q);
+            Task<string> output = GetAsync(Endpoints.Clan, "search" + q);
             SimplifiedClan[] result = Parse<SimplifiedClan[]>(await output);
 
-            cache.Update(result, "clanSearch" + String.Join("", queries) + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            cache.Update(result, "clanSearch" + region.ToString() + String.Join("", queries));
 
             return result;
         }
