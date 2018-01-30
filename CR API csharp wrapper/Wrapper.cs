@@ -181,10 +181,11 @@ namespace CRAPI
         /// <param name="score">Minimum clan score. If you do not want to input this one, enter NULL</param>
         /// <param name="minMembers">Minimum members in clan. 0-50. If you do not want to input this one, enter NULL</param>
         /// <param name="maxMembers">Maximum members in clan. 0-60. If you do not want to input this one, enter NULL</param>
+        /// <param name="region">Optional parameter, default value is Locations.None. Enter another one to search only for clans in region.</param>
         /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
         /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
         /// <returns></returns>
-        public SimplifiedClan[] SearchForClans(string name, int? score, int? minMembers, int? maxMembers, string[] include = null, string[] exclude = null)
+        public SimplifiedClan[] SearchForClans(string name, int? score, int? minMembers, int? maxMembers, Locations region = Locations.None, string[] include = null, string[] exclude = null)
         {
             List<string> queries = new List<string>(4);
 
@@ -213,27 +214,27 @@ namespace CRAPI
             if (queries.Count == 0)
                 throw new ArgumentException("At least one parameter must be not-null!");
 
+            if (include != null && exclude != null)
+                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
+
+            if (include != null)
+                queries.Add("keys=" + String.Join(",", include));
+            if (exclude != null)
+                queries.Add("exclude=" + String.Join(",", exclude));
+
             string q = String.Empty;
             q += "?" + queries[0];
             for (int i = 1; i < queries.Count; i++)
                 q += "&" + queries[i];
 
-            string query = String.Empty;
-            if (include != null && exclude != null)
-                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
-            if (include != null)
-                query += "?keys=" + String.Join(",", include);
-            if (exclude != null)
-                query += "?exclude=" + String.Join(",", exclude);
-
-            SimplifiedClan[] cachedResult = cache.GetFromCache<SimplifiedClan[]>("clanSearch" + String.Join("", queries) + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            SimplifiedClan[] cachedResult = cache.GetFromCache<SimplifiedClan[]>("clanSearch" + region.ToString() + String.Join("", queries));
             if (cachedResult != null)
                 return cachedResult;
 
-            string output = Get(Endpoints.Clan, "search" + query + q);
+            string output = Get(Endpoints.Clan, region != Locations.None ? "search/" + region.ToString() + q : "search" + q);
             SimplifiedClan[] result = Parse<SimplifiedClan[]>(output);
 
-            cache.Update(result, "clanSearch" + String.Join("", queries) + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            cache.Update(result, "clanSearch" + region.ToString() + String.Join("", queries));
 
             return result;
         }
@@ -508,6 +509,7 @@ namespace CRAPI
         {
             try
             {
+                /*
                 HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
                 req.Method = "GET";
                 req.Headers.Add("auth", key);
@@ -515,7 +517,23 @@ namespace CRAPI
                 StreamReader sr = new StreamReader(myResponse.GetResponseStream(), System.Text.Encoding.UTF8);
                 string result = sr.ReadToEnd();
                 sr.Close();
-                myResponse.Close();
+                myResponse.Close();*/
+
+                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+                req.MediaType = "GET";
+                req.Headers.Add("auth", key);
+                req.Timeout = 20000;
+
+                string result;
+
+                using (WebResponse serverResponse = req.GetResponse())
+                {
+                    long length = serverResponse.ContentLength;
+                    using (StreamReader sr = new StreamReader(serverResponse.GetResponseStream(), System.Text.Encoding.UTF8))
+                    {
+                        result = sr.ReadToEnd();
+                    }
+                }
 
 
                 return result;
@@ -569,6 +587,8 @@ namespace CRAPI
         private Dictionary<CacheKey, CacheDetails> cache;
         private DateTime lastCacheCheck;
 
+        private const string tempFileSuffix = ".crapiwrapperTMP";
+
         public Cacher(int cacheDuration, int cacheCheckInterval = 5)
         {
             this.cacheDuration = cacheDuration;
@@ -597,7 +617,7 @@ namespace CRAPI
 
             try
             {
-                string fileString = File.ReadAllText(cacheResult.Value.path);
+                string fileString = File.ReadAllText(cacheResult.Value.path + tempFileSuffix);
                 return (T)CacheSerializer.DeserializeObject(fileString);
             }
             catch
@@ -620,7 +640,7 @@ namespace CRAPI
             {
                 string pathToFile = Path.Combine(Path.GetTempPath(), $"crapiwrapper-{ID}.{typeof(T).ToString()}");
 
-                File.WriteAllText(pathToFile, CacheSerializer.SerializeObject(objectToCache));
+                File.WriteAllText(pathToFile + tempFileSuffix, CacheSerializer.SerializeObject(objectToCache));
 
                 cache.Add(new CacheKey() { ID = ID, typeOfObject = typeof(T) }, new CacheDetails() { cached = DateTime.Now, path = pathToFile });
             }
@@ -638,7 +658,7 @@ namespace CRAPI
             {
                 try
                 {
-                    File.Delete(oCache.Value.path);
+                    File.Delete(oCache.Value.path + tempFileSuffix);
                     cache.Remove(oCache.Key);
                 }
                 catch { }
@@ -647,14 +667,26 @@ namespace CRAPI
             lastCacheCheck = DateTime.Now;
         }
 
-        ~Cacher()
+        /// <summary>
+        /// Clears cache and removes all temporary files
+        /// </summary>
+        public void Clear()
         {
-            foreach (string path in cache.Select(x => x.Value.path))
+            cache.Clear();
+
+            string[] files = Directory.GetFiles(Path.Combine(Path.GetTempPath()), "*" + tempFileSuffix);
+
+            for (int i = 0; i < files.Length; i++)
                 try
                 {
-                    File.Delete(path);
+                    File.Delete(files[i]);
                 }
                 catch { }
+        }
+
+        ~Cacher()
+        {
+            Clear();
         }
     }
 
