@@ -12,9 +12,9 @@ tournaments and more.
 [nuget.org package](https://www.nuget.org/packages/Stastny.CRAPI/)
 
 ```
-Install-Package Stastny.CRAPI -Version 0.3.6
+Install-Package Stastny.CRAPI -Version 0.4.0
 
-dotnet add package Stastny.CRAPI --version 0.3.6
+dotnet add package Stastny.CRAPI --version 0.4.0
 ```
 
 ## How to use this wrapper
@@ -26,9 +26,9 @@ You should receive something like this: `3012e5ab523243q2a86w2bqa58bdf9bce960718
 When you get your own key, you can include this wrapper in your project. The easiest way is to use my [NUGET package](https://www.nuget.org/packages/Stastny.CRAPI/).
 You can either import the package via visual studio or use one of these commands:
 ```
-Install-Package Stastny.CRAPI -Version 0.3.6
+Install-Package Stastny.CRAPI -Version 0.4.0
 
-dotnet add package Stastny.CRAPI --version 0.3.6
+dotnet add package Stastny.CRAPI --version 0.4.0
 ```
 
 
@@ -72,6 +72,13 @@ foreach(Card card in deck){
 }
 
 // ...
+```
+
+You can even get multiple players in one request, or search for clans in region
+```csharp
+wr.SearchForClans(null, 30000, 20, 49, Wrapper.Locations.CZ); // Returns array of clans with any name, at least 30 000 points, 20 <= members <= 49, in Czech Republic
+
+wr.GetPlayer(new string[]{ "80RGVCV9C", "anotherTAG", "anotherTAG", "anotherTAG" }) // Returns 4 players in array (this uses just one API request)
 ```
 
 
@@ -216,9 +223,9 @@ If something goes wrong at client side (timed out, no internet connection), an `
 [nuget.org package](https://www.nuget.org/packages/Stastny.CRAPI/)
 
 ```
-Install-Package Stastny.CRAPI -Version 0.3.6
+Install-Package Stastny.CRAPI -Version 0.4.0
 
-dotnet add package Stastny.CRAPI --version 0.3.6
+dotnet add package Stastny.CRAPI --version 0.4.0
 ```
 
 
