@@ -82,6 +82,36 @@ namespace CRAPI
         }
 
         /// <summary>
+        /// Get few Player instances from API
+        /// </summary>
+        /// <param name="tags">Player tags, must be upper-case. Do not pass hundreds of tags, as timeout is set to 20 seconds</param>
+        /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
+        /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
+        /// <returns></returns>
+        public Player[] GetPlayer(string[] tags, string[] include = null, string[] exclude = null)
+        {
+            string query = String.Empty;
+            if (include != null && exclude != null)
+                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
+            if (include != null)
+                query += "?keys=" + String.Join(",", include);
+            if (exclude != null)
+                query += "?exclude=" + String.Join(",", exclude);
+
+            // Check for cache
+            Player[] cachedResult = cache.GetFromCache<Player[]>(String.Join("", tags) + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            if (cachedResult != null)
+                return cachedResult;
+
+            string output = Get(Endpoints.Player, String.Join(",", tags) + query);
+            Player[] result = Parse<Player[]>(output);
+
+            cache.Update(result, String.Join("", tags) + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+
+            return result;
+        }
+
+        /// <summary>
         /// Get instatnce of Clan from API
         /// </summary>
         /// <param name="tag">Clan tag. Must be upper-case</param>
@@ -107,6 +137,36 @@ namespace CRAPI
             Clan result = Parse<Clan>(output);
 
             cache.Update(result, tag + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+
+            return result;
+        }
+
+        /// <summary>
+        /// Get few instatnces of Clan from API
+        /// </summary>
+        /// <param name="tag">Clan tags. Must be upper-case. Do not pass hundreds of tags, as timeout is set to 20 seconds</param>
+        /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
+        /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
+        /// <returns></returns>
+        public Clan[] GetClan(string[] tags, string[] include = null, string[] exclude = null)
+        {
+            string query = String.Empty;
+            if (include != null && exclude != null)
+                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
+            if (include != null)
+                query += "?keys=" + String.Join(",", include);
+            if (exclude != null)
+                query += "?exclude=" + String.Join(",", exclude);
+
+            // Check for cache
+            Clan[] cachedResult = cache.GetFromCache<Clan[]>(String.Join("", tags) + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            if (cachedResult != null)
+                return cachedResult;
+
+            string output = Get(Endpoints.Clan, String.Join(",", tags) + query);
+            Clan[] result = Parse<Clan[]>(output);
+
+            cache.Update(result, String.Join("", tags) + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
 
             return result;
         }
@@ -305,6 +365,36 @@ namespace CRAPI
         }
 
         /// <summary>
+        /// Get few Player instances from API
+        /// </summary>
+        /// <param name="tags">Player tags, must be upper-case. Do not pass hundreds of tags, as timeout is set to 20 seconds</param>
+        /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
+        /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
+        /// <returns></returns>
+        public async Task<Player[]> GetPlayerAsync(string[] tags, string[] include = null, string[] exclude = null)
+        {
+            string query = String.Empty;
+            if (include != null && exclude != null)
+                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
+            if (include != null)
+                query += "?keys=" + String.Join(",", include);
+            if (exclude != null)
+                query += "?exclude=" + String.Join(",", exclude);
+
+            // Check for cache
+            Player[] cachedResult = cache.GetFromCache<Player[]>(String.Join("", tags) + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            if (cachedResult != null)
+                return cachedResult;
+
+            Task<string> output = GetAsync(Endpoints.Player, String.Join(",", tags) + query);
+            Player[] result = Parse<Player[]>(await output);
+
+            cache.Update(result, String.Join("", tags) + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+
+            return result;
+        }
+
+        /// <summary>
         /// Get instance of Clan from API async
         /// </summary>
         /// <param name="tag">Clan tag. Must be upper-case</param>
@@ -329,6 +419,36 @@ namespace CRAPI
             Clan result = Parse<Clan>(await output);
 
             cache.Update(result, tag + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+
+            return result;
+        }
+
+        /// <summary>
+        /// Get few instatnces of Clan from API
+        /// </summary>
+        /// <param name="tag">Clan tags. Must be upper-case. Do not pass hundreds of tags, as timeout is set to 20 seconds</param>
+        /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
+        /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
+        /// <returns></returns>
+        public async Task<Clan[]> GetClanAsync(string[] tags, string[] include = null, string[] exclude = null)
+        {
+            string query = String.Empty;
+            if (include != null && exclude != null)
+                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
+            if (include != null)
+                query += "?keys=" + String.Join(",", include);
+            if (exclude != null)
+                query += "?exclude=" + String.Join(",", exclude);
+
+            // Check for cache
+            Clan[] cachedResult = cache.GetFromCache<Clan[]>(String.Join("", tags) + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            if (cachedResult != null)
+                return cachedResult;
+
+            Task<string> output = GetAsync(Endpoints.Clan, String.Join(",", tags) + query);
+            Clan[] result = Parse<Clan[]>(await output);
+
+            cache.Update(result, String.Join("", tags) + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
 
             return result;
         }
