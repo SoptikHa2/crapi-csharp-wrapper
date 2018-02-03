@@ -31,7 +31,7 @@ namespace CRAPI
         /// <summary>
         /// Url to card image
         /// </summary>
-        public IconUrls iconUrls;
+        public string icon;
         /// <summary>
         /// Key of card ("rocket")
         /// </summary>
@@ -73,14 +73,5 @@ namespace CRAPI
         {
             return name;
         }
-    }
-
-    [Serializable]
-    public struct IconUrls
-    {
-        /// <summary>
-        /// TODO
-        /// </summary>
-        public string medium;
     }
 }

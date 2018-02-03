@@ -636,16 +636,6 @@ namespace CRAPI
         {
             try
             {
-                /*
-                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
-                req.Method = "GET";
-                req.Headers.Add("auth", key);
-                WebResponse myResponse = req.GetResponse();
-                StreamReader sr = new StreamReader(myResponse.GetResponseStream(), System.Text.Encoding.UTF8);
-                string result = sr.ReadToEnd();
-                sr.Close();
-                myResponse.Close();*/
-
                 HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
                 req.MediaType = "GET";
                 req.Headers.Add("auth", key);
@@ -655,7 +645,6 @@ namespace CRAPI
 
                 using (WebResponse serverResponse = req.GetResponse())
                 {
-                    long length = serverResponse.ContentLength;
                     using (StreamReader sr = new StreamReader(serverResponse.GetResponseStream(), System.Text.Encoding.UTF8))
                     {
                         result = sr.ReadToEnd();
