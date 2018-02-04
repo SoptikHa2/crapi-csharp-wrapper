@@ -75,5 +75,8 @@ namespace CRAPI
     public struct ClanChest
     {
         public string status;
+        public int level;
+        public int maxLevel;
+        public int crowns;
     }
 }
