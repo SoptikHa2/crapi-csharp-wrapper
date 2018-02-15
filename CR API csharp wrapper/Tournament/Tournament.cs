@@ -33,7 +33,7 @@ namespace CRAPI
         /// <summary>
         /// Current number of players in tournament
         /// </summary>
-        public int capacity;
+        public int playerCount;
 
         /// <summary>
         /// Maximum number of players in tournament
@@ -93,6 +93,16 @@ namespace CRAPI
         /// Player's inside-tournament trophies
         /// </summary>
         public int score;
+
+        /// <summary>
+        /// Player's rank inside tournament
+        /// </summary>
+        public int rank;
+
+        /// <summary>
+        /// Short info about player's clan
+        /// </summary>
+        public ClanInfo clan;
 
         public override string ToString()
         {
