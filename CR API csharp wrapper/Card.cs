@@ -23,7 +23,7 @@ namespace CRAPI
         /// <summary>
         /// Maximum level of card
         /// </summary>
-        public int maxLevel;
+        public int? maxLevel;
         /// <summary>
         /// Number of cards in player's inventory
         /// </summary>
@@ -65,6 +65,10 @@ namespace CRAPI
         /// Cards that player needs to upgrade to next level. Is null, if [requiredForUpgrade] is "Maxed"
         /// </summary>
         public int? leftToUpgrade;
+        /// <summary>
+        /// Card ID
+        /// </summary>
+        public int id;
         /// <summary>
         /// Returns string reprezentation of card, return card's name
         /// </summary>

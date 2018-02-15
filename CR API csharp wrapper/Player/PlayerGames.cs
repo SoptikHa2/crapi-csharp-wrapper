@@ -48,5 +48,22 @@ namespace CRAPI
         /// Player's current win streak
         /// </summary>
         public int currentWinStreak;
+        /// <summary>
+        /// Player's last played battle
+        /// </summary>
+        public BattleInfo lastBattle;
+    }
+
+    [Serializable]
+    public struct BattleInfo
+    {
+        /// <summary>
+        /// Type of game, "2v2"
+        /// </summary>
+        public string type;
+        /// <summary>
+        /// Time (linux time, example: 1518707789)
+        /// </summary>
+        public int time;
     }
 }

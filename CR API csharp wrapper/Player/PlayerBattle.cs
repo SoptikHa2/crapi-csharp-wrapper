@@ -53,6 +53,10 @@ namespace CRAPI
         /// In which arena was the fight
         /// </summary>
         public Arena arena;
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public int? winCountBefore;
     }
 
     [Serializable]
@@ -63,7 +67,7 @@ namespace CRAPI
         /// </summary>
         public string name;
         /// <summary>
-        /// TODO
+        /// Type of deck (Collection, Draft, ...)
         /// </summary>
         public string deck;
         /// <summary>
@@ -108,8 +112,8 @@ namespace CRAPI
         /// </summary>
         public Card[] deck;
         /// <summary>
-        /// Count of trophies won/lost
+        /// Link to player's deck
         /// </summary>
-        public int trophyChange;
+        public string deckLink;
     }
 }
