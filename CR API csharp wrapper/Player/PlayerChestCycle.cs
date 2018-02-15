@@ -18,27 +18,27 @@ namespace CRAPI
         public string[] upcoming;
 
         /// <summary>
-        /// TODO
+        /// I don't know what this means. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks!
         /// </summary>
         public int superMagical;
 
         /// <summary>
-        /// TODO
+        /// I don't know what this means. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks!
         /// </summary>
         public int magical;
 
         /// <summary>
-        /// TODO
+        /// I don't know what this means. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks!
         /// </summary>
         public int legendary;
 
         /// <summary>
-        /// TODO
+        /// I don't know what this means. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks!
         /// </summary>
         public int epic;
 
         /// <summary>
-        /// TODO
+        /// I don't know what this means. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks!
         /// </summary>
         public int giant;
     }

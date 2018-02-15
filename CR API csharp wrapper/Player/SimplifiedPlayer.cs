@@ -21,11 +21,11 @@ namespace CRAPI
         /// </summary>
         public string tag;
         /// <summary>
-        /// TODO
+        /// I don't know what this means. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks!
         /// </summary>
         public int rank;
         /// <summary>
-        /// TODO
+        /// I don't know what this means. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks!
         /// </summary>
         public int previousRank;
         /// <summary>
@@ -53,11 +53,11 @@ namespace CRAPI
         /// </summary>
         public int? donationsReceived;
         /// <summary>
-        /// TODO [May be null]
+        /// I don't know what this means. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks! [May be null]
         /// </summary>
         public int? donationsDelta;
         /// <summary>
-        /// TODO [May be null]
+        /// I don't know what this means. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks! [May be null]
         /// </summary>
         public float? donationsPercent;
         /// <summary>

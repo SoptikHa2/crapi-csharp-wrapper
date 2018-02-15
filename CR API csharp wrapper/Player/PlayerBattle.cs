@@ -22,7 +22,7 @@ namespace CRAPI
         /// </summary>
         public int utcTime;
         /// <summary>
-        /// TODO
+        /// I don't know what this means. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks!
         /// </summary>
         public string deckType;
         /// <summary>
@@ -30,7 +30,7 @@ namespace CRAPI
         /// </summary>
         public int teamSize;
         /// <summary>
-        /// TODO
+        /// I don't know what this means. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks!
         /// </summary>
         public int winner;
         /// <summary>
@@ -54,7 +54,7 @@ namespace CRAPI
         /// </summary>
         public Arena arena;
         /// <summary>
-        /// TODO
+        /// I don't know what this means. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks!
         /// </summary>
         public int? winCountBefore;
     }
@@ -79,11 +79,11 @@ namespace CRAPI
         /// </summary>
         public int overtimeSeconds;
         /// <summary>
-        /// TODO
+        /// I don't know what this means. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks!
         /// </summary>
         public string players;
         /// <summary>
-        /// TODO
+        /// I don't know what this means. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks!
         /// </summary>
         public bool sameDeck;
     }

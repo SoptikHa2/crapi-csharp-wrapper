@@ -21,11 +21,11 @@ namespace CRAPI
         /// </summary>
         public string name;
         /// <summary>
-        /// TODO
+        /// I don't know what this means. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks!
         /// </summary>
         public string category;
         /// <summary>
-        /// TODO
+        /// Badge unique ID
         /// </summary>
         public int id;
     }

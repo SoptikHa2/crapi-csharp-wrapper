@@ -25,7 +25,7 @@ namespace CRAPI
         /// </summary>
         public string description;
         /// <summary>
-        /// TODO
+        /// Invite policy of clan (example: "invite only")
         /// </summary>
         public string type;
         /// <summary>
@@ -41,7 +41,7 @@ namespace CRAPI
         /// </summary>
         public int requiredScore;
         /// <summary>
-        /// TODO
+        /// Total donations in clan
         /// </summary>
         public int donations;
         /// <summary>
@@ -60,6 +60,10 @@ namespace CRAPI
         /// Array of players in clan
         /// </summary>
         public SimplifiedPlayer[] members;
+        /// <summary>
+        /// Keeps basic information about clan tracking by API
+        /// </summary>
+        public TrackingStatus tracking;
 
         /// <summary>
         /// Get string representation of this clan, returns clan name
@@ -74,9 +78,38 @@ namespace CRAPI
     [Serializable]
     public struct ClanChest
     {
+        /// <summary>
+        /// Current clan chest status (example: "inactive")
+        /// </summary>
         public string status;
+        /// <summary>
+        /// Current clan chest level
+        /// </summary>
         public int level;
+        /// <summary>
+        /// Maximum clan chest level (10)
+        /// </summary>
         public int maxLevel;
+        /// <summary>
+        /// Current number of crowns commited to clan chest
+        /// </summary>
         public int crowns;
+    }
+
+    [Serializable]
+    public struct TrackingStatus
+    {
+        /// <summary>
+        /// I don't know what this means. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks!
+        /// </summary>
+        public bool active;
+        /// <summary>
+        /// I don't know what this means. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks!
+        /// </summary>
+        public bool available;
+        /// <summary>
+        /// I don't know what this means. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks!
+        /// </summary>
+        public int snapshotCount;
     }
 }

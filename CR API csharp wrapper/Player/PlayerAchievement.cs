@@ -20,11 +20,11 @@ namespace CRAPI
         /// </summary>
         public int stars;
         /// <summary>
-        /// TODO
+        /// I don't know what this means. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks!
         /// </summary>
         public int value;
         /// <summary>
-        /// TODO
+        /// I don't know what this means. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks!
         /// </summary>
         public int target;
         /// <summary>
