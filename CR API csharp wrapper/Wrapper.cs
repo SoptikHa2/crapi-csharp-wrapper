@@ -17,6 +17,11 @@ namespace CRAPI
         private Cacher cache;
 
         /// <summary>
+        /// Last successful server response. Request something and access this to get server JSON response
+        /// </summary>
+        public string ServerResponse { get; private set; }
+
+        /// <summary>
         /// All current API endpoints
         /// </summary>
         public enum Endpoints
@@ -651,7 +656,7 @@ namespace CRAPI
                     }
                 }
 
-
+                ServerResponse = result;
                 return result;
             }
             catch (WebException e)
