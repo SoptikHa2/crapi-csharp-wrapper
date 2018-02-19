@@ -41,6 +41,32 @@ namespace CRAPI
         /// </summary>
         public ClanBadge badge;
 
+
+        /// <summary>
+        /// Type of clan (eg open, closed). This is null everywhere except clan search.
+        /// </summary>
+        public string type;
+        /// <summary>
+        /// Clan score (clan trophies). This is null everywhere except clan search.
+        /// </summary>
+        public int? score;
+        /// <summary>
+        /// Number of members. This is null everywhere except clan search.
+        /// </summary>
+        public int? memberCount;
+        /// <summary>
+        /// Minimum required score to join. This is null everywhere except clan search.
+        /// </summary>
+        public int? requiredScore;
+        /// <summary>
+        /// Clan location. This is null everywhere except clan search.
+        /// </summary>
+        public ClanRegion location;
+        /// <summary>
+        /// Info about clan tracking. This is null everywhere except clan search.
+        /// </summary>
+        public TrackingStatus tracking;
+
         /// <summary>
         /// Returns string representation of clan summary, returns clan name
         /// </summary>
