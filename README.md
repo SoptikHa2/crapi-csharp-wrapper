@@ -1,135 +1,39 @@
-# C# wrapper for CR API
-This C# wrapper was made to help people with using [CR API](https://cr-api.com/). 
-Wrapper is written in C# and can be used in any C# application. You can use it to get info about players, their decks, their chest cycle, recent battles, clans, clan chest,
-tournaments and more.
+# C# Wrapper for CR API
+This C# Wrapper was created to help developers with accessing unofficial [Clash Royale API](https://cr-api.com/). You can search for clans, tournaments, see player's deck, card collection, chest cycle, past battles, view clan information and much more. Feel free to explore this wrapper.
 
-> You need developer key to use API. You can get the key by following instructions listed on [CR API website](http://docs.cr-api.com/#/authentication)
+> Because the API changes very often, there may be few things that are in API but are not yet in wrapper. If you find them, please report it via github issues.
 
-## NUGET package
+For first, you'll need AUTH key to access API. Go to [CR API website](http://docs.cr-api.com/#/authentication?id=key-management) and get your own key.
 
-`Stastny.CRAPI`
-
-[nuget.org package](https://www.nuget.org/packages/Stastny.CRAPI/)
-
+Now just download nuget package [Stastny.CRAPI](https://www.nuget.org/packages/Stastny.CRAPI/) and you start :)
 ```
 Install-Package Stastny.CRAPI -Version 0.4.1
 
 dotnet add package Stastny.CRAPI --version 0.4.1
 ```
 
-## How to use this wrapper
-
-First of all, you should obtain your own developer key. Please see [CR API website](http://docs.cr-api.com/#/authentication) and get your developer key.
-You should receive something like this: `3012e5ab523243q2a86w2bqa58bdf9bce96071843029447631924cf99w5a9kfc` (example key, this one is not valid).
-
-
-When you get your own key, you can include this wrapper in your project. The easiest way is to use my [NUGET package](https://www.nuget.org/packages/Stastny.CRAPI/).
-You can either import the package via visual studio or use one of these commands:
-```
-Install-Package Stastny.CRAPI -Version 0.4.1
-
-dotnet add package Stastny.CRAPI --version 0.4.1
-```
-
-
-After you get your developer key and include the wrapper, you can start using it. Start by adding new using.
+## How to start
+First of all, get API auth key and download nuget package (see above). Now, you have to instantiate wrapper class.
 ```csharp
-// Start of file
-using System;
-using CRAPI;
+Wrapper wr = new Wrapper("YourAPIKey");
 ```
-
-
-Then you need to create new Wrapper object.
-
+You can now use `wr` to get everything from API. Let's get player:
 ```csharp
-Wrapper wr = new Wrapper("your dev key");
+Player SomeRandomPlayer = wr.GetPlayer("80RGVCV9C"); // 80RGVCV9C is player TAG
 ```
+You can access player's chest cycle, deck, card collection, clan, etc. Just type `SomeRandomPlayer.` and let Visual Studio show you everything you can get!
 
+> Clan received from Player doesn't contain all possible informations. Use `wr.GetClan(SomeRandomPlayer.clan.tag);` to get everything else.
 
-Now, you can get Player or Clan objects.
+You can use simmilar process to get clan `wr.GetClan("9Y8888RC");`, or tournament.
 
-```csharp
-Player somerandomplayer = wr.GetPlayer("80RGVCV9C"); // Get player with tag 80RGVCV9C
+You can search for clans using `wr.SearchForClans("Clash", 10000, 10, 40);`. This will search for clans with name "Clash", score at least 10000 and member count between 10 and 40. Some of these values may be omitted (by passing `null`), but at least one must be there. Name must be at least 3 characters long. For example `wr.SearchForClans(null, null, null, 30);` will search for all clans with at most 30 members.
 
-Clan somerandomclan = wr.GetClan("22Y802"); // Get clan with tag 22Y802
+> After every request, API response in JSON format is stored in `wr.ServerResponse`. If you miss some feature, take a look if it isn't in server response. If it is, create github issue and let me know. If it isn't, create [API issue](https://github.com/cr-api/cr-api/issues) so API developers can add this feature.
 
-Player[] bestPlayersInClashRoyale = wr.GetTopPlayers(); // Returns array which contains the best players in CR
-Clan[] bestClansInClashRoyale = wr.GetTopClans(); // Returns array which contains the best clans in CR
-```
+## Use wrapper Async
 
-
-
-You can get information about player/clan directly from these objects.
-
-```csharp
-somerandomplayer.name; // Get player's name
-Card[] deck = somerandomplayer.currentDeck; // Get array of card, this array represents player's deck
-
-// Write each card's name into console
-foreach(Card card in deck){
-	Console.WriteLine(card.name);
-}
-
-// ...
-```
-
-You can even get multiple players in one request, or search for clans in region
-```csharp
-wr.SearchForClans(null, 30000, 20, 49, Wrapper.Locations.CZ); // Returns array of clans with any name, at least 30 000 points, 20 <= members <= 49, in Czech Republic
-
-wr.GetPlayer(new string[]{ "80RGVCV9C", "anotherTAG", "anotherTAG", "anotherTAG" }) // Returns 4 players in array (this uses just one API request)
-```
-
-
-You can get much more info from player or clan objects - for example player's recent battles or clan badge. Use IntelliSense or browse my code to see what you can achieve with
-my wrapper!
-
-## Example usage
-
-> You have to add using: `using CRAPI;`
-
-```csharp
- // Initialize wrapper with your dev key
-Wrapper wr = new Wrapper("3012e5ab523243q2a86w2bqa58bdf9bce96071843029447631924cf99w5a9kfc");
-
-// Read player TAG from default input
-string tag = Console.ReadLine();
-
-// Get player from API
-Player player = wr.GetPlayer(tag);
-
-// Write player's name, level and arena'
-Console.WriteLine($"{player.name} (XP level {player.stats.level}) ({player.arena.name})");
-// Write player's clan name and player's role in clan
-Console.WriteLine($"{player.clan.name} ({player.clan.role})");
-
-Card[] cards = player.currentDeck;
-
-// For each card in player's deck
-foreach(Card c in cards)
-{
-	// Write card's name, elixir cost, rarity and level
-    Console.WriteLine($"{c.name} {c.elixir} ({c.rarity}) --- level: {c.level}");
-}
-```
-
-Output:
-
-```
-Soptik (XP level 10) (Legendary Arena)
-CZ exKnights 2 (elder)
-Mega Knight 7 (Legendary) --- level: 1
-Skeleton Army 3 (Epic) --- level: 5
-Inferno Tower 5 (Rare) --- level: 8
-The Log 2 (Legendary) --- level: 2
-Minions 3 (Common) --- level: 12
-Miner 3 (Legendary) --- level: 2
-Executioner 5 (Epic) --- level: 5
-Archers 3 (Common) --- level: 11
-```
-
-## Example ASYNC usage
+You can even use this wrapper async - that means, you can order 20 player requests and do something instead of waiting for wrapper to finish.
 
 > You have to write this code to special method -> do not throw this into Main! Make method like `static async void DoSomething()` (async keyword!)
 
@@ -137,8 +41,8 @@ Archers 3 (Common) --- level: 11
 > You have to add new using: `using System.Threading.Tasks;`
 
 ```csharp
-// As in sync version, initialize wrapper with your developer key
-Wrapper wr = new Wrapper("3012e5ab523243q2a86w2bqa58bdf9bce96071843029447631924cf99w5a9kfc");
+// As in sync version, initialize wrapper with your API key
+Wrapper wr = new Wrapper("MyAPIKey");
 
 // Store player tag and clan tag
 string tag = "80RGVCV9C";
@@ -192,6 +96,8 @@ Nova l Pompeyo
 Nova eSports
 ```
 
+
+
 ## Using Include and Exclude
 
 All .Get methods have two optional parameters - `string[] include` and `string[] exclude`. At least one of these must be `null`.
@@ -206,7 +112,7 @@ wr.GetPlayer("80RGVCV9C", new string[] { "clan" }); // Returns only "clan" field
 If you want, you can also exclude some fields. Just pass one or more field names in `string[] exclude`. You MUST set `include` as `null`, you cannot specify both
 parameters at one time.
 ```csharp
-wr.GetPlayer("80RGVCV9C", null, new string[] { "clan" }); // Returns everything except "clan" field, this will be `null` (or default value)
+wr.GetPlayer("80RGVCV9C", null, new string[] { "clan" }); // Returns everything except "clan" field, this will be `null`
 ```
 
 ## Exceptions
@@ -214,19 +120,7 @@ wr.GetPlayer("80RGVCV9C", null, new string[] { "clan" }); // Returns everything 
 When something goes wrong, an exception is thrown. This can be either `APIException` if something goes wrong at sever side (bad player tag, bad auth key, etc).
 This is class inherited from `Exception` and contains message from server what gone wrong.
 
-If something goes wrong at client side (timed out, no internet connection), an `WebException` (this is classical .NET exception) is thrown.
-
-## NUGET package
-
-`Stastny.CRAPI`
-
-[nuget.org package](https://www.nuget.org/packages/Stastny.CRAPI/)
-
-```
-Install-Package Stastny.CRAPI -Version 0.4.1
-
-dotnet add package Stastny.CRAPI --version 0.4.1
-```
+If something goes wrong at client side (timed out, no internet connection), an `WebException` is thrown.
 
 
 # Contact Me
