@@ -112,8 +112,12 @@ namespace CRAPI
         /// </summary>
         public Card[] deck;
         /// <summary>
-        /// Link to player's deck
+        /// Link to user deck. Follow this link on device with ClashRoyale installed to copy deck
         /// </summary>
         public string deckLink;
+        /// <summary>
+        /// I don't know what this means. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks!
+        /// </summary>
+        public int startTrophies;
     }
 }

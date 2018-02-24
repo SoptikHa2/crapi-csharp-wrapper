@@ -20,6 +20,10 @@ namespace CRAPI
         /// Last successful server response. Request something and access this to get server JSON response
         /// </summary>
         public string ServerResponse { get; private set; }
+        /// <summary>
+        /// Remaining requests in this minute. There are 260 requests/minute allowed. This value is updated after every request.
+        /// </summary>
+        public int RequestsRemaining { get; private set; }
 
         /// <summary>
         /// All current API endpoints
@@ -300,7 +304,16 @@ namespace CRAPI
                 return cachedResult;
 
             string output = Get(Endpoints.Clan, "search" + q);
-            SimplifiedClan[] result = Parse<SimplifiedClan[]>(output);
+            SimplifiedClan[] result = null;
+
+            try
+            {
+                result = Parse<SimplifiedClan[]>(output);
+            }
+            catch
+            {
+                result = new SimplifiedClan[] { Parse<SimplifiedClan>(output) };
+            }
 
             cache.Update(result, "clanSearch" + region.ToString() + String.Join("", queries));
 
@@ -650,6 +663,10 @@ namespace CRAPI
 
                 using (WebResponse serverResponse = req.GetResponse())
                 {
+                    int reqs = -1;
+                    int.TryParse(serverResponse.Headers["X-RateLimit-Remaining"], out reqs);
+                    if (reqs != -1)
+                        RequestsRemaining = reqs;
                     using (StreamReader sr = new StreamReader(serverResponse.GetResponseStream(), System.Text.Encoding.UTF8))
                     {
                         result = sr.ReadToEnd();
