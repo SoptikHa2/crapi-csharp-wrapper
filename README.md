@@ -27,15 +27,15 @@ You can access player's chest cycle, deck, card collection, clan, etc. Just type
 
 You can use simmilar process to get clan `wr.GetClan("9Y8888RC");`, or tournament.
 
-You can search for clans using `wr.SearchForClans("Clash", 10000, 10, 40);`. This will search for clans with name "Clash", score at least 10000 and member count between 10 and 40. Some of these values may be omitted (by passing `null`), but at least one must be there. Name must be at least 3 characters long. For example `wr.SearchForClans(null, null, null, 30);` will search for all clans with at most 30 members.
+You can search for clans using `wr.SearchForClans("Clash", 10000, 10, 40);`. This will search for clans with name "Clash", score at least 10000 and member count between 10 and 40. Some of these values may be omitted (by passing `null`), but at least one have to be there. Name must be at least 3 characters long. For example `wr.SearchForClans(null, null, null, 30);` will search for all clans with at most 30 members.
 
 > After every request, API response in JSON format is stored in `wr.ServerResponse`. If you miss some feature, take a look if it isn't in server response. If it is, create github issue and let me know. If it isn't, create [API issue](https://github.com/cr-api/cr-api/issues) so API developers can add this feature.
 
 ## Use wrapper Async
 
-You can even use this wrapper async - that means, you can order 20 player requests and do something instead of waiting for wrapper to finish.
+You can even use this wrapper async - that means, you can order 20 player requests and do something while waiting for wrapper to finish.
 
-> You have to write this code to special method -> do not throw this into Main! Make method like `static async void DoSomething()` (async keyword!)
+> You have to write this code to special method -> do not throw this into Main! Make method like `async void DoSomething()` (async keyword!)
 
 
 > You have to add new using: `using System.Threading.Tasks;`
