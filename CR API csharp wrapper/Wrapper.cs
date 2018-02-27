@@ -52,7 +52,7 @@ namespace CRAPI
         /// </summary>
         /// <param name="devkey">Private developer key</param>
         /// <param name="cacheDuration">Wrapper cache duration in minutes. 0 or less = no cache</param>
-        public Wrapper(string devkey, int cacheDuration = 1)
+        public Wrapper(string devkey, int cacheDuration = 0)
         {
             this.key = devkey;
             this.cache = new Cacher(cacheDuration);
