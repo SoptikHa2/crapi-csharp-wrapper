@@ -653,6 +653,29 @@ namespace CRAPI
             return result;
         }
 
+        public async Task<SimplifiedTournament[]> GetOpenTournamentsAsync(string[] include = null, string[] exclude = null)
+        {
+            string query = String.Empty;
+            if (include != null && exclude != null)
+                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
+            if (include != null)
+                query += "?keys=" + String.Join(",", include);
+            if (exclude != null)
+                query += "?exclude=" + String.Join(",", exclude);
+
+            SimplifiedTournament[] cachedResult = cache.GetFromCache<SimplifiedTournament[]>("openTournaments");
+            if (cachedResult != null)
+                return cachedResult;
+
+            Task<string> output = GetAsync(Endpoints.Tournaments, "open" + query);
+            SimplifiedTournament[] result = Parse<SimplifiedTournament[]>(await output);
+
+            cache.Update(result, "openTournaments");
+
+            return result;
+        }
+
+
         #endregion
 
         /// <summary>
