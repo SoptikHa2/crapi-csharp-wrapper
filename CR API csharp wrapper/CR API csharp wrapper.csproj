@@ -48,6 +48,7 @@
     <Compile Include="Player\LeagueStatistics.cs" />
     <Compile Include="Player\PlayerAchievement.cs" />
     <Compile Include="Player\PlayerBattle.cs" />
+    <Compile Include="Tournament\SimplifiedTournament.cs" />
     <Compile Include="Tournament\Tournament.cs" />
     <Compile Include="Wrapper.cs" />
     <Compile Include="Arena.cs" />

@@ -349,6 +349,28 @@ namespace CRAPI
             return result;
         }
 
+        public SimplifiedTournament[] GetOpenTournaments(string[] include = null, string[] exclude = null)
+        {
+            string query = String.Empty;
+            if (include != null && exclude != null)
+                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
+            if (include != null)
+                query += "?keys=" + String.Join(",", include);
+            if (exclude != null)
+                query += "?exclude=" + String.Join(",", exclude);
+
+            SimplifiedTournament[] cachedResult = cache.GetFromCache<SimplifiedTournament[]>("openTournaments");
+            if (cachedResult != null)
+                return cachedResult;
+
+            string output = Get(Endpoints.Tournaments, "open" + query);
+            SimplifiedTournament[] result = Parse<SimplifiedTournament[]>(output);
+
+            cache.Update(result, "openTournaments");
+
+            return result;
+        }
+
         #endregion
 
         #region GetFromAPIasync

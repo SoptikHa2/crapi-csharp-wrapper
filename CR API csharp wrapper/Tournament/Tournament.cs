@@ -51,19 +51,19 @@ namespace CRAPI
         public int duration;
 
         /// <summary>
-        /// Time when tournament ended in normal format. Example: 1514346417
+        /// Time when tournament ended in normal format. Example: 1514346417. May be null
         /// </summary>
-        public int endTime;
+        public int? endTime;
 
         /// <summary>
-        /// Time when tournament started in normal format. Example: 1514342817
+        /// Time when tournament started in normal format. Example: 1514342817. May be null
         /// </summary>
-        public int startTime;
+        public int? startTime;
 
         /// <summary>
-        /// Time when was tournament created in normal format. Example: 1514338911
+        /// Time when was tournament created in normal format. Example: 1514338911. May be null
         /// </summary>
-        public int createTime;
+        public int? createTime;
 
         /// <summary>
         /// Creator of this tournament
