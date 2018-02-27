@@ -8,8 +8,17 @@ namespace CRAPI
 {
     public class ClanInfo
     {
+        /// <summary>
+        /// Clan tag
+        /// </summary>
         public string tag;
+        /// <summary>
+        /// Clan name
+        /// </summary>
         public string name;
+        /// <summary>
+        /// Clan badge
+        /// </summary>
         public ClanBadge badge;
     }
 }
