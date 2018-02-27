@@ -254,7 +254,7 @@ namespace CRAPI
         /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
         /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
         /// <returns></returns>
-        public SimplifiedClan[] SearchForClans(string name, int? score, int? minMembers, int? maxMembers, Locations region = Locations.None, string[] include = null, string[] exclude = null)
+        public SimplifiedClan[] SearchForClans(string name, int? score, int? minMembers, int? maxMembers, Locations region = Locations.None, int? max = null, string[] include = null, string[] exclude = null)
         {
             List<string> queries = new List<string>(4);
 
@@ -279,6 +279,8 @@ namespace CRAPI
                 queries.Add("minMembers=" + minMembers);
             if (maxMembers != null)
                 queries.Add("maxMembers=" + maxMembers);
+            if (max != null)
+                queries.Add("max=" + max);
 
             if (queries.Count == 0)
                 throw new ArgumentException("At least one parameter must be not-null!");
@@ -567,7 +569,7 @@ namespace CRAPI
         /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
         /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
         /// <returns></returns>
-        public async Task<SimplifiedClan[]> SearchForClansAsync(string name, int? score, int? minMembers, int? maxMembers, Locations region = Locations.None, string[] include = null, string[] exclude = null)
+        public async Task<SimplifiedClan[]> SearchForClansAsync(string name, int? score, int? minMembers, int? maxMembers, Locations region = Locations.None, int? max = null, string[] include = null, string[] exclude = null)
         {
             List<string> queries = new List<string>(4);
 
@@ -592,6 +594,8 @@ namespace CRAPI
                 queries.Add("minMembers=" + minMembers);
             if (maxMembers != null)
                 queries.Add("maxMembers=" + maxMembers);
+            if (max != null)
+                queries.Add("max=" + max);
 
             if (queries.Count == 0)
                 throw new ArgumentException("At least one parameter must be not-null!");
@@ -617,7 +621,17 @@ namespace CRAPI
                 return cachedResult;
 
             Task<string> output = GetAsync(Endpoints.Clan, "search" + q);
-            SimplifiedClan[] result = Parse<SimplifiedClan[]>(await output);
+
+            SimplifiedClan[] result = null;
+
+            try
+            {
+                result = Parse<SimplifiedClan[]>(await output);
+            }
+            catch
+            {
+                result = new SimplifiedClan[] { Parse<SimplifiedClan>(await output) };
+            }
 
             cache.Update(result, "clanSearch" + region.ToString() + String.Join("", queries));
 
