@@ -883,7 +883,8 @@ namespace CRAPI
 
         ~Cacher()
         {
-            Clear();
+            if (cache != null)
+                Clear();
         }
     }
 
