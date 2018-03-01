@@ -869,7 +869,10 @@ namespace CRAPI
         /// </summary>
         public void Clear()
         {
-            cache.Clear();
+            //check to make sure cache is not already null before clearing it
+            if (cache != null) { 
+                cache.Clear();
+            }
 
             string[] files = Directory.GetFiles(Path.Combine(Path.GetTempPath()), "*" + tempFileSuffix);
 
