@@ -93,7 +93,7 @@ namespace CRAPI
         /// <summary>
         /// Current number of crowns commited to clan chest
         /// </summary>
-        public int crowns;
+        public int? crowns;
     }
 
     [Serializable]

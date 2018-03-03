@@ -7,9 +7,9 @@ For first, you'll need AUTH key to access API. Go to [CR API website](http://doc
 
 Now just download nuget package [Stastny.CRAPI](https://www.nuget.org/packages/Stastny.CRAPI/) and you start :)
 ```
-Install-Package Stastny.CRAPI -Version 0.5.0
+Install-Package Stastny.CRAPI -Version 0.5.2
 
-dotnet add package Stastny.CRAPI --version 0.5.0
+dotnet add package Stastny.CRAPI --version 0.5.2
 ```
 
 ## How to start
