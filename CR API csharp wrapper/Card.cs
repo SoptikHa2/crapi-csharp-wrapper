@@ -17,23 +17,23 @@ namespace CRAPI
         /// </summary>
         public string name;
         /// <summary>
-        /// Current card level
+        /// Current card level. May be null if this instance comes from player's favourite card
         /// </summary>
-        public int level;
+        public int? level;
         /// <summary>
         /// Maximum level of card
         /// </summary>
         public int? maxLevel;
         /// <summary>
-        /// Number of cards in player's inventory
+        /// Number of cards in player's inventory. May be null if this instance coems from player's favourite card 
         /// </summary>
-        public int count;
+        public int? count;
         /// <summary>
         /// Url to card image
         /// </summary>
         public string icon;
         /// <summary>
-        /// Key of card ("rocket")
+        /// Key of card ("rocket"). May be null if this instance comes from player's favourite card.
         /// </summary>
         public string key;
         /// <summary>
@@ -58,11 +58,13 @@ namespace CRAPI
         public string rarity;
         /// <summary>
         /// Cards required to upgrade to next level ("Maxed" when on
-        /// maximum level, otherwise, number, for example "2")
+        /// maximum level, otherwise, number, for example "2"). May be null if this instance
+        /// comes from player's favourite card
         /// </summary>
         public string requiredForUpgrade;
         /// <summary>
-        /// Cards that player needs to upgrade to next level. Is null, if [requiredForUpgrade] is "Maxed"
+        /// Cards that player needs to upgrade to next level. Is null, if [requiredForUpgrade] is "Maxed".
+        /// May be null if this instance comes from player's favourite card.
         /// </summary>
         public int? leftToUpgrade;
         /// <summary>

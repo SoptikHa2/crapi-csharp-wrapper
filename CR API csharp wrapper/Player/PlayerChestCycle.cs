@@ -18,27 +18,27 @@ namespace CRAPI
         public string[] upcoming;
 
         /// <summary>
-        /// I don't know what this means. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks!
+        /// Number of chests player have to open to get Super Magical chest
         /// </summary>
         public int superMagical;
 
         /// <summary>
-        /// I don't know what this means. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks!
+        /// Number of chests player have to open to get Magical chest
         /// </summary>
         public int magical;
 
         /// <summary>
-        /// I don't know what this means. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks!
+        /// Number of chests player have to open to get Legendary chest
         /// </summary>
         public int legendary;
 
         /// <summary>
-        /// I don't know what this means. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks!
+        /// Number of chests player have to open to get Epic chest
         /// </summary>
         public int epic;
 
         /// <summary>
-        /// I don't know what this means. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks!
+        /// Number of chests player have to open to get Giant chest
         /// </summary>
         public int giant;
     }

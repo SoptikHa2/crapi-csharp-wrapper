@@ -45,10 +45,6 @@ namespace CRAPI
         /// </summary>
         public float drawsPercent;
         /// <summary>
-        /// Player's current win streak
-        /// </summary>
-        public int currentWinStreak;
-        /// <summary>
         /// Player's last played battle
         /// </summary>
         public BattleInfo lastBattle;

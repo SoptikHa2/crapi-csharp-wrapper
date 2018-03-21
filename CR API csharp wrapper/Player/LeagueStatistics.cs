@@ -27,10 +27,6 @@ namespace CRAPI
     public struct Season
     {
         /// <summary>
-        /// Season rank
-        /// </summary>
-        public int rank;
-        /// <summary>
         /// Season trophies
         /// </summary>
         public int trophies;
@@ -39,7 +35,7 @@ namespace CRAPI
         /// </summary>
         public string id;
         /// <summary>
-        /// Best trophies of season. Is NULL everywhere except [previousSeason]
+        /// Best trophies of season. Is NULL in [bestSeason]
         /// </summary>
         public int? bestTrophies;
     }

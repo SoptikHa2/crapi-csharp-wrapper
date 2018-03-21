@@ -22,7 +22,7 @@ namespace CRAPI
         /// </summary>
         public int utcTime;
         /// <summary>
-        /// I don't know what this means. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks!
+        /// Type of deck (Example: "draft")
         /// </summary>
         public string deckType;
         /// <summary>
@@ -57,6 +57,10 @@ namespace CRAPI
         /// I don't know what this means. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks!
         /// </summary>
         public int? winCountBefore;
+        /// <summary>
+        /// I don't know what this means nor what type is this. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks!
+        /// </summary>
+        public object challengeType;
     }
 
     [Serializable]
@@ -80,10 +84,11 @@ namespace CRAPI
         public int overtimeSeconds;
         /// <summary>
         /// I don't know what this means. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks!
+        /// (Example: "PvP")
         /// </summary>
         public string players;
         /// <summary>
-        /// I don't know what this means. If you do, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks!
+        /// Do players share the same deck?
         /// </summary>
         public bool sameDeck;
     }

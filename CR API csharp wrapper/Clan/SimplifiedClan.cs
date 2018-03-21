@@ -21,7 +21,7 @@ namespace CRAPI
         /// </summary>
         public string name;
         /// <summary>
-        /// If instance of this class comes from player's profile: Player's role (elder, member, etc). If this instance is from clan search, this should be NULL.
+        /// If instance of this class comes from player's profile: Player's role (elder, member, etc). If this instance is from clan search or player's battle, this should be NULL.
         /// </summary>
         public string role;
         /// <summary>
