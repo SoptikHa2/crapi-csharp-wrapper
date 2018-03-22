@@ -11,7 +11,7 @@ namespace CRAPI
 {
     public class Wrapper
     {
-        private const string domain = "http://api.cr-api.com/";
+        private const string domain = "http://api.royaleapi.com/";
 
         private readonly string key;
         private Cacher cache;

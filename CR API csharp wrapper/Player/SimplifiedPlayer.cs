@@ -65,7 +65,7 @@ namespace CRAPI
         /// </summary>
         public Arena arena;
         /// <summary>
-        /// Basic info about player's clan
+        /// Basic info about player's clan. Is null if this instance comes from clan or player doesn't have clan.
         /// </summary>
         public ClanInfo clan;
 
