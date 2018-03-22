@@ -66,14 +66,21 @@ namespace CRAPI
         public int? createTime;
 
         /// <summary>
-        /// Creator of this tournament
+        /// Creator of this tournament. This is null if you [searched] for tournament.
+        /// In that case use <see cref="creatorTag"/> instead
         /// </summary>
-        public TournamentPlayer creator;
+        public TournamentPlayer? creator;
 
         /// <summary>
         /// Players inside this tournament
         /// </summary>
         public TournamentPlayer[] members;
+
+        /// <summary>
+        /// Creator of this tournament. This is null if you got tournament directly by tag.
+        /// In that case use <see cref="creator"/> instead
+        /// </summary>
+        public string creatorTag;
     }
 
     [Serializable]
