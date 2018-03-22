@@ -351,6 +351,9 @@ namespace CRAPI
             return result;
         }
 
+        /// <summary>
+        /// Get currently open tournaments
+        /// </summary>
         public SimplifiedTournament[] GetOpenTournaments(string[] include = null, string[] exclude = null)
         {
             string query = String.Empty;
@@ -369,6 +372,57 @@ namespace CRAPI
             SimplifiedTournament[] result = Parse<SimplifiedTournament[]>(output);
 
             cache.Update(result, "openTournaments");
+
+            return result;
+        }
+
+        /// <summary>
+        /// Search for tournaments based on their name
+        /// </summary>
+        public Tournament[] SearchForTournaments(string name, string[] include = null, string[] exclude = null)
+        {
+            List<string> queries = new List<string>(4);
+
+            if (name != null)
+                if (name.Length < 1)
+                    throw new ArgumentException("Parameter must contain at least 1 character.", "name");
+
+            if (name != null)
+                queries.Add("name=" + name);
+
+            if (queries.Count == 0)
+                throw new ArgumentException("'Name' parameter must be specified.");
+
+            if (include != null && exclude != null)
+                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
+
+            if (include != null)
+                queries.Add("keys=" + String.Join(",", include));
+            if (exclude != null)
+                queries.Add("exclude=" + String.Join(",", exclude));
+
+            string q = String.Empty;
+            q += "?" + queries[0];
+            for (int i = 1; i < queries.Count; i++)
+                q += "&" + queries[i];
+
+            Tournament[] cachedResult = cache.GetFromCache<Tournament[]>("tournamentSearch" + String.Join("", queries));
+            if (cachedResult != null)
+                return cachedResult;
+
+            string output = Get(Endpoints.Tournaments, "search" + q);
+            Tournament[] result = null;
+
+            try
+            {
+                result = Parse<Tournament[]>(output);
+            }
+            catch
+            {
+                result = new Tournament[] { Parse<Tournament>(output) };
+            }
+
+            cache.Update(result, "tournamentSearch" + String.Join("", queries));
 
             return result;
         }
@@ -667,6 +721,9 @@ namespace CRAPI
             return result;
         }
 
+        /// <summary>
+        /// Get currently open tournaments async
+        /// </summary>
         public async Task<SimplifiedTournament[]> GetOpenTournamentsAsync(string[] include = null, string[] exclude = null)
         {
             string query = String.Empty;
@@ -689,6 +746,56 @@ namespace CRAPI
             return result;
         }
 
+        /// <summary>
+        /// Search for tournaments based on their name async
+        /// </summary>
+        public async Task<Tournament[]> SearchForTournamentsAsync(string name, string[] include = null, string[] exclude = null)
+        {
+            List<string> queries = new List<string>(4);
+
+            if (name != null)
+                if (name.Length < 1)
+                    throw new ArgumentException("Parameter must contain at least 1 character.", "name");
+
+            if (name != null)
+                queries.Add("name=" + name);
+
+            if (queries.Count == 0)
+                throw new ArgumentException("'Name' parameter must be specified.");
+
+            if (include != null && exclude != null)
+                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
+
+            if (include != null)
+                queries.Add("keys=" + String.Join(",", include));
+            if (exclude != null)
+                queries.Add("exclude=" + String.Join(",", exclude));
+
+            string q = String.Empty;
+            q += "?" + queries[0];
+            for (int i = 1; i < queries.Count; i++)
+                q += "&" + queries[i];
+
+            Tournament[] cachedResult = cache.GetFromCache<Tournament[]>("tournamentSearch" + String.Join("", queries));
+            if (cachedResult != null)
+                return cachedResult;
+
+            Task<string> output = GetAsync(Endpoints.Tournaments, "search" + q);
+            Tournament[] result = null;
+
+            try
+            {
+                result = Parse<Tournament[]>(await output);
+            }
+            catch
+            {
+                result = new Tournament[] { Parse<Tournament>(await output) };
+            }
+
+            cache.Update(result, "tournamentSearch" + String.Join("", queries));
+
+            return result;
+        }
 
         #endregion
 
