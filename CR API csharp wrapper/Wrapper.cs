@@ -859,17 +859,43 @@ namespace CRAPI
 
         private async Task<string> GetAsync(string url)
         {
-            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
-            req.Method = "GET";
-            req.Headers.Add("auth", key);
-            Task<WebResponse> myResponse = req.GetResponseAsync();
-            WebResponse response = await myResponse;
-            StreamReader sr = new StreamReader(response.GetResponseStream(), System.Text.Encoding.UTF8);
-            string result = sr.ReadToEnd();
-            sr.Close();
-            response.Close();
+            try
+            {
+                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+                req.MediaType = "GET";
+                req.Headers.Add("auth", key);
+                req.Timeout = 20000;
 
-            return result;
+                string result;
+
+                using (WebResponse serverResponse = await req.GetResponseAsync())
+                {
+                    int reqs = -1;
+                    int.TryParse(serverResponse.Headers["X-RateLimit-Remaining"], out reqs);
+                    if (reqs != -1)
+                        RequestsRemaining = reqs;
+                    using (StreamReader sr = new StreamReader(serverResponse.GetResponseStream(), System.Text.Encoding.UTF8))
+                    {
+                        result = sr.ReadToEnd();
+                    }
+                }
+
+                ServerResponse = result;
+                return result;
+            }
+            catch (WebException e)
+            {
+                WebResponse wr = e.Response;
+
+                // Cannot connect to api servers -> API servers are down or user is disconnected
+                if (wr == null)
+                    throw e;
+
+                StreamReader sr = new StreamReader(wr.GetResponseStream());
+                BadResponse returnedException = Parse<BadResponse>(sr.ReadToEnd()) as BadResponse;
+                APIException exception = new APIException(returnedException.status, returnedException.message, returnedException.error);
+                throw exception;
+            }
         }
 
         /// <summary>
