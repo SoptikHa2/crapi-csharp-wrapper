@@ -69,25 +69,16 @@ namespace CRAPI
         /// <returns></returns>
         public Player GetPlayer(string tag, string[] include = null, string[] exclude = null)
         {
-            string query = String.Empty;
-            if (include != null && exclude != null)
-                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
-            if (include != null)
-                query += "?keys=" + String.Join(",", include);
-            if (exclude != null)
-                query += "?exclude=" + String.Join(",", exclude);
-
-            // Check for cache
-            Player cachedResult = cache.GetFromCache<Player>(tag + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
-            if (cachedResult != null)
-                return cachedResult;
-
-            string output = Get(Endpoints.Player, tag + query);
-            Player result = Parse<Player>(output);
-
-            cache.Update(result, tag + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
-
-            return result;
+            try
+            {
+                Task<Player> task = GetPlayerAsync(tag, include, exclude);
+                task.Wait();
+                return task.Result;
+            }
+            catch (Exception ex)
+            {
+                throw ex.InnerException;
+            }
         }
 
         /// <summary>
@@ -99,25 +90,16 @@ namespace CRAPI
         /// <returns></returns>
         public Player[] GetPlayer(string[] tags, string[] include = null, string[] exclude = null)
         {
-            string query = String.Empty;
-            if (include != null && exclude != null)
-                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
-            if (include != null)
-                query += "?keys=" + String.Join(",", include);
-            if (exclude != null)
-                query += "?exclude=" + String.Join(",", exclude);
-
-            // Check for cache
-            Player[] cachedResult = cache.GetFromCache<Player[]>(String.Join("", tags) + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
-            if (cachedResult != null)
-                return cachedResult;
-
-            string output = Get(Endpoints.Player, String.Join(",", tags) + query);
-            Player[] result = Parse<Player[]>(output);
-
-            cache.Update(result, String.Join("", tags) + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
-
-            return result;
+            try
+            {
+                Task<Player[]> task = GetPlayerAsync(tags, include, exclude);
+                task.Wait();
+                return task.Result;
+            }
+            catch (Exception ex)
+            {
+                throw ex.InnerException;
+            }
         }
 
         /// <summary>
@@ -129,25 +111,16 @@ namespace CRAPI
         /// <returns></returns>
         public Clan GetClan(string tag, string[] include = null, string[] exclude = null)
         {
-            string query = String.Empty;
-            if (include != null && exclude != null)
-                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
-            if (include != null)
-                query += "?keys=" + String.Join(",", include);
-            if (exclude != null)
-                query += "?exclude=" + String.Join(",", exclude);
-
-            // Check for cache
-            Clan cachedResult = cache.GetFromCache<Clan>(tag + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
-            if (cachedResult != null)
-                return cachedResult;
-
-            string output = Get(Endpoints.Clan, tag + query);
-            Clan result = Parse<Clan>(output);
-
-            cache.Update(result, tag + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
-
-            return result;
+            try
+            {
+                Task<Clan> task = GetClanAsync(tag, include, exclude);
+                task.Wait();
+                return task.Result;
+            }
+            catch (Exception ex)
+            {
+                throw ex.InnerException;
+            }
         }
 
         /// <summary>
@@ -159,25 +132,16 @@ namespace CRAPI
         /// <returns></returns>
         public Clan[] GetClan(string[] tags, string[] include = null, string[] exclude = null)
         {
-            string query = String.Empty;
-            if (include != null && exclude != null)
-                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
-            if (include != null)
-                query += "?keys=" + String.Join(",", include);
-            if (exclude != null)
-                query += "?exclude=" + String.Join(",", exclude);
-
-            // Check for cache
-            Clan[] cachedResult = cache.GetFromCache<Clan[]>(String.Join("", tags) + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
-            if (cachedResult != null)
-                return cachedResult;
-
-            string output = Get(Endpoints.Clan, String.Join(",", tags) + query);
-            Clan[] result = Parse<Clan[]>(output);
-
-            cache.Update(result, String.Join("", tags) + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
-
-            return result;
+            try
+            {
+                Task<Clan[]> task = GetClanAsync(tags, include, exclude);
+                task.Wait();
+                return task.Result;
+            }
+            catch (Exception ex)
+            {
+                throw ex.InnerException;
+            }
         }
 
         /// <summary>
@@ -189,28 +153,16 @@ namespace CRAPI
         /// <returns></returns>
         public SimplifiedPlayer[] GetTopPlayers(Locations region = Locations.None, string[] include = null, string[] exclude = null)
         {
-            if (region.ToString().StartsWith("_"))
-                region = Locations.None;
-
-            string query = String.Empty;
-            if (include != null && exclude != null)
-                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
-            if (include != null)
-                query += "?keys=" + String.Join(",", include);
-            if (exclude != null)
-                query += "?exclude=" + String.Join(",", exclude);
-
-            // Check for cache
-            SimplifiedPlayer[] cachedResult = cache.GetFromCache<SimplifiedPlayer[]>("topPlayersRegion" + region.ToString() + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
-            if (cachedResult != null)
-                return cachedResult;
-
-            string output = Get(Endpoints.Top, region != Locations.None ? "players/" + region.ToString() + query : "players" + query);
-            SimplifiedPlayer[] result = Parse<SimplifiedPlayer[]>(output);
-
-            cache.Update(result, "topPlayersRegion" + region.ToString() + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
-
-            return result;
+            try
+            {
+                Task<SimplifiedPlayer[]> task = GetTopPlayersAsync(region, include, exclude);
+                task.Wait();
+                return task.Result;
+            }
+            catch (Exception ex)
+            {
+                throw ex.InnerException;
+            }
         }
 
         /// <summary>
@@ -222,24 +174,16 @@ namespace CRAPI
         /// <returns></returns>
         public SimplifiedClan[] GetTopClans(Locations region = Locations.None, string[] include = null, string[] exclude = null)
         {
-            string query = String.Empty;
-            if (include != null && exclude != null)
-                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
-            if (include != null)
-                query += "?keys=" + String.Join(",", include);
-            if (exclude != null)
-                query += "?exclude=" + String.Join(",", exclude);
-
-            SimplifiedClan[] cachedResult = cache.GetFromCache<SimplifiedClan[]>("topClansRegion" + region.ToString() + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
-            if (cachedResult != null)
-                return cachedResult;
-
-            string output = Get(Endpoints.Top, region != Locations.None ? "clans/" + region.ToString() + query : "clans" + query);
-            SimplifiedClan[] result = Parse<SimplifiedClan[]>(output);
-
-            cache.Update(result, "topClansRegion" + region.ToString() + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
-
-            return result;
+            try
+            {
+                Task<SimplifiedClan[]> task = GetTopClansAsync(region, include, exclude);
+                task.Wait();
+                return task.Result;
+            }
+            catch (Exception ex)
+            {
+                throw ex.InnerException;
+            }
         }
 
         /// <summary>
@@ -256,70 +200,16 @@ namespace CRAPI
         /// <returns></returns>
         public SimplifiedClan[] SearchForClans(string name, int? score, int? minMembers, int? maxMembers, Locations region = Locations.None, int? max = null, string[] include = null, string[] exclude = null)
         {
-            List<string> queries = new List<string>(4);
-
-            if (name != null)
-                if (name.Length < 3)
-                    throw new ArgumentException("Parameter must contain at least 3 characters. If you do not want to search using this parameter, pass NULL instead.", "name");
-
-            if (minMembers != null)
-                if (minMembers < 0 || minMembers > 50)
-                    throw new ArgumentOutOfRangeException("Parameter must be in range 0-50. Value: " + minMembers, "minMembers");
-
-            if (maxMembers != null)
-                if (maxMembers < 0 || maxMembers > 60)
-                    throw new ArgumentOutOfRangeException("Parameter must be in range 0-60. Value: " + maxMembers, "maxMembers");
-
-
-            if (name != null)
-                queries.Add("name=" + name);
-            if (score != null)
-                queries.Add("score=" + score);
-            if (minMembers != null)
-                queries.Add("minMembers=" + minMembers);
-            if (maxMembers != null)
-                queries.Add("maxMembers=" + maxMembers);
-            if (max != null)
-                queries.Add("max=" + max);
-
-            if (queries.Count == 0)
-                throw new ArgumentException("At least one parameter must be not-null!");
-
-            if (include != null && exclude != null)
-                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
-
-            if (include != null)
-                queries.Add("keys=" + String.Join(",", include));
-            if (exclude != null)
-                queries.Add("exclude=" + String.Join(",", exclude));
-
-            if (region != Locations.None)
-                queries.Add("locationId=" + (int)region);
-
-            string q = String.Empty;
-            q += "?" + queries[0];
-            for (int i = 1; i < queries.Count; i++)
-                q += "&" + queries[i];
-
-            SimplifiedClan[] cachedResult = cache.GetFromCache<SimplifiedClan[]>("clanSearch" + region.ToString() + String.Join("", queries));
-            if (cachedResult != null)
-                return cachedResult;
-
-            string output = Get(Endpoints.Clan, "search" + q);
-            SimplifiedClan[] result = null;
-
             try
             {
-                result = Parse<SimplifiedClan[]>(output);
+                Task<SimplifiedClan[]> task = SearchForClansAsync(name, score, minMembers, maxMembers, region, max, include, exclude);
+                task.Wait();
+                return task.Result;
             }
-            catch
+            catch (Exception ex)
             {
-                result = new SimplifiedClan[] { Parse<SimplifiedClan>(output) };
+                throw ex.InnerException;
             }
-
-            cache.Update(result, "clanSearch" + region.ToString() + String.Join("", queries));
-
-            return result;
         }
 
         /// <summary>
@@ -331,24 +221,16 @@ namespace CRAPI
         /// <returns></returns>
         public Tournament GetTournament(string tag, string[] include = null, string[] exclude = null)
         {
-            string query = String.Empty;
-            if (include != null && exclude != null)
-                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
-            if (include != null)
-                query += "?keys=" + String.Join(",", include);
-            if (exclude != null)
-                query += "?exclude=" + String.Join(",", exclude);
-
-            Tournament cachedResult = cache.GetFromCache<Tournament>(tag + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
-            if (cachedResult != null)
-                return cachedResult;
-
-            string output = Get(Endpoints.Tournaments, tag + query);
-            Tournament result = Parse<Tournament>(output);
-
-            cache.Update(result, tag + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
-
-            return result;
+            try
+            {
+                Task<Tournament> task = GetTournamentAsync(tag, include, exclude);
+                task.Wait();
+                return task.Result;
+            }
+            catch (Exception ex)
+            {
+                throw ex.InnerException;
+            }
         }
 
         /// <summary>
@@ -356,24 +238,16 @@ namespace CRAPI
         /// </summary>
         public SimplifiedTournament[] GetOpenTournaments(string[] include = null, string[] exclude = null)
         {
-            string query = String.Empty;
-            if (include != null && exclude != null)
-                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
-            if (include != null)
-                query += "?keys=" + String.Join(",", include);
-            if (exclude != null)
-                query += "?exclude=" + String.Join(",", exclude);
-
-            SimplifiedTournament[] cachedResult = cache.GetFromCache<SimplifiedTournament[]>("openTournaments");
-            if (cachedResult != null)
-                return cachedResult;
-
-            string output = Get(Endpoints.Tournaments, "open" + query);
-            SimplifiedTournament[] result = Parse<SimplifiedTournament[]>(output);
-
-            cache.Update(result, "openTournaments");
-
-            return result;
+            try
+            {
+                Task<SimplifiedTournament[]> task = GetOpenTournamentsAsync(include, exclude);
+                task.Wait();
+                return task.Result;
+            }
+            catch (Exception ex)
+            {
+                throw ex.InnerException;
+            }
         }
 
         /// <summary>
@@ -381,50 +255,16 @@ namespace CRAPI
         /// </summary>
         public Tournament[] SearchForTournaments(string name, string[] include = null, string[] exclude = null)
         {
-            List<string> queries = new List<string>(4);
-
-            if (name != null)
-                if (name.Length < 1)
-                    throw new ArgumentException("Parameter must contain at least 1 character.", "name");
-
-            if (name != null)
-                queries.Add("name=" + name);
-
-            if (queries.Count == 0)
-                throw new ArgumentException("'Name' parameter must be specified.");
-
-            if (include != null && exclude != null)
-                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
-
-            if (include != null)
-                queries.Add("keys=" + String.Join(",", include));
-            if (exclude != null)
-                queries.Add("exclude=" + String.Join(",", exclude));
-
-            string q = String.Empty;
-            q += "?" + queries[0];
-            for (int i = 1; i < queries.Count; i++)
-                q += "&" + queries[i];
-
-            Tournament[] cachedResult = cache.GetFromCache<Tournament[]>("tournamentSearch" + String.Join("", queries));
-            if (cachedResult != null)
-                return cachedResult;
-
-            string output = Get(Endpoints.Tournaments, "search" + q);
-            Tournament[] result = null;
-
             try
             {
-                result = Parse<Tournament[]>(output);
+                Task<Tournament[]> task = SearchForTournamentsAsync(name, include, exclude);
+                task.Wait();
+                return task.Result;
             }
-            catch
+            catch (Exception ex)
             {
-                result = new Tournament[] { Parse<Tournament>(output) };
+                throw ex.InnerException;
             }
-
-            cache.Update(result, "tournamentSearch" + String.Join("", queries));
-
-            return result;
         }
 
         #endregion
@@ -799,62 +639,10 @@ namespace CRAPI
 
         #endregion
 
-        /// <summary>
-        /// Get direct output from CR API
-        /// </summary>
-        /// <param name="endpoint">Endpoint to use</param>
-        /// <param name="parameter">Parameter to endpoint (like player ID)</param>
-        /// <returns></returns>
-        private string Get(Endpoints endpoint, string parameter)
-        {
-            return Get(domain + endpoint.ToString() + "/" + parameter);
-        }
-
         private async Task<string> GetAsync(Endpoints endpoint, string parameter)
         {
             Task<string> tReq = GetAsync(domain + endpoint.ToString() + "/" + parameter);
             return await tReq;
-        }
-
-        private string Get(string url)
-        {
-            try
-            {
-                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
-                req.MediaType = "GET";
-                req.Headers.Add("auth", key);
-                req.Timeout = 20000;
-
-                string result;
-
-                using (WebResponse serverResponse = req.GetResponse())
-                {
-                    int reqs = -1;
-                    int.TryParse(serverResponse.Headers["X-RateLimit-Remaining"], out reqs);
-                    if (reqs != -1)
-                        RequestsRemaining = reqs;
-                    using (StreamReader sr = new StreamReader(serverResponse.GetResponseStream(), System.Text.Encoding.UTF8))
-                    {
-                        result = sr.ReadToEnd();
-                    }
-                }
-
-                ServerResponse = result;
-                return result;
-            }
-            catch (WebException e)
-            {
-                WebResponse wr = e.Response;
-
-                // Cannot connect to api servers -> API servers are down or user is disconnected
-                if (wr == null)
-                    throw e;
-
-                StreamReader sr = new StreamReader(wr.GetResponseStream());
-                BadResponse returnedException = Parse<BadResponse>(sr.ReadToEnd()) as BadResponse;
-                APIException exception = new APIException(returnedException.status, returnedException.message, returnedException.error);
-                throw exception;
-            }
         }
 
         private async Task<string> GetAsync(string url)
@@ -1003,7 +791,8 @@ namespace CRAPI
         public void Clear()
         {
             //check to make sure cache is not already null before clearing it
-            if (cache != null) { 
+            if (cache != null)
+            {
                 cache.Clear();
             }
 
