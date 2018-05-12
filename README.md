@@ -8,9 +8,9 @@ For first, you'll need AUTH key to access API. Go to [ROYALE API website](https:
 
 Now just download nuget package [Stastny.CRAPI](https://www.nuget.org/packages/Stastny.CRAPI/) and you start :)
 ```
-Install-Package Stastny.CRAPI -Version 0.6.0
+Install-Package Stastny.CRAPI -Version 0.6.1
 
-dotnet add package Stastny.CRAPI --version 0.6.0
+dotnet add package Stastny.CRAPI --version 0.6.1
 ```
 
 ## How to start
