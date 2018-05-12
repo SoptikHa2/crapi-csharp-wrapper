@@ -132,36 +132,36 @@ where each gets `Player` (or clan, ...) and returns collection of `string` - tag
 Here's example that starts mining tags of players, where first player is the best player in Clash Royale.
 
 ```csharp
-            // Player is the thing I work with (I mine players), string is the thing mining returns (player tags)
-            var result = wr.Mine<Player, string>(
-                new Player[] { wr.GetPlayer(wr.GetTopPlayers().First().tag, false, true) }, // As first data, use best player (here may be more players, even all players in wr.GetTopPlayers())
-                playerTag => wr.GetPlayer(playerTag, false, true), // How to get object Player from tag
-                new Func<Player, IEnumerable<string>>[]{ // Define array of actions to do with each player object (how to get more tags)
-                    // Here, do only three actions:
-                    new Func<Player, IEnumerable<string>>( // Get other players from clan
-                        player => player.clan == null ? new string[0] : // If player doesn't have clan, return nothing
-                                    wr.GetClan(player.clan.tag) // Get player's clan
-                                    .members.Select(member => member.tag) // For each clan member, get his tag (this is used to mine additional tags from known players)
-                        ),
-                    new Func<Player, IEnumerable<string>>( // Get players from player's battles (from opponents)
-                        player => player.battles.SelectMany(battle => battle.opponent.Select(plinfo => plinfo.tag))
-                        ),
-                    new Func<Player, IEnumerable<string>>(
-                        player => player.battles.SelectMany(battle => battle.opponent.Where(plinfo => plinfo.tag != player.tag).Select(plinfo => plinfo.tag))
-                        )
-                    },
-                new Func<string, string>( // This functions gets tag (string) and returns required object - in this case, string. If you want to get for example
-                                          // full player profile, use something like tag => wr.GetPlayer(tag)
-                       resultTag => resultTag
-                    )
-                );
+// Player is the thing I work with (I mine players), string is the thing mining returns (player tags)
+var result = wr.Mine<Player, string>(
+    new Player[] { wr.GetPlayer(wr.GetTopPlayers().First().tag, false, true) }, // As first data, use best player (here may be more players, even all players in wr.GetTopPlayers())
+    playerTag => wr.GetPlayer(playerTag, false, true), // How to get object Player from tag
+    new Func<Player, IEnumerable<string>>[]{ // Define array of actions to do with each player object (how to get more tags)
+        // Here, do only three actions:
+        new Func<Player, IEnumerable<string>>( // Get other players from clan
+            player => player.clan == null ? new string[0] : // If player doesn't have clan, return nothing
+                        wr.GetClan(player.clan.tag) // Get player's clan
+                        .members.Select(member => member.tag) // For each clan member, get his tag (this is used to mine additional tags from known players)
+            ),
+        new Func<Player, IEnumerable<string>>( // Get players from player's battles (from opponents)
+            player => player.battles.SelectMany(battle => battle.opponent.Select(plinfo => plinfo.tag))
+            ),
+        new Func<Player, IEnumerable<string>>(
+            player => player.battles.SelectMany(battle => battle.opponent.Where(plinfo => plinfo.tag != player.tag).Select(plinfo => plinfo.tag))
+            )
+        },
+    new Func<string, string>( // This functions gets tag (string) and returns required object - in this case, string. If you want to get for example
+                                // full player profile, use something like tag => wr.GetPlayer(tag)
+            resultTag => resultTag
+        )
+    );
 
-            // Do not use this in real app, as this code will never end (add some condition)
-            // This foreach iterates through all players mined.
-            foreach (IEnumerable<string> tags in result)
-            {
-                Console.WriteLine(String.Join("\n", tags));
-            }
+// Do not use this in real app, as this code will never end (add some condition)
+// This foreach iterates through all players mined.
+foreach (IEnumerable<string> tags in result)
+{
+    Console.WriteLine(String.Join("\n", tags));
+}
 ```
 Please note that you should access result by using foreach, because mining uses `yield return` functionality.
 
