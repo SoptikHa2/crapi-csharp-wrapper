@@ -147,7 +147,7 @@ var result = wr.Mine<Player, string>(
             player => player.battles.SelectMany(battle => battle.opponent.Select(plinfo => plinfo.tag))
             ),
         new Func<Player, IEnumerable<string>>(
-            player => player.battles.SelectMany(battle => battle.opponent.Where(plinfo => plinfo.tag != player.tag).Select(plinfo => plinfo.tag))
+            player => player.battles.SelectMany(battle => battle.team.Where(plinfo => plinfo.tag != player.tag).Select(plinfo => plinfo.tag))
             )
         },
     new Func<string, string>( // This functions gets tag (string) and returns required object - in this case, string. If you want to get for example
