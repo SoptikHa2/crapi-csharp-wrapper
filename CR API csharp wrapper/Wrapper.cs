@@ -309,9 +309,9 @@ namespace CRAPI
             Task<string> output = GetAsync(Endpoints.Player, tag + query);
             Player result = Parse<Player>(await output);
             if (includeChestCycleInRequest)
-                result.chestCycle = await GetPlayerChestCycle(result.tag);
+                result.chestCycle = await GetPlayerChestCycle(tag);
             if (includeBattlesDataInRequest)
-                result.battles = await GetPlayerBattles(result.tag);
+                result.battles = await GetPlayerBattles(tag);
 
             cache.Update(result, tag + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]) + includeChestCycleInRequest + includeBattlesDataInRequest);
 
@@ -329,6 +329,12 @@ namespace CRAPI
         /// <returns></returns>
         public async Task<Player[]> GetPlayerAsync(string[] tags, bool includeChestCycleInRequest, bool includeBattlesDataInRequest, string[] include = null, string[] exclude = null)
         {
+            if((includeChestCycleInRequest || includeBattlesDataInRequest) && include != null && include.Length != 0 && !include.Contains("tag"))
+            {
+                Array.Resize(ref include, include.Length + 1);
+                include[include.Length - 1] = "tag";
+            }
+
             string query = String.Empty;
             if (include != null && exclude != null)
                 throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
