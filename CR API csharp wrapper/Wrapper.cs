@@ -72,14 +72,16 @@ namespace CRAPI
         /// Get instance of Player from API
         /// </summary>
         /// <param name="tag">Player's tag. Must be upper-case</param>
+        /// <param name="includeChestCycleInRequest">Include chest cycle in player object. This consumes additional request (see <see cref="RequestsRemaining"/>)</param>
+        /// <param name="includeBattlesDataInRequest">Include battles data in player object. This consumes additional request (see <see cref="RequestsRemaining"/>)</param>
         /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
         /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
         /// <returns></returns>
-        public Player GetPlayer(string tag, string[] include = null, string[] exclude = null)
+        public Player GetPlayer(string tag, bool includeChestCycleInRequest, bool includeBattlesDataInRequest, string[] include = null, string[] exclude = null)
         {
             try
             {
-                Task<Player> task = GetPlayerAsync(tag, include, exclude);
+                Task<Player> task = GetPlayerAsync(tag, includeChestCycleInRequest, includeBattlesDataInRequest, include, exclude);
                 task.Wait();
                 return task.Result;
             }
@@ -93,14 +95,16 @@ namespace CRAPI
         /// Get few Player instances from API
         /// </summary>
         /// <param name="tags">Player tags, must be upper-case. Do not pass hundreds of tags, as timeout is set to 20 seconds</param>
+        /// <param name="includeChestCycleInRequest">Include chest cycle in player object. This consumes additional request (see <see cref="RequestsRemaining"/>)</param>
+        /// <param name="includeBattlesDataInRequest">Include battles data in player object. This consumes additional request (see <see cref="RequestsRemaining"/>)</param>
         /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
         /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
         /// <returns></returns>
-        public Player[] GetPlayer(string[] tags, string[] include = null, string[] exclude = null)
+        public Player[] GetPlayer(string[] tags, bool includeChestCycleInRequest, bool includeBattlesDataInRequest, string[] include = null, string[] exclude = null)
         {
             try
             {
-                Task<Player[]> task = GetPlayerAsync(tags, include, exclude);
+                Task<Player[]> task = GetPlayerAsync(tags, includeChestCycleInRequest, includeBattlesDataInRequest, include, exclude);
                 task.Wait();
                 return task.Result;
             }
@@ -283,10 +287,12 @@ namespace CRAPI
         /// Get instance of Player from API async
         /// </summary>
         /// <param name="tag">Player's tag. Must be upper-case</param>
+        /// <param name="includeChestCycleInRequest">Include chest cycle in player object. This consumes additional request (see <see cref="RequestsRemaining"/>)</param>
+        /// <param name="includeBattlesDataInRequest">Include battles data in player object. This consumes additional request (see <see cref="RequestsRemaining"/>)</param>
         /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
         /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
         /// <returns></returns>
-        public async Task<Player> GetPlayerAsync(string tag, string[] include = null, string[] exclude = null)
+        public async Task<Player> GetPlayerAsync(string tag, bool includeChestCycleInRequest, bool includeBattlesDataInRequest, string[] include = null, string[] exclude = null)
         {
             string query = String.Empty;
             if (include != null && exclude != null)
@@ -296,14 +302,18 @@ namespace CRAPI
             if (exclude != null)
                 query += "?exclude=" + String.Join(",", exclude);
 
-            Player cachedResult = cache.GetFromCache<Player>(tag + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            Player cachedResult = cache.GetFromCache<Player>(tag + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]) + includeChestCycleInRequest + includeBattlesDataInRequest);
             if (cachedResult != null)
                 return cachedResult;
 
             Task<string> output = GetAsync(Endpoints.Player, tag + query);
             Player result = Parse<Player>(await output);
+            if (includeChestCycleInRequest)
+                result.chestCycle = await GetPlayerChestCycle(result.tag);
+            if (includeBattlesDataInRequest)
+                result.battles = await GetPlayerBattles(result.tag);
 
-            cache.Update(result, tag + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            cache.Update(result, tag + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]) + includeChestCycleInRequest + includeBattlesDataInRequest);
 
             return result;
         }
@@ -312,10 +322,12 @@ namespace CRAPI
         /// Get few Player instances from API
         /// </summary>
         /// <param name="tags">Player tags, must be upper-case. Do not pass hundreds of tags, as timeout is set to 20 seconds</param>
+        /// <param name="includeChestCycleInRequest">Include chest cycle in player object. This consumes additional request (see <see cref="RequestsRemaining"/>)</param>
+        /// <param name="includeBattlesDataInRequest">Include battles data in player object. This consumes additional request (see <see cref="RequestsRemaining"/>)</param>
         /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
         /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
         /// <returns></returns>
-        public async Task<Player[]> GetPlayerAsync(string[] tags, string[] include = null, string[] exclude = null)
+        public async Task<Player[]> GetPlayerAsync(string[] tags, bool includeChestCycleInRequest, bool includeBattlesDataInRequest, string[] include = null, string[] exclude = null)
         {
             string query = String.Empty;
             if (include != null && exclude != null)
@@ -326,14 +338,22 @@ namespace CRAPI
                 query += "?exclude=" + String.Join(",", exclude);
 
             // Check for cache
-            Player[] cachedResult = cache.GetFromCache<Player[]>(String.Join("", tags) + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            Player[] cachedResult = cache.GetFromCache<Player[]>(String.Join("", tags) + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]) + includeChestCycleInRequest + includeBattlesDataInRequest);
             if (cachedResult != null)
                 return cachedResult;
 
             Task<string> output = GetAsync(Endpoints.Player, String.Join(",", tags) + query);
             Player[] result = Parse<Player[]>(await output);
+            for(int i = 0; i < result.Length; i++)
+            {
+                Player p = result[i];
+                if (includeChestCycleInRequest)
+                    p.chestCycle = await GetPlayerChestCycle(p.tag);
+                if (includeBattlesDataInRequest)
+                    p.battles = await GetPlayerBattles(p.tag);
+            }
 
-            cache.Update(result, String.Join("", tags) + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            cache.Update(result, String.Join("", tags) + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]) + includeChestCycleInRequest + includeBattlesDataInRequest);
 
             return result;
         }
@@ -641,6 +661,62 @@ namespace CRAPI
             }
 
             cache.Update(result, "tournamentSearch" + String.Join("", queries));
+
+            return result;
+        }
+
+        private async Task<PlayerChestCycle> GetPlayerChestCycle(string tag)
+        {
+            PlayerChestCycle cachedResult = cache.GetFromCache<PlayerChestCycle>(tag + "chestcycle");
+            if (cachedResult != null)
+                return cachedResult;
+
+            Task<string> output = GetAsync(Endpoints.Player, tag + "/chests");
+            PlayerChestCycle result = Parse<PlayerChestCycle>(await output);
+
+            cache.Update(result, tag + "chestcycle");
+
+            return result;
+        }
+
+        private async Task<PlayerChestCycle> GetPlayerChestCycle(string[] tags)
+        {
+            PlayerChestCycle cachedResult = cache.GetFromCache<PlayerChestCycle>(String.Join(",", tags) + "chestcycle");
+            if (cachedResult != null)
+                return cachedResult;
+
+            Task<string> output = GetAsync(Endpoints.Player, String.Join(",", tags) + "/chests");
+            PlayerChestCycle result = Parse<PlayerChestCycle>(await output);
+
+            cache.Update(result, String.Join(",", tags) + "chestcycle");
+
+            return result;
+        }
+
+        private async Task<PlayerBattle[]> GetPlayerBattles(string tag)
+        {
+            PlayerBattle[] cachedResult = cache.GetFromCache<PlayerBattle[]>(tag + "battles");
+            if (cachedResult != null)
+                return cachedResult;
+
+            Task<string> output = GetAsync(Endpoints.Player, tag + "/battles");
+            PlayerBattle[] result = Parse<PlayerBattle[]>(await output);
+
+            cache.Update(result, tag + "battles");
+
+            return result;
+        }
+
+        private async Task<PlayerBattle[]> GetPlayerBattles(string[] tags)
+        {
+            PlayerBattle[] cachedResult = cache.GetFromCache<PlayerBattle[]>(String.Join(",", tags) + "battles");
+            if (cachedResult != null)
+                return cachedResult;
+
+            Task<string> output = GetAsync(Endpoints.Player, String.Join(",", tags) + "/battles");
+            PlayerBattle[] result = Parse<PlayerBattle[]>(await output);
+
+            cache.Update(result, String.Join(",", tags) + "battles");
 
             return result;
         }
