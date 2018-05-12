@@ -21,9 +21,14 @@ namespace CRAPI
         /// </summary>
         public string ServerResponse { get; private set; }
         /// <summary>
-        /// Remaining requests in this minute. There are 260 requests/minute allowed. This value is updated after every request.
+        /// Remaining requests in this minute. There are 3 requests/second allowed. This value is updated after every request.
         /// </summary>
         public int RequestsRemaining { get; private set; }
+        /// <summary>
+        /// Should wrapper throttle calls by user? Exceeding request limits is now penalized by API.
+        /// </summary>
+        private bool Throttle;
+        private DateTime LastRequestTimestamp;
 
         /// <summary>
         /// All current API endpoints
@@ -51,10 +56,13 @@ namespace CRAPI
         /// Initialize wrapper for CR API
         /// </summary>
         /// <param name="devkey">Private developer key</param>
+        /// <param name="throttleCallsOnWrapperLevel">As exceeding call limit is now penalized, wrapper will by default throttle calls</param>
         /// <param name="cacheDuration">Wrapper cache duration in minutes. 0 or less = no cache</param>
-        public Wrapper(string devkey, int cacheDuration = 0)
+        public Wrapper(string devkey, bool throttleCallsOnWrapperLevel = true, int cacheDuration = 0)
         {
             this.key = devkey;
+            this.Throttle = throttleCallsOnWrapperLevel;
+            this.LastRequestTimestamp = DateTime.Now;
             this.cache = new Cacher(cacheDuration);
         }
 
@@ -641,7 +649,15 @@ namespace CRAPI
 
         private async Task<string> GetAsync(Endpoints endpoint, string parameter)
         {
+            // If there are no requests remaining
+            if (Throttle && RequestsRemaining == 0 && (DateTime.Now - LastRequestTimestamp).TotalSeconds <= 1)
+            {
+                // Wait a bit
+                System.Threading.Thread.Sleep(1000 - (int)(DateTime.Now - LastRequestTimestamp).TotalMilliseconds);
+            }
+
             Task<string> tReq = GetAsync(domain + endpoint.ToString() + "/" + parameter);
+            LastRequestTimestamp = DateTime.Now;
             return await tReq;
         }
 
