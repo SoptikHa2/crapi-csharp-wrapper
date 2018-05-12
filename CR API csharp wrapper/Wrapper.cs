@@ -344,7 +344,7 @@ namespace CRAPI
 
             Task<string> output = GetAsync(Endpoints.Player, String.Join(",", tags) + query);
             Player[] result = Parse<Player[]>(await output);
-            for(int i = 0; i < result.Length; i++)
+            for (int i = 0; i < result.Length; i++)
             {
                 Player p = result[i];
                 if (includeChestCycleInRequest)
@@ -719,6 +719,40 @@ namespace CRAPI
             cache.Update(result, String.Join(",", tags) + "battles");
 
             return result;
+        }
+
+
+        public IEnumerable<IEnumerable<O>> Mine<T, O>(IEnumerable<T> input, Func<string, T> getObjectFromTag, IEnumerable<Func<T, IEnumerable<string>>> selectTagsFunction, Func<string, O> resultFunction)
+        {
+            List<string> tags = new List<string>();
+
+            foreach (T inp in input)
+            {
+                foreach (Func<T, IEnumerable<string>> function in selectTagsFunction)
+                {
+                    tags.AddRange(function(inp));
+                }
+            }
+
+            List<string> ts = new List<string>();
+            ts.AddRange(tags);
+            for (int i = 0; i < tags.Count; i++)
+            {
+                T result = getObjectFromTag(tags[i]);
+                foreach (Func<T, IEnumerable<string>> function in selectTagsFunction)
+                {
+                    foreach(string tag in function(result))
+                    {
+                        if (!tags.Contains(tag))
+                        {
+                            tags.Add(tag);
+                            ts.Add(tag);
+                        }
+                    }
+                }
+                yield return ts.Select(tag => resultFunction(tag));
+                ts.Clear();
+            }
         }
 
         #endregion

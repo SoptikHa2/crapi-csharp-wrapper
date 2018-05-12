@@ -1,15 +1,16 @@
 # C# Wrapper for CR API
-This C# Wrapper was created to help developers with accessing unofficial [Clash Royale API](https://royaleapi.com/). You can search for clans, tournaments, see player's deck, card collection, chest cycle, past battles, view clan information, search for open tournaments and much more. Feel free to explore this wrapper.
+This C# Wrapper was created to help developers with accessing unofficial [Clash Royale API](https://royaleapi.com/). You can search for clans, tournaments, see player's deck, card collection, chest cycle, past battles, view clan information, search for open tournaments and much more. You can even use this wrapper as data miner. Feel free to explore this wrapper.
 
-> Because the API changes very often, there may be few things that are in API but are not yet in wrapper. If you find them, please report it via github issues.
+> If you find something that isn't in wrapper, visit [API website](https://docs.royaleapi.com/) and see, if the feature you want is there. If not, [create API issue](https://github.com/royaleAPI/cr-api/issues).
+If it is there, but it isn't in wrapper, [create wrapper issue](https://github.com/SoptikHa2/crapi-csharp-wrapper/issues) and I'll implement it as soon as possible.
 
-For first, you'll need AUTH key to access API. Go to [ROYALE API website](http://docs.royaleapi.com/#/authentication?id=key-management) and get your own key.
+For first, you'll need AUTH key to access API. Go to [ROYALE API website](https://docs.royaleapi.com/#/authentication?id=key-management) and get your own key.
 
 Now just download nuget package [Stastny.CRAPI](https://www.nuget.org/packages/Stastny.CRAPI/) and you start :)
 ```
-Install-Package Stastny.CRAPI -Version 0.5.5
+Install-Package Stastny.CRAPI -Version 0.6.0
 
-dotnet add package Stastny.CRAPI --version 0.5.5
+dotnet add package Stastny.CRAPI --version 0.6.0
 ```
 
 ## How to start
@@ -28,8 +29,6 @@ You can access player's chest cycle, deck, card collection, clan, etc. Just type
 You can use simmilar process to get clan `wr.GetClan("9Y8888RC");`, or tournament.
 
 You can search for clans using `wr.SearchForClans("Clash", 10000, 10, 40);`. This will search for clans with name "Clash", score at least 10000 and member count between 10 and 40. Some of these values may be omitted (by passing `null`), but at least one have to be there. Name must be at least 3 characters long. For example `wr.SearchForClans(null, null, null, 30);` will search for all clans with at most 30 members.
-
-> After every request, API response in JSON format is stored in `wr.ServerResponse`. If you miss some feature, take a look if it isn't in server response. If it is, create github issue and let me know. If it isn't, create [API issue](https://github.com/cr-api/cr-api/issues) so API developers can add this feature.
 
 ## Use wrapper Async
 
@@ -114,6 +113,57 @@ parameters at one time.
 ```csharp
 wr.GetPlayer("80RGVCV9C", null, new string[] { "clan" }); // Returns everything except "clan" field, this will be `null`
 ```
+
+## Mining data
+
+New wrapper versions offers unique feature - you can use it to simply mine data from Clash Royale. Simply call `wr.Mine` and wrapper will take care of everything.
+The mine method looks like this:
+```csharp
+public IEnumerable<IEnumerable<O>> Mine<T, O>(IEnumerable<T> input, Func<string, T> getObjectFromTag, IEnumerable<Func<T, IEnumerable<string>>> selectTagsFunction, Func<string, O> resultFunction)
+```
+`T` is thing, that you work with (`Player`, `Clan`, ...). `O` is output type - if you want to get player tags, this will be `string`. `input` is collection of source objects - 
+for example players. You need at least one. The more objects you put here, the more will you wait before mining starts.
+
+Function `getObjectFromTag` defines, what you want - if you want to use players, simply use `tag => wr.GetPlayer(tag)`. `selectTagsFunction` is collection of functions,
+where each gets `Player` (or clan, ...) and returns collection of `string` - tags gathered from object (from player's clan, from his recent battles, ...).
+
+`resultFunction` gets string (tag) and returns `O` - thing that you want to get from mining. This may be tag (`tag => tag`) or full player profile (`tag => wr.GetPlayer(tag)`).
+
+Here's example that starts mining tags of players, where first player is the best player in Clash Royale.
+
+```csharp
+            // Player is the thing I work with (I mine players), string is the thing mining returns (player tags)
+            var result = wr.Mine<Player, string>(
+                new Player[] { wr.GetPlayer(wr.GetTopPlayers().First().tag, false, true) }, // As first data, use best player (here may be more players, even all players in wr.GetTopPlayers())
+                playerTag => wr.GetPlayer(playerTag, false, true), // How to get object Player from tag
+                new Func<Player, IEnumerable<string>>[]{ // Define array of actions to do with each player object (how to get more tags)
+                    // Here, do only three actions:
+                    new Func<Player, IEnumerable<string>>( // Get other players from clan
+                        player => player.clan == null ? new string[0] : // If player doesn't have clan, return nothing
+                                    wr.GetClan(player.clan.tag) // Get player's clan
+                                    .members.Select(member => member.tag) // For each clan member, get his tag (this is used to mine additional tags from known players)
+                        ),
+                    new Func<Player, IEnumerable<string>>( // Get players from player's battles (from opponents)
+                        player => player.battles.SelectMany(battle => battle.opponent.Select(plinfo => plinfo.tag))
+                        ),
+                    new Func<Player, IEnumerable<string>>(
+                        player => player.battles.SelectMany(battle => battle.opponent.Where(plinfo => plinfo.tag != player.tag).Select(plinfo => plinfo.tag))
+                        )
+                    },
+                new Func<string, string>( // This functions gets tag (string) and returns required object - in this case, string. If you want to get for example
+                                          // full player profile, use something like tag => wr.GetPlayer(tag)
+                       resultTag => resultTag
+                    )
+                );
+
+            // Do not use this in real app, as this code will never end (add some condition)
+            // This foreach iterates through all players mined.
+            foreach (IEnumerable<string> tags in result)
+            {
+                Console.WriteLine(String.Join("\n", tags));
+            }
+```
+Please note that you should access result by using foreach, because mining uses `yield return` functionality.
 
 ## Exceptions
 
