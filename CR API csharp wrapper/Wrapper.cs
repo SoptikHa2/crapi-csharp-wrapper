@@ -157,6 +157,48 @@ namespace CRAPI
         }
 
         /// <summary>
+        /// Get currently running clan war
+        /// </summary>
+        /// <param name="tag">Tag of clan</param>
+        /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
+        /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
+        /// <returns></returns>
+        public ClanWarInfo GetClanWar(string tag, string[] include = null, string[] exclude = null)
+        {
+            try
+            {
+                Task<ClanWarInfo> task = GetClanWarAsync(tag, include, exclude);
+                task.Wait();
+                return task.Result;
+            }
+            catch (Exception ex)
+            {
+                throw ex.InnerException;
+            }
+        }
+
+        /// <summary>
+        /// Get past clan wars of clan
+        /// </summary>
+        /// <param name="tag">Tag of clan</param>
+        /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
+        /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
+        /// <returns></returns>
+        public ClanWarsRecord[] GetPastClanWars(string tag, string[] include = null, string[] exclude = null)
+        {
+            try
+            {
+                Task<ClanWarsRecord[]> task = GetPastClanWarsAsync(tag, include, exclude);
+                task.Wait();
+                return task.Result;
+            }
+            catch (Exception ex)
+            {
+                throw ex.InnerException;
+            }
+        }
+
+        /// <summary>
         /// Get top players in clash royale. Returned players are instances of SimplifiedPlayer, thus contain only basic information
         /// </summary>
         /// <param name="region">Optional parameter, feault value is Locations.None. Specifies from what country should be top players returned. This CANNOT be location starting with "_" (like _EU, _NA, etc). In that case, Location.None will be used.</param>
@@ -329,7 +371,7 @@ namespace CRAPI
         /// <returns></returns>
         public async Task<Player[]> GetPlayerAsync(string[] tags, bool includeChestCycleInRequest, bool includeBattlesDataInRequest, string[] include = null, string[] exclude = null)
         {
-            if((includeChestCycleInRequest || includeBattlesDataInRequest) && include != null && include.Length != 0 && !include.Contains("tag"))
+            if ((includeChestCycleInRequest || includeBattlesDataInRequest) && include != null && include.Length != 0 && !include.Contains("tag"))
             {
                 Array.Resize(ref include, include.Length + 1);
                 include[include.Length - 1] = "tag";
@@ -419,6 +461,64 @@ namespace CRAPI
             Clan[] result = Parse<Clan[]>(await output);
 
             cache.Update(result, String.Join("", tags) + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+
+            return result;
+        }
+
+        /// <summary>
+        /// Get currently running clan war
+        /// </summary>
+        /// <param name="tag">Tag of clan</param>
+        /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
+        /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
+        /// <returns></returns>
+        public async Task<ClanWarInfo> GetClanWarAsync(string tag, string[] include = null, string[] exclude = null)
+        {
+            string query = String.Empty;
+            if (include != null && exclude != null)
+                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
+            if (include != null)
+                query += "?keys=" + String.Join(",", include);
+            if (exclude != null)
+                query += "?exclude=" + String.Join(",", exclude);
+
+            ClanWarInfo cachedResult = cache.GetFromCache<ClanWarInfo>(tag + "war" + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            if (cachedResult != null)
+                return cachedResult;
+
+            Task<string> output = GetAsync(Endpoints.Clan, tag + "/war" + query);
+            ClanWarInfo result = Parse<ClanWarInfo>(await output);
+
+            cache.Update(result, tag + "war" + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+
+            return result;
+        }
+
+        /// <summary>
+        /// Get past clan wars of clan
+        /// </summary>
+        /// <param name="tag">Tag of clan</param>
+        /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
+        /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
+        /// <returns></returns>
+        public async Task<ClanWarsRecord[]> GetPastClanWarsAsync(string tag, string[] include = null, string[] exclude = null)
+        {
+            string query = String.Empty;
+            if (include != null && exclude != null)
+                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
+            if (include != null)
+                query += "?keys=" + String.Join(",", include);
+            if (exclude != null)
+                query += "?exclude=" + String.Join(",", exclude);
+
+            ClanWarsRecord[] cachedResult = cache.GetFromCache<ClanWarsRecord[]>(tag + "pastwars" + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
+            if (cachedResult != null)
+                return cachedResult;
+
+            Task<string> output = GetAsync(Endpoints.Clan, tag + "/warlog" + query);
+            ClanWarsRecord[] result = Parse<ClanWarsRecord[]>(await output);
+
+            cache.Update(result, tag + "pastwars" + String.Join("", include ?? new string[0]) + String.Join("", exclude ?? new string[0]));
 
             return result;
         }
@@ -747,7 +847,7 @@ namespace CRAPI
                 T result = getObjectFromTag(tags[i]);
                 foreach (Func<T, IEnumerable<string>> function in selectTagsFunction)
                 {
-                    foreach(string tag in function(result))
+                    foreach (string tag in function(result))
                     {
                         if (!tags.Contains(tag))
                         {

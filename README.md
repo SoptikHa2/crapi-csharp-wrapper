@@ -1,5 +1,5 @@
 # C# Wrapper for CR API
-This C# Wrapper was created to help developers with accessing unofficial [Clash Royale API](https://royaleapi.com/). You can search for clans, tournaments, see player's deck, card collection, chest cycle, past battles, view clan information, search for open tournaments and much more. You can even use this wrapper as data miner. Feel free to explore this wrapper.
+This C# Wrapper was created to help developers with accessing unofficial [Clash Royale API](https://royaleapi.com/). You can search for clans, tournaments, see player's deck, card collection, chest cycle, past battles, view clan information, search for open tournaments, gather Clan Wars data and much more. You can even use this wrapper as data miner. Feel free to explore this wrapper.
 
 > If you find something that isn't in wrapper, visit [API website](https://docs.royaleapi.com/) and see, if the feature you want is there. If not, [create API issue](https://github.com/royaleAPI/cr-api/issues).
 If it is there, but it isn't in wrapper, [create wrapper issue](https://github.com/SoptikHa2/crapi-csharp-wrapper/issues) and I'll implement it as soon as possible.
@@ -8,9 +8,9 @@ For first, you'll need AUTH key to access API. Go to [ROYALE API website](https:
 
 Now just download nuget package [Stastny.CRAPI](https://www.nuget.org/packages/Stastny.CRAPI/) and you start :)
 ```
-Install-Package Stastny.CRAPI -Version 0.6.1
+Install-Package Stastny.CRAPI -Version 0.6.2
 
-dotnet add package Stastny.CRAPI --version 0.6.1
+dotnet add package Stastny.CRAPI --version 0.6.2
 ```
 
 ## How to start

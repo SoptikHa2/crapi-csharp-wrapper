@@ -45,6 +45,8 @@
   <ItemGroup>
     <Compile Include="APIException.cs" />
     <Compile Include="Clan\ClanInfo.cs" />
+    <Compile Include="Clan\ClanWarInfo.cs" />
+    <Compile Include="Clan\ClanWarsRecord.cs" />
     <Compile Include="Player\LeagueStatistics.cs" />
     <Compile Include="Player\PlayerAchievement.cs" />
     <Compile Include="Player\PlayerBattle.cs" />
