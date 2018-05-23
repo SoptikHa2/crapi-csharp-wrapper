@@ -4,9 +4,9 @@ This C# Wrapper was created to help developers with accessing unofficial [Clash 
 > If you find something that isn't in wrapper, visit [API website](https://docs.royaleapi.com/) and see, if the feature you want is there. If not, [create API issue](https://github.com/royaleAPI/cr-api/issues).
 If it is there, but it isn't in wrapper, [create wrapper issue](https://github.com/SoptikHa2/crapi-csharp-wrapper/issues) and I'll implement it as soon as possible.
 
-For first, you'll need AUTH key to access API. Go to [ROYALE API website](https://docs.royaleapi.com/#/authentication?id=key-management) and get your own key.
+To start, you'll need AUTH key to access API. Go to [ROYALE API website](https://docs.royaleapi.com/#/authentication?id=key-management) and get your own key.
 
-Now just download nuget package [Stastny.CRAPI](https://www.nuget.org/packages/Stastny.CRAPI/) and you start :)
+Now just download nuget package [Stastny.CRAPI](https://www.nuget.org/packages/Stastny.CRAPI/) and everything is ready :)
 ```
 Install-Package Stastny.CRAPI -Version 0.6.2
 
@@ -33,8 +33,6 @@ You can search for clans using `wr.SearchForClans("Clash", 10000, 10, 40);`. Thi
 ## Use wrapper Async
 
 You can even use this wrapper async - that means, you can order 20 player requests and do something while waiting for wrapper to finish.
-
-> You have to write this code to special method -> do not throw this into Main! Make method like `async void DoSomething()` (async keyword!)
 
 
 > You have to add new using: `using System.Threading.Tasks;`
@@ -71,7 +69,7 @@ Console.WriteLine("Done!");
 
 
 // Get variables
-// NOTE: If the while cycle above wouldn't be here, the application would wait untill everything is prepared here
+// NOTE: If the while loop above wouldn't be here, the application would wait untill everything is prepared here
 Player player = await a_player;
 Clan clan = await a_clan;
 SimplifiedPlayer[] topPlayers = await a_topPlayers;
@@ -163,6 +161,10 @@ foreach (IEnumerable<string> tags in result)
     Console.WriteLine(String.Join("\n", tags));
 }
 ```
+
+Mining may look really complex, but if you spend few minutes and learn which parameter does what (I suggest you to take look at [Mine method source code](https://github.com/SoptikHa2/crapi-csharp-wrapper/blob/master/CR%20API%20csharp%20wrapper/Wrapper.cs#L831)
+so you'll know how to use it) you'll be able to build data miners in few minutes.
+
 Please note that you should access result by using foreach, because mining uses `yield return` functionality.
 
 ## Exceptions
