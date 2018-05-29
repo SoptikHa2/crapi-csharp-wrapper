@@ -21,6 +21,10 @@ namespace CRAPI
         /// </summary>
         public int tournamentGames;
         /// <summary>
+        /// Total number of player's wins in all clan wars
+        /// </summary>
+        public int warDayWins;
+        /// <summary>
         /// Player's wins
         /// </summary>
         public int wins;

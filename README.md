@@ -8,9 +8,9 @@ To start, you'll need AUTH key to access API. Go to [ROYALE API website](https:/
 
 Now just download nuget package [Stastny.CRAPI](https://www.nuget.org/packages/Stastny.CRAPI/) and everything is ready :)
 ```
-Install-Package Stastny.CRAPI -Version 0.6.2
+Install-Package Stastny.CRAPI -Version 0.6.3
 
-dotnet add package Stastny.CRAPI --version 0.6.2
+dotnet add package Stastny.CRAPI --version 0.6.3
 ```
 
 ## How to start
@@ -114,7 +114,7 @@ wr.GetPlayer("80RGVCV9C", null, new string[] { "clan" }); // Returns everything 
 
 ## Mining data
 
-New wrapper versions offers unique feature - you can use it to simply mine data from Clash Royale. Simply call `wr.Mine` and wrapper will take care of everything.
+This wrapper offers unique feature - you can use it to simply mine data from Clash Royale. Simply call `wr.Mine` and wrapper will take care of everything.
 The mine method looks like this:
 ```csharp
 public IEnumerable<IEnumerable<O>> Mine<T, O>(IEnumerable<T> input, Func<string, T> getObjectFromTag, IEnumerable<Func<T, IEnumerable<string>>> selectTagsFunction, Func<string, O> resultFunction)

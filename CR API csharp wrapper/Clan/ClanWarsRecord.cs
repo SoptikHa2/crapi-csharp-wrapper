@@ -20,5 +20,9 @@ namespace CRAPI
         /// Season number
         /// </summary>
         public int seasonNumber;
+        /// <summary>
+        /// Unix timestamp, when the clan war started
+        /// </summary>
+        public int createdDate;
     }
 }

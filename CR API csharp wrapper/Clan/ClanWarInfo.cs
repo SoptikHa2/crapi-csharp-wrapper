@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +22,29 @@ namespace CRAPI
         /// Participants in this clan war
         /// </summary>
         public Participant[] participants;
+        /// <summary>
+        /// Unix timestamp, when current clan war stage ends
+        /// </summary>
+        public int stageEndTime
+        {
+            get
+            {
+                return _warEndTime ?? _collectionEndTime.Value;
+            }
+            set { }
+        }
+
+
+        /// <summary>
+        /// This is internal wrapper property, don't touch! It has to be public because of deserialization
+        /// </summary>
+        [JsonProperty("warEndTime")]
+        public int? _warEndTime;
+        /// <summary>
+        /// This is internal wrapper property, don't touch! It has to be public because of deserialization
+        /// </summary>
+        [JsonProperty("collectionEndTime")]
+        public int? _collectionEndTime;
     }
 
     [Serializable]

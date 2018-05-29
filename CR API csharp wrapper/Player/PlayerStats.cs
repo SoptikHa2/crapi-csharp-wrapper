@@ -17,6 +17,10 @@ namespace CRAPI
         /// </summary>
         public int tournamentCardsWon;
         /// <summary>
+        /// Total count of collected cards in all clan wars
+        /// </summary>
+        public int clanCardsCollected;
+        /// <summary>
         /// Best count of player's tropheis
         /// </summary>
         public int maxTrophies;
