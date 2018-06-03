@@ -321,6 +321,29 @@ namespace CRAPI
             }
         }
 
+        /// <summary>
+        /// Get clan history. You have to enable tracking on clan to be able to do this. See docs.royaleapi.com/#/endpoints/clan_history?id=how-to-be-included .
+        /// This method returns dictionary, where key (string) is time and value (ClanHistoryRecord) is clan snapshot from the date
+        /// </summary>
+        /// <param name="tag">Clan tag</param>
+        /// <param name="days">How many days should the returned history have</param>
+        /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
+        /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
+        /// <returns></returns>
+        public Dictionary<string, ClanHistoryRecord> GetClanHistory(string tag, int days = 7, string[] include = null, string[] exclude = null)
+        {
+            try
+            {
+                Task<Dictionary<string, ClanHistoryRecord>> task = GetClanHistoryAsync(tag, days, include, exclude);
+                task.Wait();
+                return task.Result;
+            }
+            catch (Exception ex)
+            {
+                throw ex.InnerException;
+            }
+        }
+
         #endregion
 
         #region GetFromAPIasync
@@ -698,6 +721,9 @@ namespace CRAPI
         /// <summary>
         /// Get currently open tournaments async
         /// </summary>
+        /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
+        /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
+
         public async Task<SimplifiedTournament[]> GetOpenTournamentsAsync(string[] include = null, string[] exclude = null)
         {
             string query = String.Empty;
@@ -723,6 +749,8 @@ namespace CRAPI
         /// <summary>
         /// Search for tournaments based on their name async
         /// </summary>
+        /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
+        /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
         public async Task<Tournament[]> SearchForTournamentsAsync(string name, string[] include = null, string[] exclude = null)
         {
             List<string> queries = new List<string>(4);
@@ -767,6 +795,47 @@ namespace CRAPI
             }
 
             cache.Update(result, "tournamentSearch" + String.Join("", queries));
+
+            return result;
+        }
+
+        /// <summary>
+        /// Get clan history. You have to enable tracking on clan to be able to do this. See docs.royaleapi.com/#/endpoints/clan_history?id=how-to-be-included .
+        /// This method returns dictionary, where key (string) is time and value (ClanHistoryRecord) is clan snapshot from the date
+        /// </summary>
+        /// <param name="tag">Clan tag</param>
+        /// <param name="days">How many days should the returned history have</param>
+        /// <param name="include">Optional parameter, may be null. Specifies fields to be included in response. Everything else is dropped. This parameter and/or [exclude] parameter must be NULL.</param>
+        /// <param name="exclude">Optional parameter, may be null. Specifies fields to be dropped from response. Everything else is delivered. This parameter and/or [include] parameter must be NULL.</param>
+        /// <returns></returns>
+        public async Task<Dictionary<string, ClanHistoryRecord>> GetClanHistoryAsync(string tag, int days = 7, string[] include = null, string[] exclude = null)
+        {
+            List<string> queries = new List<string>(3);
+            queries.Add(days.ToString());
+
+            if (include != null && exclude != null)
+                throw new ArgumentException("At least one of parameters (include, exclude) must be NULL", "include, exclude");
+
+            if (include != null)
+                queries.Add("keys=" + String.Join(",", include));
+            if (exclude != null)
+                queries.Add("exclude=" + String.Join(",", exclude));
+
+            string q = String.Empty;
+            q += "?" + queries[0];
+            for (int i = 1; i < queries.Count; i++)
+                q += "&" + queries[i];
+
+            Dictionary<string, ClanHistoryRecord> cachedResult = cache.GetFromCache<Dictionary<string, ClanHistoryRecord>>("clanHistory" + String.Join("", queries));
+            if (cachedResult != null)
+                return cachedResult;
+
+            Task<string> output = GetAsync(Endpoints.Clan, tag + "/history" + q);
+            Dictionary<string, ClanHistoryRecord> result = null;
+
+            result = Parse<Dictionary<string, ClanHistoryRecord>>(await output);
+
+            cache.Update(result, "clanHistory" + String.Join("", queries));
 
             return result;
         }

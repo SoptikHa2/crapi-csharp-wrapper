@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace CRAPI
 {
+    [Serializable]
     public class APIException : Exception
     {
         /// <summary>

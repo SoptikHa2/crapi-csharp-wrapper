@@ -50,9 +50,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CR API csharp wrapper\CR API csharp wrapper.csproj">
-      <Project>{2ac9dd68-3a26-4f74-a87b-1c1bec7fc12e}</Project>
-      <Name>CR API csharp wrapper</Name>
+    <ProjectReference Include="..\CR API Standart Wrapper\CR Standart Wrapper.csproj">
+      <Project>{79852E97-D6D3-4260-AA78-0D36915A81FF}</Project>
+      <Name>CR Standart Wrapper</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

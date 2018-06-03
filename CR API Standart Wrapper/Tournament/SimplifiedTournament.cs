@@ -9,6 +9,7 @@ namespace CRAPI
     /// <summary>
     /// Tournament as is returned from Open Tournaments endpoint
     /// </summary>
+    [Serializable]
     public class SimplifiedTournament
     {
         /// <summary>
