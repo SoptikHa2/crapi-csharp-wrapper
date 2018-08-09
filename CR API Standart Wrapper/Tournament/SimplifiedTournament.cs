@@ -17,9 +17,9 @@ namespace CRAPI
         /// </summary>
         public string tag;
         /// <summary>
-        /// Tournament type, eg open
+        /// Tournament type, is open?
         /// </summary>
-        public string type;
+        public bool open;
         /// <summary>
         /// Tournament status, eg inProgress, inPreparation, etc
         /// </summary>
@@ -29,17 +29,13 @@ namespace CRAPI
         /// </summary>
         public string name;
         /// <summary>
-        /// This seems to be always equal to <see cref="playerCount"/>. If you know what this stands for, please go to github (/SoptikHa2/crapi-csharp-wrapper/) and submit new issue. Thanks!
+        /// Maximum count of players
         /// </summary>
-        public int capacity;
+        public int maxPlayers;
         /// <summary>
         /// Current count of players
         /// </summary>
-        public int playerCount;
-        /// <summary>
-        /// Maximum count of players
-        /// </summary>
-        public int maxCapacity;
+        public int currentPlayers;
         /// <summary>
         /// Duration of preparation state in seconds
         /// </summary>
@@ -60,5 +56,13 @@ namespace CRAPI
         /// Time when was tournament created in normal format. Example: 1514338911. May be null.
         /// </summary>
         public int? createTime;
+        /// <summary>
+        /// Player who created the tournament
+        /// </summary>
+        SimplifiedPlayer creator;
+        /// <summary>
+        /// Players in the tournament
+        /// </summary>
+        SimplifiedPlayer[] members;
     }
 }
