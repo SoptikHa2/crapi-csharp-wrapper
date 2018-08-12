@@ -25,11 +25,11 @@ namespace CRAPI
         /// <summary>
         /// Unix timestamp, when current clan war stage ends
         /// </summary>
-        public int stageEndTime
+        public int? stageEndTime
         {
             get
             {
-                return _warEndTime ?? _collectionEndTime.Value;
+                return _warEndTime ?? _collectionEndTime.GetValueOrDefault();
             }
             set { }
         }

@@ -8,11 +8,11 @@ If it is there, but it isn't in wrapper, [create wrapper issue](https://github.c
 
 To start, you'll need AUTH key to access API. Go to [ROYALE API website](https://docs.royaleapi.com/#/authentication?id=key-management) and get your own key.
 
-Now just download nuget package [Stastny.CRAPI](https://www.nuget.org/packages/Stastny.CRAPI/) and everything is ready :)
+Now just download nuget package [Stastny.CRAPI](https://www.nuget.org/packages/Stastny.CRAPI/) and everything will be ready :)
 ```
-Install-Package Stastny.CRAPI -Version 0.7.2
+Install-Package Stastny.CRAPI -Version 0.7.3
 
-dotnet add package Stastny.CRAPI --version 0.7.2
+dotnet add package Stastny.CRAPI --version 0.7.3
 ```
 
 ## How to start
