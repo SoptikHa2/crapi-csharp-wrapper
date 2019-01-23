@@ -1,6 +1,10 @@
 **Warning**
 
-I no longer use this wrapper myself. This means that this wrapper lacks new features, for example anything new from the new CR tournaments. If you need new features, create new issue. I'll get an email about it and respond with an ETA - however this might be weeks in the future. If you need the new feature now, consider forking this project and submitting a pull request. All you need to do is to look at `wrapper.cs` file how does, for example `getPlayer()`, work and then create C# class from JSON sent by API. Once you get how the structure works it should take you about half an hour to implement API endpoint.
+I no longer use this wrapper myself and development stalled for several months. This wrapper still works and you can use it, and it'll work in the future - but no new API features will be added and bugs won't be fixed. I suggest you to use [P.E.K.K.A .Net wrapper](https://github.com/Blind-Striker/clash-royale-client-dotnet) which should support both official and unofficial Clash Royale API.
+
+- Soptik, 2019-01-23
+
+---
 
 # C# Wrapper for CR API
 This C# Wrapper was created to help developers with accessing unofficial [Clash Royale API](https://royaleapi.com/). You can search for clans, tournaments, see player's deck, card collection, chest cycle, past battles, view clan information, search for open tournaments, gather Clan Wars data and much more. You can even use this wrapper as data miner. Feel free to explore this wrapper.
