@@ -1,5 +1,13 @@
 **Warning**
 
+Unofficial Clash Royale API will change it’s version to v3 in few days, which means complete API overhaul. This will almost certainly break this wrapper. If your application ceases to work, switch to [P.E.K.K.A .Net wrapper](https://github.com/Blind-Striker/clash-royale-client-dotnet) which should work flawlessly.
+
+- Soptik, 2019-05-06
+
+---
+
+**Warning**
+
 I no longer use this wrapper myself and development stalled for several months. This wrapper still works and you can use it, and it'll work in the future - but no new API features will be added and bugs won't be fixed. I suggest you to use [P.E.K.K.A .Net wrapper](https://github.com/Blind-Striker/clash-royale-client-dotnet) which should support both official and unofficial Clash Royale API.
 
 - Soptik, 2019-01-23
